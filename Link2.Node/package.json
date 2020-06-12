@@ -1,0 +1,23 @@
+{
+  "name": "link2.node",
+  "version": "0.0.0",
+  "description": "Link2.Node",
+  "main": "server.js",
+  "author": {
+    "name": ""
+  },
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "product": "webpack --mode production",
+    "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
+    "start-js": "react-scripts start",
+    "start": "npm-run-all -p watch-css start-js",
+    "build": "npm run build-css && react-scripts build"
+  },
+  "devDependencies": {
+    "hard-source-webpack-plugin": "^0.13.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  }
+}
