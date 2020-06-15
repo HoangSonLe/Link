@@ -12,7 +12,29 @@ const Colors = {
     darkgrey: '#4F4F4F',
     darkgrey2: '#444444',
     redpink: '#FF6E6E',
-    primaryColor: "#123213"
-}
+    primaryColor: "#123213",
+    darkbule:"#004e87",
+    lightGray: '#90949C',
+    lighterGray: '#DDDFE2',
 
+}
+export const FontWeight = {
+    extraLight: "extra-light",
+    // extraLightItalic: "extra-light-italic",
+    light: "light",
+    // lightItalic: "light-italic",
+    regular: "regular",
+    // regularItalic: "regular-italic",
+    medium: "medium",
+    // mediumItalic: "medium-italic",
+    semibold: "semibold",
+    // semiboldItalic:"semibold-italic",
+    bold: "bold",
+    // boldItalic: "bold-italic",
+    extrabold: "extra-bold",
+    // extraboldItalic: "extra-bold-italic",
+    black: "black",
+    // blackItalic: "black-italic",
+
+}
 export default Colors;

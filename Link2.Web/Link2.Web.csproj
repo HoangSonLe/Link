@@ -2231,7 +2231,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50511</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50511/</IISUrl>
+          <IISUrl>http://localhost:5051/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:5051/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

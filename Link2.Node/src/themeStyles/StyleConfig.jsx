@@ -14,7 +14,12 @@ export const ColorObject = {
   default: createColor("#DEDEDE", Colors.white),
   info: createColor("#00acc1", Colors.white),
   gray: createColor("#ccc", Colors.white),
-  blue: createColor("#004e87", Colors.white)
+  blue: createColor("#004e87", Colors.white),
+  white: createColor("#ffffff", Colors.black),
+  lightGray: createColor(Colors.lightGray, Colors.white),
+  lighterGray: createColor(Colors.lighterGray, Colors.black),
+  lightGreen: createColor(Colors.lightgreen, Colors.white)
+
 }
 const globalStyle = {
   containerPadding: '10pt',
@@ -643,7 +648,7 @@ const customTabsStyles = {
     fontSize: "0.875rem !important", // size chữ
     alignText: "center", // căn giữa (giữa/ trái/ phải) title khi title ở trên so với tab
     fontFamily: globalStyle.fontFamily, //font chữ mặc định của title tab
-    fontWeight: "unset", //độ đậm nhạt
+    fontWeight: "bold", //độ đậm nhạt
   },
   tabsRoot: {
     fontSize: "12px" //size của tên tab
@@ -659,10 +664,13 @@ const customTabsStyles = {
   // css của tab khi được chọn
   tabSelected: {
     backgroundColor: "rgba(255, 255, 255, 0.2)", //màu nền
-    transition: "0.2s background-color 0.1s"
+    transition: "0.2s background-color 0.1s",
+    color: Colors.darkblue
+
   },
   tabWrapper: {
-    marginIcon: "-1px 5px 0 0" // margin của tabicon
+    marginIcon: "-1px 5px 0 0", // margin của tabicon
+    fontWeight: "bold", //độ đậm nhạt
   },
   cardStyle: {
     padding: "0px 15px 0px 15px", //padding của tab so với header và nội dung
@@ -672,7 +680,7 @@ const customTabsStyles = {
     minWidth: "0", //Chiều rộng tối thiểu
     maxWidth: "unset", //Chiều rộng tối đa
     fontSize: ".875rem", //cỡ chữ
-    backgroundGradient: false //có hiển thị linear-gradient (background dải màu) hay không
+    backgroundGradient: true, //có hiển thị linear-gradient (background dải màu) hay không
   },
   cardHeaderStyle: {
     floatingHeaderPadding: "15px", //padding của header.
@@ -714,23 +722,28 @@ const paginationStyle = {
 };
 const typographyStyles = {
   borderThickness: 2, // độ dày của border typography nếu có
-  h1FontSize: 10, // fontSize cho variant h1
-  h2FontSize: 20,
-  h3FontSize: 30,
-  h4FontSize: 40,
-  h5FontSize: 50,
-  h6FontSize: 60,
-  h1LineHeight: 1, // LineHeight cho variant h1
-  h2LineHeight: 2,
-  h3LineHeight: 3,
-  h4LineHeight: 4,
-  h5LineHeight: 5,
-  h6LineHeight: 6,
+  h1FontSize: "60px", // fontSize cho variant h1
+  h2FontSize: "48px",
+  h3FontSize: "34px",
+  h4FontSize: "28px",
+  h5FontSize: "22px",
+  h6FontSize: "18px",
+  subtitle1FontSize: "12px",
+  subtitle2FontSize: "11px",
+  body1FontSize: "16px",
+  body2FontSize: "14px",
+  h1LineHeight: 1.5, // LineHeight cho variant h1
+  h2LineHeight: 1.5,
+  h3LineHeight: 1.5,
+  h4LineHeight: 1.5,
+  h5LineHeight: 1.5,
+  h6LineHeight: 1.5,
   font1: "Muli",
   font2: "Saira",
   font3: "",
   font4: "",
   font5: "",
+
   // h1FontFamily: globalStyle.fontFamily, //fontFamily cho variant h1
   // h2FontFamily: globalStyle.fontFamily,
   // h3FontFamily: globalStyle.fontFamily,
@@ -743,14 +756,14 @@ const typographyStyles = {
   strongerRadius: '12px', //radius mạnh hơn nữa
   heavyRadius: '20px',  //radius đậm
   superStrongRadius: '30px', // siêu mạnh
+  XXLRadius: '38px', // siêu mạnh
   maximumRadius: "50%", // hết cở 50%
   thinWidth: '1px', // 1px width
-  lighterWidth: '3px', //width nhẹ nhẹ
+  lighterWidth: '2px', //width nhẹ nhẹ
   strongWidth: '5px', //width mạnh
   superStrongWidth: '10px', // siêu mạnh
   maximumWidth: '15px' // hết cở 
 };
-
 //infoArea
 const infoAreaStyle = {
   infoArea: {

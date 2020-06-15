@@ -180,6 +180,42 @@ namespace Link2.Web.Controllers
                     TimeOut = null
               },
             },
+            new LisSystem()
+            {
+                CanDelete = false,
+                Id =  34,
+                Name = "Serial",
+                CommunicationMode =  4001,
+                ChannelId= 47,
+                IsActive = true,
+                SendQCResult = false,
+                AutoExport = true,
+                TimeZoneId = "Aleutian Standard Time",
+                SerialChannel = new SerialChannel(){
+                    Id= 47,
+                    PortName="COM1",
+                    BaudRate= 9600,
+                    DTSDSR = false,
+                    RTSCTS = false,
+                    Handshake= 1,
+                    TimeOut=  1,
+                    Parity=  1,
+                    StopBits = 3
+              },
+              FolderChannel = new FolderChannel() {
+                    Id = 0,
+                    RootFolder = null,
+                    InputFile = null,
+                    OutputFile= null,
+                    NeedAck = false
+              },
+              TCPChannel = new TCPChannel(){
+                    Id= 0,
+                    Ip= null,
+                    Port= 0,
+                    TimeOut = null
+              },
+            },
 
         };
 
@@ -228,6 +264,14 @@ namespace Link2.Web.Controllers
                 OutputFile = null,
                 NeedAck= false
             };
+            ack.IsSuccess = true;
+            return ack;
+        }
+        [HttpGet]
+        public Acknowledgement<LisSystem> GetDefaultLis()
+        {
+            var ack = new Acknowledgement<LisSystem>();
+            ack.Data = new LisSystem();
             ack.IsSuccess = true;
             return ack;
         }
