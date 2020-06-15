@@ -11,19 +11,13 @@ export default class BaseModal extends ModalLayout {
     modalBody() {
         const { data, ...others } = this.props;
         return (
-            // <PatientDetail
-            //     closeModal={this.closeThisModal}
-            //     data={data}
-            //     {...others}
-            // />
-            
-            <h1>Nody</h1>
+            this.props.modalBody
         )
     }
-    leftFooter(){
+    leftFooter() {
         return this.props.leftFooter;
     }
-    rightFooter(){
+    rightFooter() {
         return this.props.rightFooter;
     }
 }

@@ -7,26 +7,27 @@ class IconButtonGroup extends React.Component {
     constructor(props) {
         super(props);
     }
-
+    // _onClick = (e) => {
+    //     typeof this.props.onClick === 'function' && this.props.onClick(e);
+    // }
     render() {
         let { components, float } = this.props;
         if (!components || components.length == 0) return null;
         return (
             <I3Div display="flex" float={float}>
                 {components.map((i, index) => {
-                    return (
+                    return typeof i.onClick === 'function' ?
                         <I3Icon
                             key={index}
                             className={i.className}
                             onClick={i.onClick}
                             fontSize="h1"
                             color="blue"
-                            margin={["xs", "xs", "xs", "xs"]}
+                            margin={"xs"}
+                            cursor="pointer"
                         />
-                        // <I3Div key={index} margin={["no", "xs", "no", "xs"]}>
-                        //     {i}
-                        // </I3Div>
-                    )
+                        : null
+
                 })}
             </I3Div>
         );

@@ -103,9 +103,9 @@ class AppRoot extends BasePage {
   }
 
   childrenRender() {
-    let data = this.state;
+    let routeData = this.state;
     return (
-      <MainContent data={data} />
+      <MainContent routeData={routeData} />
       // <Router history={this.getHistory()}>
       //         <Route
       //         exact
@@ -131,9 +131,10 @@ const Styles = {
   },
 
   rightPopupModalPaper: {
-    width: "624px",
+    width: "520px",
     right: "0px",
     position: "absolute",
+
   },
 
   rootDialogContent: {

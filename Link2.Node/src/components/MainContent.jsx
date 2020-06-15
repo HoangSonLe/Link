@@ -6,7 +6,6 @@ import {
   Lab,
   Instrument,
   Lis,
-  Item,
   Button,
 } from "../importer";
 import { withStyles } from "@material-ui/core";
@@ -27,7 +26,7 @@ class MainContent extends BaseConsumer {
       },
       {
         tabName: "Lis",
-        tabContent: <Lis lis={this.props.data.lis}></Lis>,
+        tabContent: <Lis data={this.props.routeData.lis}></Lis>,
       },
     ];
   };
@@ -51,11 +50,11 @@ class MainContent extends BaseConsumer {
     );
   };
   consumerContent() {
-    let { data } = this.props;
+    let { routeData } = this.props;
     return (
-      <I3Div>
+      <I3Div margin={"md"}>
         <I3CustomTabs indicator={true} tabs={this._createTab()}></I3CustomTabs>
-        <BaseButton variant="outlined" margin={["sm", "sm", "sm", "sm"]}>
+        <BaseButton variant="outlined" margin={"sm"}>
           Cancle
         </BaseButton>
         <Button onClick={this._handClick}>Modal</Button>

@@ -12,20 +12,39 @@ import GridItem from "components/Grid/GridItem";
 import I3Select from 'components/I3Select/I3Select'
 import BaseCheckboxItem from 'components/I3Checkbox/BaseCheckboxItem'
 import I3CustomTabs from 'components/CustomTabs/I3CustomTabs';
+import I3CheckboxItem from "components/I3Checkbox/I3CheckboxItem";
 
 import Lab from './components/Lab/Lab';
 import Instrument from './components/Instrument';
-import Lis from './components/Lis';
-import Item from './components/Item';
+import Lis from './components/Lis/Lis';
+import Item from './base-components/Item';
+import LastDivItem from "./base-components/LastDivItem";
+import IconButtonGroup from "./base-components/IconButtonGroup";
+import ListComponent from "./base-components/ListComponent";
+import RowTextField from "./base-components/RowTextField"
+import RowSwitch from "./base-components/RowSwitch";
+import BaseModal from "./base-components/BaseModal"
+import BaseButton from "./base-components/BaseButton";
 
 export {
-    Lab, Instrument, Lis, Item,
+    BaseModal,
+    BaseButton,
+    Lab,
+    Instrument,
+    Lis,
+    Item,
+    ListComponent,
+    IconButtonGroup,
+    RowSwitch,
+    RowTextField,
+    LastDivItem,
     I3CustomTabs,
     BaseCheckboxItem,
     I3Component,
     Button,
     I3Checkbox,
     I3Div,
+    I3CheckboxItem,
     I3DivCenter,
     I3Icon,
     BaseConsumer,

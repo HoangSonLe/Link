@@ -3,10 +3,10 @@ import { I3Div } from '../importer'
 import { FontWeight } from '../themeStyles/Color';
 import cx from 'classnames';
 import { withStyles } from "@material-ui/core";
-import { availableMarginAndPadding,getColorFromName } from '../general/CleanNodeHelper';
+import { getColorFromName } from 'general/CleanNodeHelper';
 import PropTypes from 'prop-types';
 
-class BaseButton extends React.Component{
+class BaseButton extends React.Component {
     static defaultProps = {
         variant: "solid",
         disabled: false,
@@ -17,14 +17,14 @@ class BaseButton extends React.Component{
     //     margin: PropTypes.oneOf([PropTypes.oneOf([PropTypes.oneOf(availableMarginAndPadding), PropTypes.arrayOf(PropTypes.oneOf(availableMarginAndPadding))]), PropTypes.arrayOf(PropTypes.oneOf([PropTypes.oneOf(availableMarginAndPadding), PropTypes.arrayOf(PropTypes.oneOf(availableMarginAndPadding))]))]),
     //     iconClassName: PropTypes.string,
     // }
-    _onClick=(e)=>{
-        if(this.props.disabled == false){
-            typeof this.props.onClick== "function" && this.props.onClick(e);
+    _onClick = (e) => {
+        if (this.props.disabled == false) {
+            typeof this.props.onClick == "function" && this.props.onClick(e);
         }
     }
-    render(){
-        let {classes,onClick,variant, margin,width,children,disabled,...otherProps} = this.props;
-        let customStyles={};
+    render() {
+        let { classes, onClick, variant, margin, width, children, disabled, ...otherProps } = this.props;
+        let customStyles = {};
         let rootClasses = cx({
             [classes.root]: true,
             [classes.solid]: variant === "solid",
@@ -32,22 +32,22 @@ class BaseButton extends React.Component{
             [classes.text]: variant === "text",
             [classes.disabled]: disabled
         })
-        if(width){
-            customStyles.width= width;
+        if (width) {
+            customStyles.width = width;
         }
-        return(
+        return (
             <I3Div
                 margin={margin}
-                fontWeight={FontWeight.bold} 
-                variant="body1" 
+                fontWeight={FontWeight.bold}
+                variant="body1"
                 display="inline-flex"
             >
-                <button 
+                <button
                     onClick={this._onClick}
                     style={customStyles}
                     className={rootClasses} {...otherProps}
                 >
-                {children}
+                    {children}
                 </button>
             </I3Div>
         )
@@ -56,20 +56,20 @@ class BaseButton extends React.Component{
 let color = getColorFromName("blue")
 export default withStyles({
     root: {
-        borderRadius:"4px",
-        border:"none",
-        cursor:"pointer",
+        borderRadius: "4px",
+        border: "none",
+        cursor: "pointer",
         minWidth: '84px',
         fontFamily: 'inherit',
         fontWeight: 'inherit',
         fontSize: 'inherit',
         lineHeight: 'inherit',
-        padding:"10px 15px",
+        padding: "10px 15px",
         lineHeight: '20px',
         '&:focus': {
             outline: 'none'
         },
-        '&:hover':{
+        '&:hover': {
             boxShadow: "0 2px 2px 0 rgba(86, 137, 175), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12)"
         }
     },
