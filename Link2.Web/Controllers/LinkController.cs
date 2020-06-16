@@ -227,7 +227,7 @@ namespace Link2.Web.Controllers
             new LisSystem()
             {
                 CanDelete = false,
-                Id =  34,
+                Id =  35,
                 Name = "Folder Channel",
                 Image="folder.png",
                 CommunicationMode =  4001,
