@@ -13,8 +13,9 @@ class RightModal extends BaseConsumer {
     consumerContent() {
         const {
             title, classes, modalBody, bodyProps, onClose,
-            rightFooter, leftFooter,
+            rightFooter, leftFooter, hasFooter
         } = this.props;
+        console.log("hasFooter", hasFooter)
         return (
             <Fragment>
                 <div className={classes.container}>
@@ -26,12 +27,16 @@ class RightModal extends BaseConsumer {
                     <div className={classes.body}>
                         {modalBody}
                     </div>
-                    <ModalFooter
-                        type={EModalType.Right}
-                        onClose={onClose}
-                        rightFooter={rightFooter}
-                        leftFooter={leftFooter}
-                    />
+                    {
+                        hasFooter ?
+                            <ModalFooter
+                                type={EModalType.Right}
+                                onClose={onClose}
+                                rightFooter={rightFooter}
+                                leftFooter={leftFooter}
+                            />
+                            : null
+                    }
                 </div>
             </Fragment>
         )

@@ -22,11 +22,11 @@ class MainContent extends BaseConsumer {
       },
       {
         tabName: "Instruments",
-        tabContent: <Instrument></Instrument>,
+        tabContent: <Instrument instrument={this.props.routeData.instrument}></Instrument>,
       },
       {
         tabName: "Lis",
-        tabContent: <Lis data={this.props.routeData.lis}></Lis>,
+        tabContent: <Lis lis={this.props.routeData.lis}></Lis>,
       },
     ];
   };
@@ -38,7 +38,7 @@ class MainContent extends BaseConsumer {
           <BaseModal
             leftFooter={
               <BaseButton variant="outlined" width="110px">
-                Cancle
+                Cancel
               </BaseButton>
             }
             rightFooter={<BaseButton width="110px">Save</BaseButton>}

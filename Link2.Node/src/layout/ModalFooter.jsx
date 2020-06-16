@@ -10,7 +10,6 @@ class ModalFooter extends BaseConsumer {
     }
     consumerContent() {
         const { classes, rightFooter, leftFooter, type, onClose } = this.props;
-        if (rightFooter == null && leftFooter == null) return null;
         let padding;
         if (type == EModalType.Right) {
             padding = ["no", "lg2", "no", "lg2"];
@@ -26,6 +25,9 @@ class ModalFooter extends BaseConsumer {
                         alignItems="center"
                         justifyContent="flex-start"
                     >
+                        <BaseButton variant="outlined" width="110px" onClick={onClose}>
+                            Cancle
+                        </BaseButton>
                         {leftFooter}
                     </I3Div>
                     <I3Div

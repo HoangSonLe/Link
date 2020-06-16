@@ -1,7 +1,7 @@
 import React from 'react';
 import BaseConsumer from 'BaseComponent/BaseConsumer';
 import { EModalType } from '../general/enum';
-import RightModal from'./RightModal';
+import RightModal from './RightModal';
 import $ from 'jquery';
 
 export default class ModalLayout extends BaseConsumer {
@@ -20,7 +20,7 @@ export default class ModalLayout extends BaseConsumer {
     }
     modalBody() {
         console
-        throw  "Not implemented `modalBody` method in ModalLayout";
+        throw "Not implemented `modalBody` method in ModalLayout";
     }
     dataToCompare() {
         return null;
@@ -64,13 +64,13 @@ export default class ModalLayout extends BaseConsumer {
     }
     rightFooter() {
     }
-    componentDidMount(){
-        if (this._consumerContentOverride == false){
+    componentDidMount() {
+        if (this._consumerContentOverride == false) {
             throw 'How dare you override my consumerContent?';
         }
     }
     consumerContent() {
-        const { type, hasDefaultPadding, title } = this.props;
+        const { type, hasDefaultPadding, title, hasFooter } = this.props;
         this._consumerContentOverride = true;
         let bodyProps = {};
         if (hasDefaultPadding) bodyProps.padding = this._defaultPadding[type];
@@ -84,6 +84,7 @@ export default class ModalLayout extends BaseConsumer {
                         title={title}
                         bodyProps={bodyProps}
                         onClose={this._close}
+                        hasFooter={hasFooter}
                     />
                 );
             default:

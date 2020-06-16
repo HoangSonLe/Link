@@ -8,7 +8,7 @@ class LastDivItem extends BaseConsumer {
         const { classes, title, margin, iconClassName, onClick } = this.props;
         return (
             <I3Div
-                onClick={this.onClick}
+                onClick={onClick}
                 variant="h5"
                 borderColor="gray"
                 border={true}
@@ -16,11 +16,11 @@ class LastDivItem extends BaseConsumer {
                 alignItems="center"
                 justifyContent="center"
                 cursor="pointer"
-                margin={margin}
+                margin={"no"}
                 color="blue"
                 fontWeight="bold"
                 height="82px"
-                width="300px">
+            >
                 <I3Icon
                     lineHeight="20px"
                     color="blue"

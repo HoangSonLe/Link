@@ -11,7 +11,7 @@ class Lis extends BaseConsumer {
       url: "/api/link/getlissystems",
       success: (ack) => {
         console.log(ack.data);
-        this.updateObject(this.props, { lis: { lisList: ack.data } });
+        this.updateObject(this.props.lis, { lisList: ack.data });
         // this.ajaxGet({
         //   url: "/api/link/GetDefaultLis",
         //   success: (ack) => {
@@ -27,11 +27,7 @@ class Lis extends BaseConsumer {
         title: title,
         body: (
           <BaseModal
-            leftFooter={
-              <BaseButton variant="outlined" width="110px">
-                Cancle
-              </BaseButton>
-            }
+            hasFooter={true}
             modalBody={
               <CloneLisDetail
                 lis={item}
@@ -46,6 +42,9 @@ class Lis extends BaseConsumer {
       true
     );
   }
+  _callBackDeleteItem = (e) => {
+    console.log("Deleteed: ", e)
+  }
   _deleteItem = (e) => {
     this.confirm(
       "Delete this LIS system?",
@@ -59,7 +58,13 @@ class Lis extends BaseConsumer {
         okay: {
           title: "Delete", // text hiển thị trên nút oke 
           handle: () => {
-            // hành động thực hiện sau khi nhấn nút oke
+            this.ajaxGet({
+              url: "/api/link/getlissystems",
+              success: ack => {
+                this.removeElement(this.props.lis.lisList, e, this._callBackDeleteItem(e))
+              }
+
+            })
           }
         }
 
@@ -70,17 +75,6 @@ class Lis extends BaseConsumer {
     return (
       <img src="http://link2.i3solution.net.au/dist/Contents/img/lis/lan-icon.png" />
     );
-  }
-  _renderRightHeader = () => {
-    return <I3CheckboxItem label={"dcjds"} checked={true} isMulti={true} />
-  }
-  _renderLeftFooter = () => {
-    return (
-      <I3Div className={classes.HeadStart + " " + classes.DetroyPaddingRight + " " + classes.DetroyPaddingLeft} >
-        <I3Icon className="far fa-circle" fontSize="h1" color="lightGreen" />
-        <span>Active</span>
-      </I3Div>
-    )
   }
 
   _renderRightFooter = (e) => {
@@ -103,44 +97,30 @@ class Lis extends BaseConsumer {
       />
     )
   }
-  _renderContent = () => {
-    let { data } = this.props;
-    let res = data.lisList.map((e) => {
-      return (
-        // <GridItem xs={12} sm={6} md={4} lg={3} key={e.id}>
-        <Item
-          key={e.id}
-          header={e.name}
-          isActive={false}
-          canDelete={e.canDelete}
-          rightFooter={this._renderRightFooter(e)}
-          image={this._renderImage(e)}
-        ></Item>
-        // </GridItem>
-      );
-    });
+  _renderItem = (e) => {
     return (
-      <GridContainer>
-        {res}
-        {/* <GridItem xs={12} sm={6} md={4} lg={3}> */}
-        <LastDivItem title="Add new Lis" onClick={() => this._openModal("New Lis", data.newLis)} />
-        {/* </GridItem> */}
-      </GridContainer>
-    )
+      <Item
+        key={e.id}
+        header={e.name}
+        isActive={e.isActive}
+        rightFooter={this._renderRightFooter(e)}
+        image={this._renderImage(e)}
+      ></Item>
+    );
   }
+  _renderAddItem = () => {
+    return <LastDivItem title="Add new Lis" onClick={() => this._openModal("New Lis", this.props.lis.newLis)} />
+  }
+  _
   consumerContent() {
-    let { data } = this.props;
-    console.log("ca", data);
-    if (data === null) {
+    let { lis } = this.props;
+    console.log("lis", lis);
+    if (!lis.lisList || lis.lisList.length <= 0) {
       return null;
     }
     return (
       <>
-        {
-          !data.lis ?
-            <ListComponent margin={["xs", "no", "xs", "no"]} title={"Instrument"} components={this._renderContent()} />
-            : null
-        }
+        <ListComponent dataList={lis.lisList} renderItem={item => this._renderItem(item)} renderAddItem={this._renderAddItem()} />
       </>
     );
   }

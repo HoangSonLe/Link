@@ -9,21 +9,22 @@ import { withStyles } from "@material-ui/core";
 import MainContent from "../components/MainContent";
 import { BasePage } from "BaseComponent/BasePage";
 
-class AppRoot extends BasePage {
+class App extends BasePage {
   constructor(props) {
     super(props);
     this.state = {
-      lab: null,
-      lis: null,
+      routeData: {}
     };
+    this._firstRender = true;
   }
   componentDidMount() {
-    //  this.ajaxGet({
-    //    url: "/api/link/GetLisSystems",
-    //    success: (ack) => {
-    //      this.updateLocalObject(this.state.lis, ack.Data);
-    //    },
-    //  });
+    this.ajaxGet({
+      url: "/api/link/GetLisSystems",
+      success: (ack) => {
+        this.updateObject(this.state.routeData, { lab: {}, lis: {}, instrument: {} });
+        // this.setState({ routeData: { lab: {}, lis: {}, instrument: {} } });
+      },
+    });
   }
 
   openModal(
@@ -75,7 +76,6 @@ class AppRoot extends BasePage {
       };
     };
     const { classes } = this.props;
-
     let dialogStyleContainer = "";
     let dialogContentRoot = classes.rootDialogContent;
     let modalPaper = classes.modalPaper;
@@ -103,18 +103,15 @@ class AppRoot extends BasePage {
   }
 
   childrenRender() {
-    let routeData = this.state;
+    let { routeData } = this.state;
+    if (this._firstRender) {
+      this._firstRender = false;
+      return (
+        null
+      );
+    }
     return (
       <MainContent routeData={routeData} />
-      // <Router history={this.getHistory()}>
-      //         <Route
-      //         exact
-      //         render={props => (
-      //             <MainContentWrapper/>
-      //         )}
-      //         path={"/"}
-      //         />
-      // </Router>
     );
   }
 }
@@ -145,7 +142,7 @@ const Styles = {
     boxShadow: "none !important",
   },
 };
-const C = withStyles(Styles)(AppRoot);
+const C = withStyles(Styles)(App);
 
 window.renderPage = (dom) => {
   ReactDOM.render(<C />, dom);

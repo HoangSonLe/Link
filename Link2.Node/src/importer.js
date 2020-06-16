@@ -15,7 +15,7 @@ import I3CustomTabs from 'components/CustomTabs/I3CustomTabs';
 import I3CheckboxItem from "components/I3Checkbox/I3CheckboxItem";
 
 import Lab from './components/Lab/Lab';
-import Instrument from './components/Instrument';
+import Instrument from './components/Instrument/Instrument';
 import Lis from './components/Lis/Lis';
 import Item from './base-components/Item';
 import LastDivItem from "./base-components/LastDivItem";

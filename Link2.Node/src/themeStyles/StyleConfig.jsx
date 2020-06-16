@@ -14,7 +14,7 @@ export const ColorObject = {
   default: createColor("#DEDEDE", Colors.white),
   info: createColor("#00acc1", Colors.white),
   gray: createColor("#ccc", Colors.white),
-  blue: createColor("#004e87", Colors.white),
+  blue: createColor(Colors.blue, Colors.white),
   white: createColor("#ffffff", Colors.black),
   lightGray: createColor(Colors.lightGray, Colors.white),
   lighterGray: createColor(Colors.lighterGray, Colors.black),
@@ -665,7 +665,8 @@ const customTabsStyles = {
   tabSelected: {
     backgroundColor: "rgba(255, 255, 255, 0.2)", //màu nền
     transition: "0.2s background-color 0.1s",
-    color: Colors.darkblue
+    color: Colors.blue,
+    fontWeight: "bold"
 
   },
   tabWrapper: {

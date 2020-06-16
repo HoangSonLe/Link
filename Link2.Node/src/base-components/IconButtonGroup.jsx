@@ -14,7 +14,7 @@ class IconButtonGroup extends React.Component {
         let { components, float } = this.props;
         if (!components || components.length == 0) return null;
         return (
-            <I3Div display="flex" float={float}>
+            <I3Div display="flex" float={float} >
                 {components.map((i, index) => {
                     return typeof i.onClick === 'function' ?
                         <I3Icon

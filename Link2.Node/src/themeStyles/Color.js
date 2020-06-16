@@ -13,10 +13,10 @@ const Colors = {
     darkgrey2: '#444444',
     redpink: '#FF6E6E',
     primaryColor: "#123213",
-    darkbule:"#004e87",
+    darkbule: "#004e87",
     lightGray: '#90949C',
     lighterGray: '#DDDFE2',
-
+    blue: "#004e87"
 }
 export const FontWeight = {
     extraLight: "extra-light",

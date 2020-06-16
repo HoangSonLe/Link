@@ -40,7 +40,7 @@ class Item extends BaseConsumer {
     consumerContent() {
         // debugger
         // let { classes, rightFooter, rightHeader, leftHeader, leftFooter, image } = this.props;
-        let { classes, header, rightFooter, isActive, image } = this.props;
+        let { classes, header, rightFooter, rightHeader, isActive, image } = this.props;
         let leftFooter = () => ({
 
         })
@@ -52,10 +52,10 @@ class Item extends BaseConsumer {
                 <GridItem xs={8} sm={8} xs={8} className={classes.DetroyPadding}>
                     <GridContainer className={classes.RightTopDiv}>
                         <GridItem xs={8} sm={8} xs={8} className={classes.HeadStart + " " + classes.DetroyPaddingRight}>
-                            <I3Component variant="caption" margin={"xs"}>{header}</I3Component>
+                            <I3Component variant="body2" margin={"xs"}>{header}</I3Component>
                         </GridItem>
                         <GridItem xs={4} sm={4} xs={4} className={classes.HeadEnd + " " + classes.DetroyPadding}>
-                            <BaseCheckboxItem className={classes.CheckBox} label="Mirror" checked={true} />
+                            {rightHeader}
                         </GridItem>
                     </GridContainer>
                     <GridContainer className={classes.RightBottomDiv}>
@@ -94,7 +94,6 @@ const Styles = {
         paddingRight: "0 !important"
     },
     RightTopDiv: {
-        height: "50%",
         borderBottom: "1px solid grey",
         margin: "0 !important",
         display: "flex",
@@ -102,7 +101,6 @@ const Styles = {
         justifyContent: "center",
     },
     RightBottomDiv: {
-        height: "50%",
         margin: "0 !important",
         display: "flex",
         alignItems: "center",
@@ -124,7 +122,7 @@ const Styles = {
     },
 
     DivContainer: {
-        width: "300px",
+        width: "auto",
         border: "solid 1px #bfcad3",
         height: "82px",
         boxShadow: " 0 2px 5px 0 rgba(0, 0, 0, 0.3)",
