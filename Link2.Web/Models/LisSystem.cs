@@ -9,6 +9,7 @@ namespace Link2.Web.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Image { get; set; }
         public bool IsActive { get; set; }
         public bool CanDelete { get; set; }
         public bool AutoExport { get; set; }

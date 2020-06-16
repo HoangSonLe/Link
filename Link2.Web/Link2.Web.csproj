@@ -144,10 +144,12 @@
     <Compile Include="Models\BaudRate.cs" />
     <Compile Include="Models\FolderChannel.cs" />
     <Compile Include="Models\Handshake.cs" />
+    <Compile Include="Models\Instrument.cs" />
     <Compile Include="Models\Laboratory.cs" />
     <Compile Include="Models\Lis.cs" />
     <Compile Include="Models\LisCommunationMode.cs" />
     <Compile Include="Models\LisSystem.cs" />
+    <Compile Include="Models\MachineType.cs" />
     <Compile Include="Models\OptionsLisEdit.cs" />
     <Compile Include="Models\Parity.cs" />
     <Compile Include="Models\SerialChannel.cs" />

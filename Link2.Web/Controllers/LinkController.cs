@@ -13,7 +13,7 @@ namespace Link2.Web.Controllers
     public class LinkController : ApiController
     {
 
-
+        //Mock Data
         private static List<Handshake> listHandshakes = new List<Handshake>() {
             new Handshake()
             {
@@ -124,6 +124,34 @@ namespace Link2.Web.Controllers
                 Label = "256000"
             }
         };
+        private static List<MachineType> listMachineTypes = new List<MachineType>()
+        {
+            new MachineType()
+            {
+                Label= "Erytra",
+                Value= 1
+            },
+            new MachineType()
+            {
+                Label= "DG Reader",
+                Value= 2
+            },
+            new MachineType()
+            {
+                Label= "Wadiana",
+                Value= 3
+            },
+            new MachineType()
+            {
+                Label= "Erytra Eflexis",
+                Value= 4
+            },
+            new MachineType()
+            {
+                Label= "DG Reader Net",
+                Value= 5
+            }
+        };
         private static List<LisCommunationMode> listLisCommunationModes = new List<LisCommunationMode>()
         {
             new LisCommunationMode()
@@ -148,6 +176,7 @@ namespace Link2.Web.Controllers
             {
                 CanDelete = false,
                 Id =  33,
+                Image="serial.png",
                 Name = "Serial Channel",
                 CommunicationMode =  4001,
                 ChannelId= 47,
@@ -166,29 +195,19 @@ namespace Link2.Web.Controllers
                     Parity=  1,
                     StopBits = 3
               },
-              FolderChannel = new FolderChannel() {
-                    Id = 0,
-                    RootFolder = null,
-                    InputFile = null,
-                    OutputFile= null,
-                    NeedAck = false
-              },
-              TCPChannel = new TCPChannel(){
-                    Id= 0,
-                    Ip= null,
-                    Port= 0,
-                    TimeOut = null
-              },
+              FolderChannel = new FolderChannel(),
+              TCPChannel = new TCPChannel(),
             },
             new LisSystem()
             {
                 CanDelete = false,
                 Id =  34,
-                Name = "Serial",
+                Name = "TCP Channel 233",
+                Image="tcp.png",
                 CommunicationMode =  4001,
                 ChannelId= 47,
                 IsActive = true,
-                SendQCResult = false,
+                SendQCResult = true,
                 AutoExport = true,
                 TimeZoneId = "Aleutian Standard Time",
                 SerialChannel = new SerialChannel(){
@@ -202,23 +221,152 @@ namespace Link2.Web.Controllers
                     Parity=  1,
                     StopBits = 3
               },
-              FolderChannel = new FolderChannel() {
-                    Id = 0,
-                    RootFolder = null,
-                    InputFile = null,
-                    OutputFile= null,
-                    NeedAck = false
-              },
-              TCPChannel = new TCPChannel(){
-                    Id= 0,
-                    Ip= null,
-                    Port= 0,
-                    TimeOut = null
-              },
+              FolderChannel = new FolderChannel(),
+              TCPChannel = new TCPChannel()
             },
+            new LisSystem()
+            {
+                CanDelete = false,
+                Id =  34,
+                Name = "Folder Channel",
+                Image="folder.png",
+                CommunicationMode =  4001,
+                ChannelId= 47,
+                IsActive = true,
+                SendQCResult = true,
+                AutoExport = true,
+                TimeZoneId = "Aleutian Standard Time",
+                SerialChannel = new SerialChannel(){
+                    Id= 47,
+                    PortName="COM1",
+                    BaudRate= 9600,
+                    DTSDSR = false,
+                    RTSCTS = false,
+                    Handshake= 1,
+                    TimeOut=  1,
+                    Parity=  1,
+                    StopBits = 3
+              },
+              FolderChannel = new FolderChannel(),
+              TCPChannel = new TCPChannel()
+            }
+        };
+        private static List<Instrument> listInstruments = new List<Instrument>()
+        {
+                new Instrument(){
+                    Id = 1,
+                    RouterId =1,
+                    Image ="erytra.jpg",
+                    MachineType =1,
+                    AstmFolder =@"C:\TestFolder\57-0694\ASTM\1-1",
+                    AutoSendToHost =false,
+                    CanDelete =true,
+                    IsActive =true,
+                    IsAssigned =false,
+                    Name ="Erytra AT1000",
+                    SerialNumber ="AT000001",
+                    TanFolder =@"C:\TestFolder\57-0694\TAN"
+                },
+                new Instrument(){
+                    Id = 2,
+                    RouterId =1,
+                    Image ="dgreader.png",
+                    MachineType =2,
+                    AstmFolder =@"C:\TestFolder\57-0694\ASTM\2-1",
+                    AutoSendToHost =false,
+                    CanDelete =true,
+                    IsActive =true,
+                    IsAssigned =false,
+                    Name ="DGReader",
+                    SerialNumber ="1560",
+                    TanFolder =@"C:\TestFolder\57-0694\TAN"
+                },
+                new Instrument(){
+                    Id = 3,
+                    RouterId =1,
+                    Image ="diana.png",
+                    MachineType =3,
+                    AstmFolder =@"C:\TestFolder\57-0694\ASTM\3-1",
+                    AutoSendToHost =false,
+                    CanDelete =true,
+                    IsActive =true,
+                    IsAssigned =false,
+                    Name ="Waidiana3",
+                    SerialNumber ="57-0694",
+                    TanFolder =@"C:\TestFolder\57-0694\TAN"
+                },
+                new Instrument(){
+                    Id = 4,
+                    RouterId =2,
+                    Image ="erytra-eflexis.jpg",
+                    MachineType =4,
+                    AstmFolder =@"C:\TestFolder\57-0694\ASTM\1-2",
+                    AutoSendToHost =false,
+                    CanDelete =true,
+                    IsActive =true,
+                    IsAssigned =false,
+                    Name ="Eflexis",
+                    SerialNumber ="0508",
+                    TanFolder =@"C:\TestFolder\57-0694\TAN"
+                },
+                new Instrument(){
+                    Id = 5,
+                    RouterId =2,
+                    Image ="dgreader-net.jpg",
+                    MachineType =5,
+                    AstmFolder =@"C:\TestFolder\57-0694\ASTM\1-2",
+                    AutoSendToHost =false,
+                    CanDelete =true,
+                    IsActive =true,
+                    IsAssigned =false,
+                    Name ="DGReader Net",
+                    SerialNumber ="0491",
+                    TanFolder =@"C:\TestFolder\57-0694\TAN"},
 
         };
+        private static List<Lis> listLis = new List<Lis>()
+            {
+                new Lis(){LisId= 1, IsMirror =false, RouterID = 1, LisSystem = listLisSytem[0]},
+                new Lis(){LisId= 2, IsMirror =false, RouterID = 1, LisSystem = listLisSytem[1]},
+                new Lis(){LisId= 3, IsMirror =false, RouterID = 1, LisSystem = listLisSytem[2]},
+                new Lis(){LisId= 1, IsMirror =false, RouterID = 2, LisSystem = listLisSytem[0]},
+                new Lis(){LisId= 2, IsMirror =false, RouterID = 2, LisSystem = listLisSytem[1]},
+                new Lis(){LisId= 3, IsMirror =false, RouterID = 2, LisSystem = listLisSytem[2]},
+                new Lis(){LisId= 1, IsMirror =false, RouterID = 3, LisSystem = listLisSytem[0]},
+                new Lis(){LisId= 2, IsMirror =false, RouterID = 3, LisSystem = listLisSytem[1]},
+                new Lis(){LisId= 3, IsMirror =false, RouterID = 3, LisSystem = listLisSytem[2]},
 
+            };
+        private static List<Laboratory> listLaboratories = new List<Laboratory>()
+        {
+                new Laboratory(){
+                    Id =1,
+                    LisInRouters =listLis.Where(i=>i.RouterID==1).ToList(),
+                    Name ="Lab Vall",
+                    Priority =1,
+                    TimeZoneId ="Romance Standard Time",
+                    LisInstruments =listInstruments.Where(i=>i.RouterId==1).ToList()
+                },
+                new Laboratory(){
+                    Id =2,
+                    LisInRouters =listLis.Where(i=>i.RouterID==2).ToList(),
+                    Name ="Lab Test",
+                    Priority =2,
+                    TimeZoneId ="Romance Standard Time",
+                    LisInstruments =listInstruments.Where(i=>i.RouterId==2).ToList()
+                },
+                new Laboratory(){
+                    Id =3,
+                    LisInRouters =listLis.Where(i=>i.RouterID==3).ToList(),
+                    Name ="Lab 3",
+                    Priority =2,
+                    TimeZoneId ="Romance Standard Time",
+                    LisInstruments =listInstruments.Where(i=>i.RouterId==3).ToList()
+                }
+
+        };
+        
+        //API get data default
         [HttpGet]
         public Acknowledgement<TCPChannel> GetDefaultTcpSetting()
         {
@@ -268,22 +416,6 @@ namespace Link2.Web.Controllers
             return ack;
         }
         [HttpGet]
-        public Acknowledgement<LisSystem> GetDefaultLis()
-        {
-            var ack = new Acknowledgement<LisSystem>();
-            ack.Data = new LisSystem();
-            ack.IsSuccess = true;
-            return ack;
-        }
-        [HttpGet]
-        public Acknowledgement<List<LisSystem>> GetLisSystems()
-        {
-            var ack = new Acknowledgement<List<LisSystem>>();
-            ack.Data = listLisSytem;
-            ack.IsSuccess = true;
-            return ack;
-        }
-        [HttpGet]
         public Acknowledgement<OptionsLisEdit> GetOptionsForListEdit()
         {
             var ack = new Acknowledgement<OptionsLisEdit>();
@@ -298,7 +430,48 @@ namespace Link2.Web.Controllers
             ack.IsSuccess = true;
             return ack;
         }
+        [HttpGet]
+        public Acknowledgement<List<MachineType>> GetOptionsForAnalyser()
+        {
+            var ack = new Acknowledgement<List<MachineType>>();
+            ack.Data = listMachineTypes;
+            ack.IsSuccess = true;
+            return ack;
+        }
 
+        //API get data
+        [HttpGet]
+        public Acknowledgement<List<LisSystem>> GetLisSystems()
+        {
+            var ack = new Acknowledgement<List<LisSystem>>();
+            ack.Data = listLisSytem;
+            ack.IsSuccess = true;
+            return ack;
+        }
+        [HttpGet]
+        public Acknowledgement<LisSystem> GetDefaultLis()
+        {
+            var ack = new Acknowledgement<LisSystem>();
+            ack.Data = new LisSystem();
+            ack.IsSuccess = true;
+            return ack;
+        }
+        [HttpGet]
+        public Acknowledgement<List<Laboratory>> GetLabs()
+        {
+            var ack = new Acknowledgement<List<Laboratory>>();
+            ack.Data = listLaboratories;
+            ack.IsSuccess = true;
+            return ack;
+        }
+        [HttpGet]
+        public Acknowledgement<List<Instrument>> GetInstruments()
+        {
+            var ack = new Acknowledgement<List<Instrument>>();
+            ack.Data = listInstruments;
+            ack.IsSuccess = true;
+            return ack;
+        }
         [HttpGet]
         public Acknowledgement<Laboratory> Test()
         {
