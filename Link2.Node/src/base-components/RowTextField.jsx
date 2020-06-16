@@ -20,6 +20,7 @@ class RowTextField extends BaseConsumer {
                 <I3Div
                     variant="h6"
                     fontWeight="bold"
+                    margin="xs"
                 >
                     {title}
                 </I3Div>
