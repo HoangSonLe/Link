@@ -1,8 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Route, Router } from "react-router-dom";
-import BaseRouterPage from "BaseComponent/BaseRouterPage";
-import MainContentWrapper from "../components/MainContentWrapper";
 import { EModalType } from "../general/enum";
 import ModalWrapper from "../layout/ModalWrapper";
 import { withStyles } from "@material-ui/core";
@@ -13,8 +10,9 @@ class App extends BasePage {
   constructor(props) {
     super(props);
     this.state = {
-      routeData: {}
+      routeData: {},
     };
+    window.app = this;
     this._firstRender = true;
   }
   componentDidMount() {

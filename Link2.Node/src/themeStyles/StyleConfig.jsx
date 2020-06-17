@@ -260,7 +260,7 @@ const selectStyle = {
   multiSelectedStyle: {
     height: "30px" //chiều cao của mỗi phần tử sau khi được chọn (trường hợp chọn multiple)
   },
-  optionBackground: "red"
+  optionBackground: "#fff"
   //chiều cao, chiều ngang, cỡ chữ apply giống như textFieldStyle
 };
 

@@ -18,7 +18,7 @@ class MainContent extends BaseConsumer {
     return [
       {
         tabName: "Labs",
-        tabContent: <Lab></Lab>,
+        tabContent: <Lab lab={this.props.routeData.lab}></Lab>,
       },
       {
         tabName: "Instruments",

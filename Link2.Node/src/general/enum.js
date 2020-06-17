@@ -14,3 +14,7 @@ export const LisType = {
     NeedAck: 7
 
 }
+export const InstrumentType = {
+    NotAssigned: 1,
+    Assigned: 2
+}

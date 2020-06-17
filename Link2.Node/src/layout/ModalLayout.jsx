@@ -8,8 +8,7 @@ export default class ModalLayout extends BaseConsumer {
     constructor(props) {
         super(props);
         this._defaultPadding = {
-            [EModalType.Full]: ["lg", "lg", "lg", "lg"],
-            [EModalType.Blank]: ["lg", "lg", "lg", "lg"],
+            [EModalType.Right]: ["lg", "lg", "lg", "lg"],
         };
         this.closeThisModal = this.closeThisModal.bind(this);
         this._firstRender = true;
@@ -84,7 +83,6 @@ export default class ModalLayout extends BaseConsumer {
                         title={title}
                         bodyProps={bodyProps}
                         onClose={this._close}
-                        hasFooter={hasFooter}
                     />
                 );
             default:

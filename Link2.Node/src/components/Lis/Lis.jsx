@@ -42,9 +42,6 @@ class Lis extends BaseConsumer {
       true
     );
   }
-  _callBackDeleteItem = (e) => {
-    console.log("Deleteed: ", e)
-  }
   _deleteItem = (e) => {
     this.confirm(
       "Delete this LIS system?",
@@ -61,7 +58,9 @@ class Lis extends BaseConsumer {
             this.ajaxGet({
               url: "/api/link/getlissystems",
               success: ack => {
-                this.removeElement(this.props.lis.lisList, e, this._callBackDeleteItem(e))
+                this.removeElement(this.props.lis.lisList, e,
+                  this.success("Removed Item !")
+                )
               }
 
             })

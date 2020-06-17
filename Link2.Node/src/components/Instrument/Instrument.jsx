@@ -3,14 +3,13 @@ import BaseConsumer from "BaseComponent/BaseConsumer";
 import { withStyles } from "@material-ui/core";
 import { I3Div, I3Icon, IconButtonGroup, Item, LastDivItem, GridContainer, GridItem, ListComponent, BaseModal, BaseButton, I3Component } from "../../importer";
 import { EModalType } from "../../general/enum";
-import CloneInstrumentDetail from "./CloneInstrumentDetail";
+import CloneInstrumentDetailModal from "./CloneInstrumentDetailModal";
 
 class Instrument extends BaseConsumer {
     componentDidMount() {
         this.ajaxGet({
             url: "/api/link/GetInstruments",
             success: (ack) => {
-                console.log(ack.data);
                 this.updateObject(this.props.instrument, { instrumentList: ack.data });
                 this.ajaxGet({
                     url: "/api/link/GetDefaultInstrument",
@@ -21,24 +20,26 @@ class Instrument extends BaseConsumer {
             },
         });
     }
-    _openModal = (title, item, hasFooter = true) => {
-        this.openModal(
-            () => ({
-                title: title,
-                body: (
-                    <BaseModal
-                        hasFooter={hasFooter}
-                        modalBody={
-                            <CloneInstrumentDetail instrument={item} />
-                        }
-                        rightFooter={<BaseButton width="110px">Save</BaseButton>}
+    _openModal = (title, item, isAdd = true, isTest = false) => {
+        !isTest ?
+            this.openModal(
+                () => ({
+                    title: title,
+                    body: <CloneInstrumentDetailModal onSave={newItem => isAdd ? this._onAddItem(newItem) : this._onUpdateItem(item, newItem)} data={item} />
+                    ,
+                }),
+                EModalType.Right,
+                true
+            )
+            :
+            null
 
-                    ></BaseModal>
-                ),
-            }),
-            EModalType.Right,
-            true
-        );
+    }
+    _onAddItem = (newItem) => {
+        this.addElement(this.props.instrument.instrumentList, newItem, null, () => this.success("Added Item"));
+    }
+    _onUpdateItem = (oldItem, newItem) => {
+        this.updateObject(oldItem, newItem, () => this.success("Updated Item"))
     }
     _deleteItem = (e) => {
         this.confirm(
@@ -53,7 +54,7 @@ class Instrument extends BaseConsumer {
                 okay: {
                     title: "Delete", // text hiển thị trên nút oke 
                     handle: () => {
-                        // hành động thực hiện sau khi nhấn nút oke
+                        this.removeElement(this.props.instrument.instrumentList, e, this.success("Removed Item"))
                     }
                 }
 
@@ -75,11 +76,11 @@ class Instrument extends BaseConsumer {
                 components={[
                     {
                         className: "fas fa-cogs",
-                        onClick: () => (this._openModal("Communication test results", e, false))
+                        onClick: () => (this._openModal("Communication test results", e, false, true))
                     },
                     {
                         className: "fas fa-pen",
-                        onClick: () => (this._openModal("Edit Lis", e))
+                        onClick: () => (this._openModal("Edit Instrument", e, false))
                     },
                     {
                         className: "far fa-trash-alt",
@@ -110,7 +111,6 @@ class Instrument extends BaseConsumer {
     }
     consumerContent() {
         let { instrument } = this.props;
-        console.log("instrument", instrument);
         if (!instrument.instrumentList || instrument.instrumentList.length <= 0) {
             return null;
         }

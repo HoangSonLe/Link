@@ -9,7 +9,7 @@ class RowTextField extends BaseConsumer {
         this._debounceChange(e.target.value);
     };
     _debounceChange = _.debounce((text) => {
-        this.props.onChange()
+        this.props.onChange(text)
     }, 400);
     consumerContent() {
         const { classes, title, value, onChange } = this.props;

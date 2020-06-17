@@ -465,14 +465,6 @@ namespace Link2.Web.Controllers
             return ack;
         }
         [HttpGet]
-        public Acknowledgement<List<Laboratory>> GetLabs()
-        {
-            var ack = new Acknowledgement<List<Laboratory>>();
-            ack.Data = listLaboratories;
-            ack.IsSuccess = true;
-            return ack;
-        }
-        [HttpGet]
         public Acknowledgement<List<Instrument>> GetInstruments()
         {
             var ack = new Acknowledgement<List<Instrument>>();
@@ -480,6 +472,23 @@ namespace Link2.Web.Controllers
             ack.IsSuccess = true;
             return ack;
         }
+        [HttpGet]
+        public Acknowledgement<Laboratory> GetDefaultLab()
+        {
+            var ack = new Acknowledgement<Laboratory>();
+            ack.Data = new Laboratory();
+            ack.IsSuccess = true;
+            return ack;
+        }
+        [HttpGet]
+        public Acknowledgement<List<Laboratory>> GetLabs()
+        {
+            var ack = new Acknowledgement<List<Laboratory>>();
+            ack.Data = listLaboratories;
+            ack.IsSuccess = true;
+            return ack;
+        }
+        
         [HttpGet]
         public Acknowledgement<Laboratory> Test()
         {
