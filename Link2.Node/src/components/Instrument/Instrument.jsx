@@ -3,7 +3,7 @@ import BaseConsumer from "BaseComponent/BaseConsumer";
 import { withStyles } from "@material-ui/core";
 import { I3Div, I3Icon, IconButtonGroup, Item, LastDivItem, GridContainer, GridItem, ListComponent, BaseModal, BaseButton, I3Component } from "../../importer";
 import { EModalType } from "../../general/enum";
-import HeaderListComponent from "../../base-components/HeaderListComponent";
+import CloneInstrumentDetail from "./CloneInstrumentDetail";
 
 class Instrument extends BaseConsumer {
     componentDidMount() {
@@ -11,13 +11,13 @@ class Instrument extends BaseConsumer {
             url: "/api/link/GetInstruments",
             success: (ack) => {
                 console.log(ack.data);
-                this.updateObject(this.props.instrument, { instrumentList: ack.data, newInstrument: {} });
-                // this.ajaxGet({
-                //   url: "/api/link/GetDefaultLis",
-                //   success: (ack) => {
-                //     this.updateObject(this.props.lis, { newLis: ack.data });
-                //   },
-                // });
+                this.updateObject(this.props.instrument, { instrumentList: ack.data });
+                this.ajaxGet({
+                    url: "/api/link/GetDefaultInstrument",
+                    success: (ac) => {
+                        this.updateObject(this.props.instrument, { newInstrument: ac.data });
+                    },
+                });
             },
         });
     }
@@ -29,7 +29,7 @@ class Instrument extends BaseConsumer {
                     <BaseModal
                         hasFooter={hasFooter}
                         modalBody={
-                            <h1>Intrument</h1>
+                            <CloneInstrumentDetail instrument={item} />
                         }
                         rightFooter={<BaseButton width="110px">Save</BaseButton>}
 

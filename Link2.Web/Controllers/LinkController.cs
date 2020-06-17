@@ -457,6 +457,14 @@ namespace Link2.Web.Controllers
             return ack;
         }
         [HttpGet]
+        public Acknowledgement<Instrument> GetDefaultInstrument()
+        {
+            var ack = new Acknowledgement<Instrument>();
+            ack.Data = new Instrument();
+            ack.IsSuccess = true;
+            return ack;
+        }
+        [HttpGet]
         public Acknowledgement<List<Laboratory>> GetLabs()
         {
             var ack = new Acknowledgement<List<Laboratory>>();
