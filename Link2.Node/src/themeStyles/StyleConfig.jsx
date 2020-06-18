@@ -651,7 +651,7 @@ const customTabsStyles = {
     fontWeight: "bold", //độ đậm nhạt
   },
   tabsRoot: {
-    fontSize: "12px" //size của tên tab
+    fontSize: "16px" //size của tên tab
   },
   tabRootButton: {
     padding: "10px 15px", //padding cua từng tab
@@ -666,8 +666,6 @@ const customTabsStyles = {
     backgroundColor: "rgba(255, 255, 255, 0.2)", //màu nền
     transition: "0.2s background-color 0.1s",
     color: Colors.blue,
-    fontWeight: "bold"
-
   },
   tabWrapper: {
     marginIcon: "-1px 5px 0 0", // margin của tabicon

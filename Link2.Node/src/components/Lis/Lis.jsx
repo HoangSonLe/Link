@@ -119,7 +119,7 @@ class Lis extends BaseConsumer {
     }
     return (
       <>
-        <ListComponent dataList={lis.lisList} renderItem={item => this._renderItem(item)} renderAddItem={this._renderAddItem()} />
+        <ListComponent margin="md" dataList={lis.lisList} renderItem={item => this._renderItem(item)} renderAddItem={this._renderAddItem()} />
       </>
     );
   }

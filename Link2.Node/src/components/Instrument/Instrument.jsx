@@ -116,13 +116,13 @@ class Instrument extends BaseConsumer {
         }
         return (
             <>
-                <I3Div>
+                <I3Div margin="md">
                     <I3Component variant="h5">
                         Assigned
                     </I3Component>
                     {this._renderGroupInstrument(true)}
                 </I3Div>
-                <I3Div>
+                <I3Div margin="md">
                     <I3Component variant="h5">
                         Not Assigned
                     </I3Component>

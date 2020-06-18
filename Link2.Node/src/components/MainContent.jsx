@@ -30,37 +30,32 @@ class MainContent extends BaseConsumer {
       },
     ];
   };
-  _handClick = () => {
-    this.openModal(
-      () => ({
-        title: "Dị ứng",
-        body: (
-          <BaseModal
-            leftFooter={
-              <BaseButton variant="outlined" width="110px">
-                Cancel
-              </BaseButton>
-            }
-            rightFooter={<BaseButton width="110px">Save</BaseButton>}
-          ></BaseModal>
-        ),
-      }),
-      EModalType.Right,
-      true
-    );
-  };
+
   consumerContent() {
-    let { routeData } = this.props;
+    let { classes, routeData } = this.props;
     return (
       <I3Div margin={"md"}>
-        <I3CustomTabs indicator={true} tabs={this._createTab()}></I3CustomTabs>
-        <BaseButton variant="outlined" margin={"sm"}>
-          Cancle
-        </BaseButton>
-        <Button onClick={this._handClick}>Modal</Button>
+        <I3CustomTabs className={classes.Tab} indicator={true} tabs={this._createTab()}></I3CustomTabs>
       </I3Div>
     );
   }
 }
-const Styles = {};
+const Styles = {
+  DivTab: {
+    "& .tabRootButton": {
+      borderRight: "1px solid #eaebef",
+      borderLeft: "1px solid #eaebef",
+      background: "linear-gradient(to bottom, white 50%, #e0e0e0a3 95%)",
+      "&:last-child": {
+        borderRight: "none"
+      }
+    },
+    "& .tabSelected": {
+      background: "#fff",
+      borderTop: "3px solid #004e87",
+      borderRadius: " 6px 6px 0 0",
+      color: "#004e87"
+    }
+  }
+};
 export default withStyles(Styles)(MainContent);
