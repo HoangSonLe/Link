@@ -29,7 +29,7 @@ class App extends BasePage {
     modalFunction,
     type = EModalType.Full,
     hasDefaultPadding = true,
-    closeWhenClickOut = false
+    closeWhenClickOut = true
   ) {
     let mIndex = -1;
     const len = () => {

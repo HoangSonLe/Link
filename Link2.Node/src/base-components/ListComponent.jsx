@@ -10,7 +10,7 @@ class ListComponent extends BaseConsumer {
         return (
             <I3Div
                 backgroundColor="lighterGray"
-                padding={["xs", "xs", "xs", "xs"]}
+                padding={["md", "xs", "xs", "xs"]}
                 margin={margin}
             >
                 {title ? <HeaderListComponent title={title} /> : null}

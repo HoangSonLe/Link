@@ -12,6 +12,6 @@ namespace Link2.Web.Models
         public List<LisCommunationMode> LisCommunationMode { get; set; }
         public List<Parity> Parity { get; set; }
         public List<StopBits> StopBits { get; set; }
-        public List<TimeZone> TimeZones { get; set; }
+        public List<TimeZones> TimeZones { get; set; }
     }
 }

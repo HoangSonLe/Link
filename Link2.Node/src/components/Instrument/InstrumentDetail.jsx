@@ -1,6 +1,5 @@
 import React from "react"
 import { BaseConsumer, I3Div, RowTextField, RowSwitch, I3Select } from "../../importer";
-import { InstrumentType } from '../../general/enum'
 export default class InstrumentDetail extends BaseConsumer {
     constructor(props) {
         super(props);
@@ -16,9 +15,6 @@ export default class InstrumentDetail extends BaseConsumer {
         this.updateObject(item, { [key]: value });
     }
     componentDidMount() {
-        this._getOptions();
-    }
-    _getOptions = () => {
         this.ajaxGet({
             url: '/api/link/GetOptionsForAnalyser',
             success: ack => {

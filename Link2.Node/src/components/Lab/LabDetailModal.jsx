@@ -2,9 +2,9 @@ import React from 'react'
 import ModalLayout from '../../layout/ModalLayout'
 
 import { BaseButton } from '../../importer';
-import InstrumentDetail from './InstrumentDetail';
+import LabDetail from './LabDetail';
 
-export default class InstrumenteDetailModal extends ModalLayout {
+export default class LabDetailModal extends ModalLayout {
     dataToCompare() {
         return this.props.data;
     }
@@ -12,9 +12,9 @@ export default class InstrumenteDetailModal extends ModalLayout {
         this.setInitDataToCompare(this.props.data);
     }
     modalBody() {
-        const { instrument, ...others } = this.props;
+        const { lab, ...others } = this.props;
         return (
-            <InstrumentDetail instrument={instrument} />
+            <LabDetail lab={lab} />
         )
     }
     leftFooter() {
@@ -22,9 +22,9 @@ export default class InstrumenteDetailModal extends ModalLayout {
     }
 
     rightFooter() {
-        const { instrument, onSave, ...others } = this.props;
+        const { lab, onSave, ...others } = this.props;
 
-        return <BaseButton width="110px" onClick={data => { onSave(instrument); this.closeThisModal(); }}>Save</BaseButton>
+        return <BaseButton width="110px" onClick={data => { onSave(lab); this.closeThisModal(); }}>Save</BaseButton>
 
     }
 }

@@ -2,60 +2,38 @@ import React, { Fragment } from 'react'
 import BaseConsumer from 'BaseComponent/BaseConsumer';
 import { withStyles } from "@material-ui/core";
 import { GridContainer, GridItem, BaseCheckboxItem, I3Icon, I3Div, I3Component } from '../importer';
-import { getColorFromName } from 'general/CleanNodeHelper';
 import PropTypes from 'prop-types';
 
 class Item extends BaseConsumer {
+    constructor(props) {
+        super(props)
+    }
 
-    // _renderImage = () => {
-    //     return (
-    //         <img src="http://link2.i3solution.net.au/dist/Contents/img/lis/lan-icon.png" />
-    //     );
-    // }
-    // _renderLeftHeader = () => {
-    //     return (
-    //         <h4>ncjdsjkjjk</h4>
-    //     )
-    // }
-    // _renderRightHeader = () => {
-    //     return <BaseCheckboxItem className={classes.CheckBox} label={"dcjds"} checked={true} isMulti={true} />
-    // }
-    // _renderLeftFooter = () => {
-    //     return (
-    //         <I3Div className={classes.HeadStart + " " + classes.DetroyPaddingRight + " " + classes.DetroyPaddingLeft} >
-    //             <I3Icon className="far fa-circle" fontSize="h1" color="lightGreen" />
-    //             <span>Active</span>
-    //         </I3Div>
-    //     )
-    // }
-    // _renderRightFooter = () => {
-    //     return (
-    //         <Fragment>
-    //             <I3Icon className="fas fa-cogs" fontSize="h1" color="blue" margin={["xs", "xs", "xs", "xs"]} />
-    //             <I3Icon className="fas fa-pen" fontSize="h1" color="blue" margin={["xs", "xs", "xs", "xs"]} />
-    //             <I3Icon className="far fa-trash-alt" fontSize="h1" color="blue" margin={["xs", "xs", "xs", "xs"]} />
-    //         </Fragment>
-    //     )
-    // }
+
+    renderImage() {
+        return "renderImage";
+    }
+
+    renderRightHeader() {
+        return "renderRightHeader";
+    }
+    renderRightFooter() {
+        return "renderRightFooter";
+    }
     consumerContent() {
-        // debugger
-        // let { classes, rightFooter, rightHeader, leftHeader, leftFooter, image } = this.props;
-        let { classes, header, rightFooter, rightHeader, isActive, image } = this.props;
-        let leftFooter = () => ({
-
-        })
+        let { classes, header, isActive } = this.props;
         return (
             <GridContainer className={classes.DivContainer}>
                 <GridItem xs={4} sm={4} xs={4} className={classes.DivImg + " " + classes.DetroyPadding}>
-                    {image}
+                    {this.renderImage()}
                 </GridItem>
                 <GridItem xs={8} sm={8} xs={8} className={classes.DetroyPadding}>
                     <GridContainer className={classes.RightTopDiv}>
                         <GridItem xs={8} sm={8} xs={8} className={classes.HeadStart + " " + classes.DetroyPaddingRight}>
-                            <I3Component variant="body2" margin={"xs"}>{header}</I3Component>
+                            <I3Component variant="body2" fontWeight="bolder" margin={"xs"}>{header}</I3Component>
                         </GridItem>
                         <GridItem xs={4} sm={4} xs={4} className={classes.HeadEnd + " " + classes.DetroyPadding}>
-                            {rightHeader}
+                            {this.renderRightHeader()}
                         </GridItem>
                     </GridContainer>
                     <GridContainer className={classes.RightBottomDiv}>
@@ -70,7 +48,7 @@ class Item extends BaseConsumer {
                         </GridItem>
                         <GridItem xs={8} sm={8} xs={8}>
                             <I3Div className={classes.HeadEnd + " " + classes.DetroyPadding} >
-                                {rightFooter}
+                                {this.renderRightFooter()}
                             </I3Div>
                         </GridItem>
                     </GridContainer>
@@ -79,14 +57,8 @@ class Item extends BaseConsumer {
         )
     }
 }
-let color = getColorFromName("white");
 
 const Styles = {
-    CheckBox: {
-        "& .MuiSvgIcon-root": {
-            fontSize: "25px"
-        }
-    },
     DetroyPadding: {
         padding: "0 !important"
     },
@@ -108,17 +80,20 @@ const Styles = {
     },
     HeadStart: {
         display: "flex",
-        fontSize: "14px",
         alignItems: "center",
         justifyContent: "flex-start",
-        fontWeight: 600
+        fontWeight: 600,
+        padding: "0 !important"
     },
     HeadEnd: {
         display: "flex",
         fontSize: "14px",
         alignItems: "center",
         justifyContent: "flex-end",
-        paddingRight: "10px"
+        paddingRight: "10px",
+        "& .MuiFormControlLabel-root": {
+            marginRight: "10px !important"
+        }
     },
 
     DivContainer: {
@@ -138,7 +113,9 @@ const Styles = {
 
 }
 Item.protoTypes = {
-    rightFooter: PropTypes.func,
-
+    isActive: PropTypes.string,
+    header: PropTypes.bool
 }
 export default withStyles(Styles)(Item);
+
+export { Item, Styles } 

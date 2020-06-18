@@ -482,9 +482,9 @@ const timelineStyles = {
 
 //checkbox/radio
 const checkboxStyle = {
-  spaceBetweenIconAndLabel: "10px", //khoảng cách giữa icon và text
-  iconFontSize: "2rem", //font size của icon
-  textFontSize: "16px", //font size của label
+  spaceBetweenIconAndLabel: "5px", //khoảng cách giữa icon và text
+  iconFontSize: "1.5rem", //font size của icon
+  textFontSize: "17px", //font size của label
   labelFontWeight: "400" //fontWeight (độ đậm) của label
 };
 const sidebarStyle = {
@@ -688,7 +688,7 @@ const customTabsStyles = {
     borderRadius: "10px", //borderRadius mặc định của Header.
   },
   cardBodyStyle: {
-    padding: "15px 0px 15px 0px", //khoảng cách trên phải dưới trái của body
+    padding: "5px 0px 15px 0px", //khoảng cách trên phải dưới trái của body
     textAlign: "unset"
   },
   indicator: {

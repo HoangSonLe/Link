@@ -1,51 +1,47 @@
 import React from "react";
 import BaseConsumer from "BaseComponent/BaseConsumer";
 import { withStyles } from "@material-ui/core";
-import { I3Div, I3Icon, IconButtonGroup, Item, LastDivItem, GridContainer, GridItem, ListComponent, BaseModal, BaseButton, I3Component, BaseCheckboxItem } from "../../importer";
+import { I3Div, I3Icon, LastDivItem, ListComponent, BaseModal, BaseButton, I3Component, BaseCheckboxItem } from "../../importer";
 import { EModalType } from "../../general/enum";
 import DevidedComponents from "../../base-components/DevidedComponents";
+import LisItem from "./LisItem";
+import InstrumentItem from "../Instrument/InstrumentItem";
+import PropTypes from 'prop-types';
 
 class LabItem extends BaseConsumer {
-    _renderInstrument = (e) => {
+    _onUpdateInstrument = (oldItem, newItem) => {
+        this.updateObject(oldItem, newItem, () => this.success("Updated Item"))
+    }
+    _onDeleteInstrument = (i) => {
+        this.removeElement(this.props.lab.lisInstruments, i, this.success("Removed Item"))
+    }
+    _renderInstrument = (i) => {
         return (
-            <Item
-                key={e.id}
-                header={e.name}
-                isActive={e.isActive}
-                rightHeader={<I3Component variant="caption" margin={"xs"}>{e.serialNumber}</I3Component>}
-                rightFooter={
-                    <IconButtonGroup
-                        components={[
-                            {
-                                className: "far fa-trash-alt",
-                                onClick: () => this.removeElement(this.props.lab.lisInstruments, e, this.success("Removed Item"))
-                            }
-                        ]}
-                    />}
-                image={<img src="http://link2.i3solution.net.au/dist/Contents/img/lis/lan-icon.png" />}
-            ></Item>
+            <InstrumentItem
+                header={i.name}
+                isActive={i.isActive}
+                instrument={i}
+                onDelete={this._onDeleteInstrument}
+                onUpdate={this._onUpdateInstrument}
+            />
         );
     }
-    _renderLis = (e) => {
+
+    _onDeleteLis = (i) => {
+        this.removeElement(this.props.lab.lisInRouters, i, this.success("Removed Item"))
+    }
+    _renderLis = (i) => {
         return (
-            <Item
-                key={e.id}
-                header={e.lisSystem.name}
-                isActive={e.lisSystem.isActive}
-                rightHeader={<BaseCheckboxItem label={"Mirror"} checked={e.isMirror} isMulti={true} />}
-                rightFooter={
-                    <IconButtonGroup
-                        components={[
-                            {
-                                className: "far fa-trash-alt",
-                                onClick: () => this.removeElement(this.props.lab.lisInRouters, e, this.success("Removed Item"))
-                            }
-                        ]}
-                    />}
-                image={<img src="http://link2.i3solution.net.au/dist/Contents/img/lis/lan-icon.png" />}
-            ></Item>
+            <LisItem
+                key={i.id}
+                header={i.lisSystem.name}
+                isActive={i.lisSystem.isActive}
+                onDelete={this._onDeleteLis}
+                lis={i}
+            />
         );
     }
+
     consumerContent() {
         let { classes, lab } = this.props;
         return (
@@ -57,9 +53,11 @@ class LabItem extends BaseConsumer {
                             Priority: {lab.priority}
                         </I3Component>,
                         <I3Component variant="subtitle1" className={classes.Div}>
-                            {lab.lisInstruments.length} instruments, {lab.lisInRouters.length} LIS, + {lab.lisInRouters.filter(i => i.isMirror).length} mirror
+                            {lab.lisInstruments ? lab.lisInstruments.length : 0} instruments,
+                            {lab.lisInRouters ? lab.lisInRouters.length : 0} LIS, +
+                            {lab.lisInRouters ? lab.lisInRouters.filter(i => i.isMirror).length : 0} mirror
                         </I3Component>,
-                        <I3Div onClick={() => { }} variant="h6" cursor="pointer" color="blue" >
+                        <I3Div onClick={this.props.onUpdateLab} variant="h6" cursor="pointer" color="blue" >
                             <I3Icon className="fas fa-pen" fontSize="subtitle1" margin="xs" color="blue" />
                             <span>Edit Lab</span>
                         </I3Div>
@@ -99,4 +97,8 @@ const Styles = {
     }
 
 };
+LabItem.protoTypes = {
+    onUpdateLab: PropTypes.func,
+    lab: PropTypes.object.isRequired
+}
 export default withStyles(Styles)(LabItem);

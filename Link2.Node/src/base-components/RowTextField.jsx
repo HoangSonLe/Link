@@ -10,24 +10,27 @@ class RowTextField extends BaseConsumer {
     };
     _debounceChange = _.debounce((text) => {
         this.props.onChange(text)
-    }, 400);
+    }, 100);
     consumerContent() {
-        const { classes, title, value, onChange } = this.props;
+        const { classes, title, value, onChange, ...otherProps } = this.props;
         return (
             <I3Div
                 margin={"md"}
             >
-                <I3Div
-                    variant="h6"
-                    fontWeight="bold"
-                    margin="xs"
-                >
-                    {title}
-                </I3Div>
+                {title ?
+                    <I3Div
+                        variant="h6"
+                        fontWeight="bold"
+                        margin="xs"
+                    >
+                        {title}
+                    </I3Div>
+                    : null}
                 <I3TextField
                     variant="outlined"
                     value={value}
                     onChange={this._onChangeInput}
+                    {...otherProps}
 
                 />
             </I3Div>

@@ -24,10 +24,10 @@ class MainContent extends BaseConsumer {
         tabName: "Instruments",
         tabContent: <Instrument instrument={this.props.routeData.instrument}></Instrument>,
       },
-      {
-        tabName: "Lis",
-        tabContent: <Lis lis={this.props.routeData.lis}></Lis>,
-      },
+      // {
+      //   tabName: "Lis",
+      //   tabContent: <Lis lis={this.props.routeData.lis}></Lis>,
+      // },
     ];
   };
 

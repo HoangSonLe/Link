@@ -12,7 +12,7 @@ namespace Link2.Web.Controllers
 {
     public class LinkController : ApiController
     {
-
+        #region Default
         //Mock Data
         private static List<Handshake> listHandshakes = new List<Handshake>() {
             new Handshake()
@@ -276,7 +276,7 @@ namespace Link2.Web.Controllers
                     AutoSendToHost =false,
                     CanDelete =true,
                     IsActive =true,
-                    IsAssigned =false,
+                    IsAssigned =true,
                     Name ="DGReader",
                     SerialNumber ="1560",
                     TanFolder =@"C:\TestFolder\57-0694\TAN"
@@ -365,7 +365,47 @@ namespace Link2.Web.Controllers
                 }
 
         };
-        
+        private static List<TimeZones> listTimeZones = new List<TimeZones>()
+        {
+            new TimeZones()
+             {
+                Label= "(UTC-12:00) International Date Line West",
+                Value = "Dateline Standard Time"
+             },
+            new TimeZones()
+             {
+                Label= "(UTC-11:00) Coordinated Universal Time-11",
+                Value = "UTC-11"
+             },
+            new TimeZones()
+             {
+                Label= "(UTC-10:00) Aleutian Islands",
+                Value = "Aleutian Standard Time"
+             },
+            new TimeZones()
+             {
+                Label= "(UTC-10:00) Hawaii",
+                Value = "Hawaiian Standard Time"
+             },
+            new TimeZones()
+             {
+                Label= "(UTC-09:30) Marquesas Islands",
+                Value = "Marquesas Standard Time"
+             },
+            new TimeZones()
+             {
+                Label= "UTC-09:00) Alaska",
+                Value = "Alaskan Standard Time"
+             },
+            new TimeZones()
+             {
+                Label= "(UTC-09:00) Coordinated Universal Time-09",
+                Value = "UTC-09"
+             },
+
+        };
+        #endregion
+        #region GetDefaultData
         //API get data default
         [HttpGet]
         public Acknowledgement<TCPChannel> GetDefaultTcpSetting()
@@ -438,8 +478,16 @@ namespace Link2.Web.Controllers
             ack.IsSuccess = true;
             return ack;
         }
-
+        public Acknowledgement<List<TimeZones>> GetOptionsForLabEditting()
+        {
+            var ack = new Acknowledgement<List<TimeZones>>();
+            ack.Data = listTimeZones;
+            ack.IsSuccess = true;
+            return ack;
+        }
+        #endregion
         //API get data
+        #region LisSystems
         [HttpGet]
         public Acknowledgement<List<LisSystem>> GetLisSystems()
         {
@@ -456,6 +504,9 @@ namespace Link2.Web.Controllers
             ack.IsSuccess = true;
             return ack;
         }
+        [HttpPost]
+        #endregion
+        #region Instrument
         [HttpGet]
         public Acknowledgement<Instrument> GetDefaultInstrument()
         {
@@ -472,6 +523,41 @@ namespace Link2.Web.Controllers
             ack.IsSuccess = true;
             return ack;
         }
+        [HttpPost]
+        public Acknowledgement DeleteInstrument(int? id)
+        {
+            var ack = new Acknowledgement();
+            if (id == null) ack.IsSuccess = false;
+            if(id!= null)
+            {
+
+                var tmp=listInstruments.Find(p=>p.Id== id);
+                listInstruments.Remove(tmp);
+                ack.IsSuccess = true;
+            }
+            return ack;
+        }
+        [HttpPost]
+        public Acknowledgement<Instrument> AddOrUpdateInstrument(Instrument ins)
+        {
+            var ack = new Acknowledgement<Instrument>();
+            if (ModelState.IsValid)
+            {
+                var index=listInstruments.FindIndex(p=>p.Id == ins.Id);
+                if (index == -1)
+                {
+                    listInstruments.Add(ins);
+                }
+                else
+                {
+                    listInstruments[index] = ins;
+                }
+                ack.IsSuccess = true;
+            }
+            ack.IsSuccess = false;
+            return ack;
+        }
+        #endregion
         [HttpGet]
         public Acknowledgement<Laboratory> GetDefaultLab()
         {
@@ -489,13 +575,6 @@ namespace Link2.Web.Controllers
             return ack;
         }
         
-        [HttpGet]
-        public Acknowledgement<Laboratory> Test()
-        {
-            var ack = new Acknowledgement<Laboratory>();
-            ack.IsSuccess = true;
 
-            return ack;
-        }
     }
 }
