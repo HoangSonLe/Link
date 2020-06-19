@@ -6,10 +6,10 @@ import LabDetail from './LabDetail';
 
 export default class LabDetailModal extends ModalLayout {
     dataToCompare() {
-        return this.props.data;
+        return this.props.lab;
     }
     componentDidMount() {
-        this.setInitDataToCompare(this.props.data);
+        this.setInitDataToCompare(this.props.lab);
     }
     modalBody() {
         const { lab, ...others } = this.props;

@@ -1,12 +1,11 @@
 import React from 'react'
 import BaseConsumer from 'BaseComponent/BaseConsumer';
-import { withStyles } from "@material-ui/core";
-import { I3Div, GridItem, GridContainer, ShouldUpdateWrapper } from '../importer';
+import { I3Div, GridItem, GridContainer } from '../importer';
 import HeaderListComponent from './HeaderListComponent';
 
-class ListComponent extends BaseConsumer {
+export default class ListComponent extends BaseConsumer {
     consumerContent() {
-        const { components, title, renderAddItem, renderItem, dataList, margin } = this.props;
+        const { title, renderAddItem, dataList, margin } = this.props;
         return (
             <I3Div
                 backgroundColor="lighterGray"
@@ -34,6 +33,3 @@ class ListComponent extends BaseConsumer {
         )
     }
 }
-const Styles = {
-}
-export default withStyles(Styles)(ListComponent);

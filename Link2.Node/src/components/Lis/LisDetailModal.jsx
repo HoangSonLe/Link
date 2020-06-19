@@ -6,10 +6,10 @@ import LisDetail from './LisDetail';
 
 export default class LisDetailModal extends ModalLayout {
     dataToCompare() {
-        return this.props.data;
+        return this.props.lis;
     }
     componentDidMount() {
-        this.setInitDataToCompare(this.props.data);
+        this.setInitDataToCompare(this.props.lis);
     }
     modalBody() {
         const { lis, ...others } = this.props;

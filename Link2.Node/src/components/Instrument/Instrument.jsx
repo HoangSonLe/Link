@@ -9,9 +9,9 @@ import InstrumentItem from "./InstrumentItem";
 class Instrument extends BaseConsumer {
     componentDidMount() {
         this.ajaxGet({
-            url: "/api/link/GetInstrumentData",
+            url: "/api/link/GetInstruments",
             success: (ack) => {
-                this.updateObject(this.props.instrument, { instrumentList: ack.data.instrumentList, newInstrument: ack.data.newInstrument });
+                this.updateObject(this.props.instrument, { instrumentList: ack.data });
             },
             error: ack => {
                 this.error("Lỗi")

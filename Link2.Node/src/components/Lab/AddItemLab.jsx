@@ -25,7 +25,6 @@ export default class InstrumentDetail extends BaseConsumer {
     consumerContent() {
         let { instrument } = this.props;
         let { OptionsInstrumentType } = this.state;
-        window.b = this.props.instrument
 
         return (
             <I3Div margin="xs">

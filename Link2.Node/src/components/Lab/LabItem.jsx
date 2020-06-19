@@ -1,7 +1,7 @@
 import React from "react";
 import BaseConsumer from "BaseComponent/BaseConsumer";
 import { withStyles } from "@material-ui/core";
-import { I3Div, I3Icon, LastDivItem, ListComponent, BaseModal, BaseButton, I3Component, BaseCheckboxItem } from "../../importer";
+import { I3Div, I3Icon, LastDivItem, ListComponent, I3Component } from "../../importer";
 import { EModalType } from "../../general/enum";
 import DevidedComponents from "../../base-components/DevidedComponents";
 import LisItem from "./LisItem";
@@ -30,7 +30,6 @@ class LabItem extends BaseConsumer {
             url: '/api/link/AddOrUpdateInstrument',
             data: newItem,
             success: ack => {
-                debugger
                 this.props.onUpdateLab(this.props.lab, ack.data);
             },
             error: ack => {
@@ -107,6 +106,7 @@ class LabItem extends BaseConsumer {
                         dataList={lab.lisInRouters}
                         renderItem={item => this._renderLis(item)}
                         renderAddItem={<LastDivItem title="Add Lis" onClick={() => alert("hi")} />} />
+
                 </I3Div>
             </I3Div>
         )

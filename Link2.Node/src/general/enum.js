@@ -18,3 +18,8 @@ export const InstrumentType = {
     NotAssigned: 1,
     Assigned: 2
 }
+export const LisCommunicationMode = {
+    FolderChannel: 4000,
+    SerialChannel: 4001,
+    TCPChannel: 4002,
+}

@@ -55,7 +55,6 @@ class LabDetail extends BaseConsumer {
                     </GridItem>
                     <GridItem xs={6}>
                         <RowTextField
-                            variant="outlined"
                             className={classes.inputText}
                             value={lab.priority ? lab.priority : 0}
                             type="number"

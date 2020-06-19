@@ -12,15 +12,13 @@ class App extends BasePage {
     this.state = {
       routeData: {},
     };
-    window.app = this;
     this._firstRender = true;
   }
   componentDidMount() {
     this.ajaxGet({
-      url: "/api/link/GetLisSystems",
+      url: "/api/link/GetLabConfigurationDefault",
       success: (ack) => {
-        this.updateObject(this.state.routeData, { lab: {}, lis: {}, instrument: {} });
-        // this.setState({ routeData: { lab: {}, lis: {}, instrument: {} } });
+        this.updateObject(this.state, { routeData: ack.data });
       },
     });
   }

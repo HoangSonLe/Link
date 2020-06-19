@@ -1,10 +1,10 @@
 import React from 'react'
 import _ from "lodash";
 import BaseConsumer from 'BaseComponent/BaseConsumer';
-import { withStyles } from "@material-ui/core";
 import { I3Div, I3TextField } from '../importer';
+import PropTypes from 'prop-types';
 
-class RowTextField extends BaseConsumer {
+export default class RowTextField extends BaseConsumer {
     _onChangeInput = (e) => {
         this._debounceChange(e.target.value);
     };
@@ -12,7 +12,7 @@ class RowTextField extends BaseConsumer {
         this.props.onChange(text)
     }, 100);
     consumerContent() {
-        const { classes, title, value, onChange, ...otherProps } = this.props;
+        const { title, value, onChange, ...otherProps } = this.props;
         return (
             <I3Div
                 margin={"md"}
@@ -37,6 +37,9 @@ class RowTextField extends BaseConsumer {
         )
     }
 }
-const Styles = {
+RowTextField.protoTypes = {
+    title: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func
 }
-export default withStyles(Styles)(RowTextField);
+

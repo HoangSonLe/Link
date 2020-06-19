@@ -6,24 +6,24 @@ import {
   Lab,
   Instrument,
   Lis,
-  Button,
 } from "../importer";
-import { withStyles } from "@material-ui/core";
+// import { withStyles } from "@material-ui/core";
 
-class MainContent extends BaseConsumer {
+export default class MainContent extends BaseConsumer {
   _createTab = () => {
+    let { routeData } = this.props;
     return [
       {
         tabName: "Labs",
-        tabContent: <Lab lab={this.props.routeData.lab}></Lab>,
+        tabContent: <Lab lab={routeData.lab}></Lab>,
       },
       {
         tabName: "Instruments",
-        tabContent: <Instrument instrument={this.props.routeData.instrument}></Instrument>,
+        tabContent: <Instrument instrument={routeData.instrument}></Instrument>,
       },
       {
         tabName: "Lis",
-        tabContent: <Lis lis={this.props.routeData.lis}></Lis>,
+        tabContent: <Lis lis={routeData.lis}></Lis>,
       },
     ];
   };
@@ -32,27 +32,27 @@ class MainContent extends BaseConsumer {
     let { classes } = this.props;
     return (
       <I3Div margin={"md"}>
-        <I3CustomTabs className={classes.Tab} indicator={true} tabs={this._createTab()}></I3CustomTabs>
+        <I3CustomTabs indicator={true} tabs={this._createTab()}></I3CustomTabs>
       </I3Div>
     );
   }
 }
-const Styles = {
-  DivTab: {
-    "& .tabRootButton": {
-      borderRight: "1px solid #eaebef",
-      borderLeft: "1px solid #eaebef",
-      background: "linear-gradient(to bottom, white 50%, #e0e0e0a3 95%)",
-      "&:last-child": {
-        borderRight: "none"
-      }
-    },
-    "& .tabSelected": {
-      background: "#fff",
-      borderTop: "3px solid #004e87",
-      borderRadius: " 6px 6px 0 0",
-      color: "#004e87"
-    }
-  }
-};
-export default withStyles(Styles)(MainContent);
+// const Styles = {
+//   DivTab: {
+//     "& .tabRootButton": {
+//       borderRight: "1px solid #eaebef",
+//       borderLeft: "1px solid #eaebef",
+//       background: "linear-gradient(to bottom, white 50%, #e0e0e0a3 95%)",
+//       "&:last-child": {
+//         borderRight: "none"
+//       }
+//     },
+//     "& .tabSelected": {
+//       background: "#fff",
+//       borderTop: "3px solid #004e87",
+//       borderRadius: " 6px 6px 0 0",
+//       color: "#004e87"
+//     }
+//   }
+// };
+

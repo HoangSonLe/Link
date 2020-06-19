@@ -6,10 +6,10 @@ import InstrumentDetail from './InstrumentDetail';
 
 export default class InstrumenteDetailModal extends ModalLayout {
     dataToCompare() {
-        return this.props.data;
+        return this.props.instrument;
     }
     componentDidMount() {
-        this.setInitDataToCompare(this.props.data);
+        this.setInitDataToCompare(this.props.instrument);
     }
     modalBody() {
         const { instrument, ...others } = this.props;

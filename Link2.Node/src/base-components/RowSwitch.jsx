@@ -1,12 +1,12 @@
 import React from 'react'
 import BaseConsumer from 'BaseComponent/BaseConsumer';
-import { withStyles } from "@material-ui/core";
 import { I3Div } from '../importer';
 import Switch from '@material-ui/core/Switch'
+import PropTypes from 'prop-types';
 
-class RowSwitch extends BaseConsumer {
+export default class RowSwitch extends BaseConsumer {
     consumerContent() {
-        const { classes, title, isActive, onChange } = this.props;
+        const { title, isActive, onChange } = this.props;
         return (
             <I3Div
                 display="flex"
@@ -40,6 +40,9 @@ class RowSwitch extends BaseConsumer {
         )
     }
 }
-const Styles = {
+RowSwitch.protoTypes = {
+    title: PropTypes.string,
+    isActive: PropTypes.string,
+    onChange: PropTypes.func
 }
-export default withStyles(Styles)(RowSwitch);
+

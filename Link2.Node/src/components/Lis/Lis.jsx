@@ -9,9 +9,9 @@ import CloneLisDetailModal from "./CloneLisDetailModal";
 class Lis extends BaseConsumer {
   componentDidMount() {
     this.ajaxGet({
-      url: "/api/link/GetLisSystemData",
+      url: "/api/link/GetLisSystems",
       success: (ack) => {
-        this.updateObject(this.props.lis, { lisList: ack.data.lisList, newLis: ack.data.newLis });
+        this.updateObject(this.props.lis, { lisList: ack.data });
       },
     });
   }
@@ -22,7 +22,7 @@ class Lis extends BaseConsumer {
         body:
           <CloneLisDetailModal
             onSave={newItem => isAdd ? this._onAddItem(newItem) : this._onUpdateItem(item, newItem)}
-            data={this.props.lisSystem}
+            data={this.props.lis.newLis}
           />
         ,
       }),
@@ -31,7 +31,7 @@ class Lis extends BaseConsumer {
     )
   }
   _onDeleteItem = (i) => {
-    this.removeElement(this.props.instrument.lis, i, this.success("Removed Item"))
+    this.removeElement(this.props.lis.lisList, i, this.success("Removed Item"))
 
   }
   _onUpdateItem = (oldItem, newItem) => {

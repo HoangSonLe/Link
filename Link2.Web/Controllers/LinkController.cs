@@ -474,6 +474,35 @@ namespace Link2.Web.Controllers
         }
         #endregion
         //API get data
+        [HttpGet]
+        public Acknowledgement<LabConfigurationDefault> GetLabConfigurationDefault()
+        {
+            var ack = new Acknowledgement<LabConfigurationDefault>();
+            ack.Data = new LabConfigurationDefault() {
+                Lab = new LabModelView() {
+                    LabList = new List<Laboratory>(),
+                    NewLab = new Laboratory()
+                },
+                Lis = new LisModelView() {
+                    LisList = new List<LisSystem>(),
+                    NewLis = new LisSystem()
+                    {
+                        AutoExport = true,
+                        CommunicationMode = listLisCommunationModes[0].Value,
+                        FolderChannel = new FolderChannel(),
+                        SerialChannel = new SerialChannel(),
+                        TCPChannel = new TCPChannel()
+                    }
+                },
+                Instrument = new InstrumentModelView()
+                {
+                    InstrumentList = new List<Instrument>(),
+                    NewInstrument = new Instrument()
+                }
+            };
+            ack.IsSuccess = true;
+            return ack;
+        }
         #region LisSystems
         [HttpGet]
         public Acknowledgement<LisModelView> GetLisSystemData()

@@ -1,17 +1,16 @@
 import React from 'react'
 import BaseConsumer from 'BaseComponent/BaseConsumer';
-import { withStyles } from "@material-ui/core";
 import LabItem from './LabItem';
 import { I3Div, BaseButton } from '../../importer';
 import { EModalType } from '../../general/enum';
 import CloneLabDetailModal from './CloneLabDetailModal';
 
-class Lab extends BaseConsumer {
+export default class Lab extends BaseConsumer {
     componentDidMount() {
         this.ajaxGet({
-            url: "/api/link/GetLabData",
+            url: "/api/link/GetLabs",
             success: (ack) => {
-                this.updateObject(this.props.lab, { labList: ack.data.labList, newLab: ack.data.newLab });
+                this.updateObject(this.props.lab, { labList: ack.data });
             },
         });
     }
@@ -64,6 +63,3 @@ class Lab extends BaseConsumer {
         )
     }
 }
-const Styles = {
-}
-export default withStyles(Styles)(Lab);
