@@ -9,9 +9,6 @@ import {
   Button,
 } from "../importer";
 import { withStyles } from "@material-ui/core";
-import { EModalType } from "../general/enum";
-import BaseModal from "../base-components/BaseModal";
-import BaseButton from "../base-components/BaseButton";
 
 class MainContent extends BaseConsumer {
   _createTab = () => {
@@ -24,10 +21,10 @@ class MainContent extends BaseConsumer {
         tabName: "Instruments",
         tabContent: <Instrument instrument={this.props.routeData.instrument}></Instrument>,
       },
-      // {
-      //   tabName: "Lis",
-      //   tabContent: <Lis lis={this.props.routeData.lis}></Lis>,
-      // },
+      {
+        tabName: "Lis",
+        tabContent: <Lis lis={this.props.routeData.lis}></Lis>,
+      },
     ];
   };
 

@@ -1,5 +1,6 @@
 ﻿using i3Solution.Library.Model;
 using Link2.Web.Models;
+using Link2.Web.ModelsView;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
@@ -344,7 +345,7 @@ namespace Link2.Web.Controllers
                     LisInRouters =listLis.Where(i=>i.RouterID==1).ToList(),
                     Name ="Lab Vall",
                     Priority =1,
-                    TimeZoneId ="Romance Standard Time",
+                    TimeZoneId ="Aleutian Standard Time",
                     LisInstruments =listInstruments.Where(i=>i.RouterId==1).ToList()
                 },
                 new Laboratory(){
@@ -360,7 +361,7 @@ namespace Link2.Web.Controllers
                     LisInRouters =listLis.Where(i=>i.RouterID==3).ToList(),
                     Name ="Lab 3",
                     Priority =2,
-                    TimeZoneId ="Romance Standard Time",
+                    TimeZoneId ="Alaskan Standard Time",
                     LisInstruments =listInstruments.Where(i=>i.RouterId==3).ToList()
                 }
 
@@ -455,21 +456,7 @@ namespace Link2.Web.Controllers
             ack.IsSuccess = true;
             return ack;
         }
-        [HttpGet]
-        public Acknowledgement<OptionsLisEdit> GetOptionsForListEdit()
-        {
-            var ack = new Acknowledgement<OptionsLisEdit>();
-            ack.Data = new OptionsLisEdit()
-            {
-                BaudRate = listBaudRates,
-                Handshake = listHandshakes,
-                Parity = listParities,
-                StopBits = listStopBitses,
-                LisCommunationMode = listLisCommunationModes
-            };
-            ack.IsSuccess = true;
-            return ack;
-        }
+        
         [HttpGet]
         public Acknowledgement<List<MachineType>> GetOptionsForAnalyser()
         {
@@ -504,7 +491,21 @@ namespace Link2.Web.Controllers
             ack.IsSuccess = true;
             return ack;
         }
-        [HttpPost]
+        [HttpGet]
+        public Acknowledgement<OptionsForLisEdit> GetOptionsForLisEdit()
+        {
+            var ack = new Acknowledgement<OptionsForLisEdit>();
+            ack.Data = new OptionsForLisEdit()
+            {
+                BaudRate = listBaudRates,
+                Handshake = listHandshakes,
+                Parity = listParities,
+                StopBits = listStopBitses,
+                LisCommunationMode = listLisCommunationModes
+            };
+            ack.IsSuccess = true;
+            return ack;
+        }
         #endregion
         #region Instrument
         [HttpGet]
@@ -546,13 +547,17 @@ namespace Link2.Web.Controllers
                 var index=listInstruments.FindIndex(p=>p.Id == ins.Id);
                 if (index == -1)
                 {
+                    ins.Id = listInstruments.Count() + 1;
                     listInstruments.Add(ins);
                 }
                 else
                 {
+                    
                     listInstruments[index] = ins;
                 }
+                ack.Data = ins;
                 ack.IsSuccess = true;
+                return ack;
             }
             ack.IsSuccess = false;
             return ack;

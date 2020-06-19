@@ -7,8 +7,37 @@ import DevidedComponents from "../../base-components/DevidedComponents";
 import LisItem from "./LisItem";
 import InstrumentItem from "../Instrument/InstrumentItem";
 import PropTypes from 'prop-types';
+import CloneLabDetailModal from "./CloneLabDetailModal";
 
 class LabItem extends BaseConsumer {
+    _openModal = (title) => {
+        this.openModal(
+            () => ({
+                title: title,
+                body: (
+                    <CloneLabDetailModal
+                        data={this.props.lab}
+                        onSave={() => this._onUpdateLab}
+                    ></CloneLabDetailModal>
+                ),
+            }),
+            EModalType.Right,
+            true
+        );
+    }
+    _onUpdateLab = () => {
+        this.ajaxPost({
+            url: '/api/link/AddOrUpdateInstrument',
+            data: newItem,
+            success: ack => {
+                debugger
+                this.props.onUpdateLab(this.props.lab, ack.data);
+            },
+            error: ack => {
+                this.error("Lỗi !!!");
+            }
+        })
+    }
     _onUpdateInstrument = (oldItem, newItem) => {
         this.updateObject(oldItem, newItem, () => this.success("Updated Item"))
     }
@@ -57,7 +86,7 @@ class LabItem extends BaseConsumer {
                             {lab.lisInRouters ? lab.lisInRouters.length : 0} LIS, +
                             {lab.lisInRouters ? lab.lisInRouters.filter(i => i.isMirror).length : 0} mirror
                         </I3Component>,
-                        <I3Div onClick={this.props.onUpdateLab} variant="h6" cursor="pointer" color="blue" >
+                        <I3Div onClick={() => this._openModal("Edit Lab")} variant="h6" cursor="pointer" color="blue" >
                             <I3Icon className="fas fa-pen" fontSize="subtitle1" margin="xs" color="blue" />
                             <span>Edit Lab</span>
                         </I3Div>

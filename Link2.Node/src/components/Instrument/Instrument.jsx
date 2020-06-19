@@ -21,23 +21,33 @@ class Instrument extends BaseConsumer {
             },
         });
     }
-    _openModal = (title, item, isAdd = true, isTest = false) => {
-        !isTest ?
-            this.openModal(
-                () => ({
-                    title: title,
-                    body: <CloneInstrumentDetailModal onSave={newItem => isAdd ? this._onAddItem(newItem) : this._onUpdateItem(item, newItem)} data={item} />
-                    ,
-                }),
-                EModalType.Right,
-                true
-            )
-            :
-            null
+    _openModal = (title) => {
+        this.openModal(
+            () => ({
+                title: title,
+                body: (
+                    <CloneInstrumentDetailModal
+                        onSave={this._onAddItem} data={this.props.instrument.newInstrument}
+                    />
+                )
+                ,
+            }),
+            EModalType.Right,
+            true
+        )
 
     }
     _onAddItem = (newItem) => {
-        this.addElement(this.props.instrument.instrumentList, newItem, null, () => this.success("Added Item"));
+        this.ajaxPost({
+            url: '/api/link/AddOrUpdateInstrument',
+            data: newItem,
+            success: ack => {
+                this.addElement(this.props.instrument.instrumentList, ack.data, null, () => this.success("Added Item"));
+            },
+            error: ack => {
+                this.error("Lỗi !!!");
+            }
+        })
     }
     _onUpdateItem = (oldItem, newItem) => {
         this.updateObject(oldItem, newItem, () => this.success("Updated Item"))
@@ -57,11 +67,17 @@ class Instrument extends BaseConsumer {
         );
     }
     _renderAddItem = () => {
-        return <LastDivItem title="Add new Instrument" onClick={() => this._openModal("New Instrument", this.props.instrument.newInstrument)} />
+        return <LastDivItem title="Add new Instrument" onClick={() => this._openModal("New Instrument")} />
     }
     _renderGroupInstrument = (condition) => {
         let arr = this.props.instrument.instrumentList.filter(i => i.isAssigned === condition);
-        return <ListComponent dataList={arr} renderItem={item => this._renderItem(item)} renderAddItem={!condition ? this._renderAddItem() : null} />
+        return (
+            <ListComponent
+                dataList={arr}
+                renderItem={item => this._renderItem(item)}
+                renderAddItem={!condition ? this._renderAddItem() : null}
+            />
+        )
     }
     consumerContent() {
         let { instrument } = this.props;

@@ -1,9 +1,10 @@
 import React from "react";
 import BaseConsumer from "BaseComponent/BaseConsumer";
 import { withStyles } from "@material-ui/core";
-import { I3Div, I3Icon, IconButtonGroup, Item, LastDivItem, GridContainer, GridItem, ListComponent, BaseModal, BaseButton, I3CheckboxItem } from "../../importer";
-import CloneLisDetail from "./CloneLisDetail";
+import { LastDivItem, ListComponent } from "../../importer";
 import { EModalType } from "../../general/enum";
+import LisSystemItem from "./LisSystemItem";
+import CloneLisDetailModal from "./CloneLisDetailModal";
 
 class Lis extends BaseConsumer {
   componentDidMount() {
@@ -25,86 +26,35 @@ class Lis extends BaseConsumer {
     this.openModal(
       () => ({
         title: title,
-        body: (
-          <BaseModal
-            hasFooter={true}
-            modalBody={
-              <CloneLisDetail
-                lis={item}
-              />
-            }
-            rightFooter={<BaseButton width="110px">Save</BaseButton>}
-
-          ></BaseModal>
-        ),
+        body:
+          <CloneLisDetailModal
+            onSave={newItem => isAdd ? this._onAddItem(newItem) : this._onUpdateItem(item, newItem)}
+            data={this.props.lisSystem}
+          />
+        ,
       }),
       EModalType.Right,
       true
-    );
-  }
-  _deleteItem = (e) => {
-    this.confirm(
-      "Delete this LIS system?",
-      {
-        cancel: {
-          title: "Cancle", // text hiển thị trên nút cancel 
-          handle: () => {
-            // hành động thực hiện sau khi nhấn nút cancel
-          }
-        },
-        okay: {
-          title: "Delete", // text hiển thị trên nút oke 
-          handle: () => {
-            this.ajaxGet({
-              url: "/api/link/getlissystems",
-              success: ack => {
-                this.removeElement(this.props.lis.lisList, e,
-                  this.success("Removed Item !")
-                )
-              }
-
-            })
-          }
-        }
-
-      }
     )
   }
-  _renderImage = (e) => {
-    return (
-      <img src="http://link2.i3solution.net.au/dist/Contents/img/lis/lan-icon.png" />
-    );
-  }
+  _onDeleteItem = (i) => {
+    this.removeElement(this.props.instrument.lis, i, this.success("Removed Item"))
 
-  _renderRightFooter = (e) => {
+  }
+  _onUpdateItem = (oldItem, newItem) => {
+    this.updateObject(oldItem, newItem, () => this.success("Updated Item"))
+
+  }
+  _renderItem = (i) => {
     return (
-      <IconButtonGroup
-        components={[
-          {
-            className: "fas fa-cogs",
-            onClick: ""
-          },
-          {
-            className: "fas fa-pen",
-            onClick: () => (this._openModal("Edit Lis", e))
-          },
-          {
-            className: "far fa-trash-alt",
-            onClick: () => (this._deleteItem(e))
-          }
-        ]}
+      <LisSystemItem
+        key={i.id}
+        header={i.name}
+        isActive={i.isActive}
+        lisSystem={i}
+        onDelete={this._onDeleteItem}
+        onUpdate={this._onUpdateItem}
       />
-    )
-  }
-  _renderItem = (e) => {
-    return (
-      <Item
-        key={e.id}
-        header={e.name}
-        isActive={e.isActive}
-        rightFooter={this._renderRightFooter(e)}
-        image={this._renderImage(e)}
-      ></Item>
     );
   }
   _renderAddItem = () => {
@@ -118,9 +68,12 @@ class Lis extends BaseConsumer {
       return null;
     }
     return (
-      <>
-        <ListComponent margin={["no", "md", "md", "md"]} dataList={lis.lisList} renderItem={item => this._renderItem(item)} renderAddItem={this._renderAddItem()} />
-      </>
+      <ListComponent
+        margin={["no", "md", "md", "md"]}
+        dataList={lis.lisList}
+        renderItem={item => this._renderItem(item)}
+        renderAddItem={this._renderAddItem()}
+      />
     );
   }
 }

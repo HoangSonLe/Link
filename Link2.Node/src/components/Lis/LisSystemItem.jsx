@@ -2,25 +2,25 @@ import React from "react";
 import { withStyles } from "@material-ui/core";
 import { IconButtonGroup, I3Component, I3Div } from "../../importer";
 import { EModalType } from "../../general/enum";
-import CloneInstrumentDetailModal from "./CloneInstrumentDetailModal";
 import PropTypes from 'prop-types';
 
 import { Item, Styles } from '../../base-components/Item'
+import CloneLisDetailModal from "./CloneLisDetailModal";
 
-class InstrumentItem extends Item {
+class LisSystemItem extends Item {
 
     constructor(props) {
         super(props)
     }
-    _openModal = (title, isTestCommunication = false) => {
-        !isTestCommunication ?
+    _openModal = (title, isAdd = true, isTest = false) => {
+        !isTest ?
             this.openModal(
                 () => ({
                     title: title,
                     body:
-                        <CloneInstrumentDetailModal
-                            onSave={newItem => this._onUpdateItem(this.props.instrument, newItem)}
-                            data={this.props.instrument}
+                        <CloneLisDetailModal
+                            onSave={newItem => isAdd ? this._onAddItem(newItem) : this._onUpdateItem(this.props.lisSystem, newItem)}
+                            data={this.props.lisSystem}
                         />
                     ,
                 }),
@@ -30,15 +30,15 @@ class InstrumentItem extends Item {
             : null
     }
     _onUpdateItem = (oldItem, newItem) => {
-        this.ajaxPost({
-            url: '/api/link/AddOrUpdateInstrument',
-            data: newItem,
+        this.ajaxGet({
+            url: "/api/link/getlissystems",
             success: ack => {
-                this.props.onUpdate(this.props.instrument, ack.data);
+                this.props.onUpdate(this.props.lisSystem, newItem)
             },
             error: ack => {
                 this.error("Lỗi !!!");
             }
+
         })
     }
     _onDeleteItem = () => {
@@ -54,16 +54,16 @@ class InstrumentItem extends Item {
                 okay: {
                     title: "Delete", // text hiển thị trên nút oke 
                     handle: () => {
-                        this.ajaxPost({
-                            url: '/api/link/DeleteInstrument/?id=' + this.props.instrument.id,
+                        this.ajaxGet({
+                            url: "/api/link/getlissystems",
                             success: ack => {
-                                this.props.onDelete(this.props.instrument);
+                                this.props.onDelete(this.props.lisSystem)
                             },
                             error: ack => {
                                 this.error("Lỗi !!!");
                             }
-                        })
 
+                        })
                     }
                 }
 
@@ -73,25 +73,23 @@ class InstrumentItem extends Item {
 
     renderImage() {
         return (
-            <img height="80%" src={"/dist/contents/images/" + this.props.instrument.image} />
+            <img src={"/dist/contents/images/" + this.props.lisSystem.image} />
         );
     }
-    renderRightHeader() {
-        return <I3Component variant="caption" margin={"xs"}>{this.props.instrument.serialNumber}</I3Component>
-    }
+    renderRightHeader() { }
 
     renderRightFooter() {
-        let { instrument } = this.props;
+        let { lisSystem } = this.props;
         let component = [];
         typeof (this.props.onUpdate) === 'function' ?
             component.push(
                 {
                     className: "fas fa-pen",
-                    onClick: () => (this._openModal("Edit Instrument"))
+                    onClick: () => (this._openModal("Edit Lis", false))
                 }
             ) : null;
 
-        !instrument.isAssigned && typeof (this.props.onDelete) === 'function' ?
+        !lisSystem.canDelete && typeof (this.props.onDelete) === 'function' ?
             component.push(
                 {
                     className: "far fa-trash-alt",
@@ -107,12 +105,12 @@ class InstrumentItem extends Item {
     }
 
 }
-InstrumentItem.protoTypes = {
+LisSystemItem.protoTypes = {
     onDelete: PropTypes.func,
     onUpdate: PropTypes.func,
-    instrument: PropTypes.object.isRequired
+    lisSystem: PropTypes.object.isRequired
 }
 const Style = {
     ...Styles
 }
-export default withStyles(Style)(InstrumentItem);
+export default withStyles(Style)(LisSystemItem);

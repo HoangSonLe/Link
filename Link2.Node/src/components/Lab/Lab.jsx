@@ -24,7 +24,7 @@ class Lab extends BaseConsumer {
             },
         });
     }
-    _openModal = (title, item) => {
+    _openModal = (title) => {
         this.openModal(
             () => ({
                 title: title,
@@ -45,6 +45,9 @@ class Lab extends BaseConsumer {
     _onUpdateItem = (oldItem, newItem) => {
         this.updateObject(oldItem, newItem, () => this.success("Updated Item"))
     }
+    // _onDeleteItem = (oldList, i) => {
+    //     this.removeElement(oldList, i, this.success("Removed Item"))
+    // }
     consumerContent() {
         let { lab } = this.props;
         if (!lab.labList || lab.labList.length <= 0) {
@@ -54,10 +57,16 @@ class Lab extends BaseConsumer {
             <>
                 <I3Div backgroundColor="lighterGray"
                     margin={["no", "md", "md", "md"]}>
-                    <BaseButton margin={"md"} onClick={() => this._openModal("New Laboratory", lab.newLab)}>Create New Laboratory</BaseButton>
+                    <BaseButton margin={"md"} onClick={() => this._openModal("New Laboratory")}>Create New Laboratory</BaseButton>
                 </I3Div>
                 {lab.labList.map(i => {
-                    return <LabItem key={i.id + "lablist"} lab={i} onUpdateLab={() => this._openModal("Edit Lab", i)} />
+                    return (
+                        <LabItem
+                            key={i.id + "lablist"}
+                            lab={i}
+                            onUpdateLab={(newLab) => this._onUpdateItem(i, newLab)}
+                        />
+                    )
                 })}
             </>
 
