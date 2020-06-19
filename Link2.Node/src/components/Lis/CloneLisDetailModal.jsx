@@ -18,7 +18,7 @@ export default class CloneLisDetailModal extends BaseCloneConsumer {
     childrenCloneContent() {
         let { data, onSave, ...otherProps } = this.props
         let cloneData = this.getCloneStateByKey(this._randomId);
-        console.log("data", data)
+        console.log("data", cloneData)
         return (
             <LisDetailModal
                 onSave={onSave}

@@ -1,7 +1,7 @@
 import React from "react";
 import BaseConsumer from "BaseComponent/BaseConsumer";
 import { withStyles } from "@material-ui/core";
-import { I3Div, I3Icon, IconButtonGroup, Item, LastDivItem, GridContainer, GridItem, ListComponent, BaseModal, BaseButton, I3Component } from "../../importer";
+import { I3Div, LastDivItem, ListComponent, I3Component } from "../../importer";
 import { EModalType } from "../../general/enum";
 import CloneInstrumentDetailModal from "./CloneInstrumentDetailModal";
 import InstrumentItem from "./InstrumentItem";
@@ -9,16 +9,13 @@ import InstrumentItem from "./InstrumentItem";
 class Instrument extends BaseConsumer {
     componentDidMount() {
         this.ajaxGet({
-            url: "/api/link/GetInstruments",
+            url: "/api/link/GetInstrumentData",
             success: (ack) => {
-                this.updateObject(this.props.instrument, { instrumentList: ack.data });
-                this.ajaxGet({
-                    url: "/api/link/GetDefaultInstrument",
-                    success: (ac) => {
-                        this.updateObject(this.props.instrument, { newInstrument: ac.data });
-                    },
-                });
+                this.updateObject(this.props.instrument, { instrumentList: ack.data.instrumentList, newInstrument: ack.data.newInstrument });
             },
+            error: ack => {
+                this.error("Lỗi")
+            }
         });
     }
     _openModal = (title) => {

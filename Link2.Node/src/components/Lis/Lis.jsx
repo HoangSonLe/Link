@@ -9,16 +9,9 @@ import CloneLisDetailModal from "./CloneLisDetailModal";
 class Lis extends BaseConsumer {
   componentDidMount() {
     this.ajaxGet({
-      url: "/api/link/getlissystems",
+      url: "/api/link/GetLisSystemData",
       success: (ack) => {
-        console.log(ack.data);
-        this.updateObject(this.props.lis, { lisList: ack.data });
-        // this.ajaxGet({
-        //   url: "/api/link/GetDefaultLis",
-        //   success: (ack) => {
-        //     this.updateObject(this.props.lis, { newLis: ack.data });
-        //   },
-        // });
+        this.updateObject(this.props.lis, { lisList: ack.data.lisList, newLis: ack.data.newLis });
       },
     });
   }
@@ -63,7 +56,7 @@ class Lis extends BaseConsumer {
   _
   consumerContent() {
     let { lis } = this.props;
-    console.log("lis", lis);
+
     if (!lis.lisList || lis.lisList.length <= 0) {
       return null;
     }

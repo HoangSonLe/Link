@@ -29,7 +29,7 @@ class MainContent extends BaseConsumer {
   };
 
   consumerContent() {
-    let { classes, routeData } = this.props;
+    let { classes } = this.props;
     return (
       <I3Div margin={"md"}>
         <I3CustomTabs className={classes.Tab} indicator={true} tabs={this._createTab()}></I3CustomTabs>

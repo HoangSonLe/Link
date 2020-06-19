@@ -476,6 +476,18 @@ namespace Link2.Web.Controllers
         //API get data
         #region LisSystems
         [HttpGet]
+        public Acknowledgement<LisModelView> GetLisSystemData()
+        {
+            var ack = new Acknowledgement<LisModelView>();
+            ack.Data = new LisModelView()
+            {
+                LisList = listLisSytem,
+                NewLis = new LisSystem()
+            };
+            ack.IsSuccess = true;
+            return ack;
+        }
+        [HttpGet]
         public Acknowledgement<List<LisSystem>> GetLisSystems()
         {
             var ack = new Acknowledgement<List<LisSystem>>();
@@ -501,13 +513,26 @@ namespace Link2.Web.Controllers
                 Handshake = listHandshakes,
                 Parity = listParities,
                 StopBits = listStopBitses,
-                LisCommunationMode = listLisCommunationModes
+                LisCommunationMode = listLisCommunationModes,
+                TimeZones = listTimeZones
             };
             ack.IsSuccess = true;
             return ack;
         }
         #endregion
         #region Instrument
+        [HttpGet]
+        public Acknowledgement<InstrumentModelView> GetInstrumentData()
+        {
+            var ack = new Acknowledgement<InstrumentModelView>();
+            ack.Data = new InstrumentModelView()
+            {
+                InstrumentList = listInstruments,
+                NewInstrument = new Instrument()
+            };
+            ack.IsSuccess = true;
+            return ack;
+        }
         [HttpGet]
         public Acknowledgement<Instrument> GetDefaultInstrument()
         {
@@ -528,8 +553,12 @@ namespace Link2.Web.Controllers
         public Acknowledgement DeleteInstrument(int? id)
         {
             var ack = new Acknowledgement();
-            if (id == null) ack.IsSuccess = false;
-            if(id!= null)
+            if (id == null)
+            {
+                ack.AddMessage("Lỗi");
+                ack.IsSuccess = false;
+            }
+            if (id!= null)
             {
 
                 var tmp=listInstruments.Find(p=>p.Id== id);
@@ -559,11 +588,23 @@ namespace Link2.Web.Controllers
                 ack.IsSuccess = true;
                 return ack;
             }
+            ack.AddMessage("Lỗi");
             ack.IsSuccess = false;
             return ack;
         }
         #endregion
+        #region Lab
         [HttpGet]
+        public Acknowledgement<LabModelView> GetLabData()
+        {
+            var ack = new Acknowledgement<LabModelView>();
+            ack.Data = new LabModelView() {
+                LabList = listLaboratories,
+                NewLab = new Laboratory()
+            };
+            ack.IsSuccess = true;
+            return ack;
+        }
         public Acknowledgement<Laboratory> GetDefaultLab()
         {
             var ack = new Acknowledgement<Laboratory>();
@@ -579,7 +620,8 @@ namespace Link2.Web.Controllers
             ack.IsSuccess = true;
             return ack;
         }
-        
+        #endregion
+
 
     }
 }

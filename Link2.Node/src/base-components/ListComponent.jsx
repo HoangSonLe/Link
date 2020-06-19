@@ -1,7 +1,7 @@
 import React from 'react'
 import BaseConsumer from 'BaseComponent/BaseConsumer';
 import { withStyles } from "@material-ui/core";
-import { I3Div, GridItem, GridContainer } from '../importer';
+import { I3Div, GridItem, GridContainer, ShouldUpdateWrapper } from '../importer';
 import HeaderListComponent from './HeaderListComponent';
 
 class ListComponent extends BaseConsumer {
