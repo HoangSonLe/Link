@@ -14,14 +14,17 @@ export default class InstrumentDetail extends BaseConsumer {
       _optionsInstrumentType: [],
     };
   }
+  //Bật tắt true / false theo key truyền vào
   _changeActive = (key) => {
     this.updateObject(this.props.instrument, {
       [key]: !this.props.instrument[key],
     });
   };
+  //Hàm change text theo key
   _changeText = (item, key, value) => {
     this.updateObject(item, { [key]: value });
   };
+  //Lấy giá trì Options cho Instrument
   componentDidMount() {
     this.ajaxGet({
       url: "/api/link/GetOptionsForAnalyser",

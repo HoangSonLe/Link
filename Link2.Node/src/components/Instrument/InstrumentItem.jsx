@@ -30,6 +30,7 @@ class InstrumentItem extends Item {
         )
       : null;
   };
+  //Cập nhật Instrument
   _onUpdateItem = (oldItem, newItem) => {
     this.ajaxPost({
       url: "/api/link/AddOrUpdateInstrument",
@@ -42,6 +43,7 @@ class InstrumentItem extends Item {
       },
     });
   };
+  //Hàm xóa instrument, check nếu là xóa trong Lab thì gọi API khác
   _onDeleteItem = () => {
     let { instrument, isInLab, onDelete } = this.props;
     this.confirm("Delete this Instrument?", {

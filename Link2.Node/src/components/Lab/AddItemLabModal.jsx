@@ -9,6 +9,7 @@ export default class AddItemLabModal extends ModalLayout {
     super(props);
     this.selectedItem = [];
   }
+  //thêm vào danh sách chọn
   _onAddInstrumentToLab = (newItems) => {
     this.selectedItem = newItems;
   };

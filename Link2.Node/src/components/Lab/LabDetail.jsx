@@ -29,6 +29,7 @@ class LabDetail extends BaseConsumer {
   _changeText = (item, key, value) => {
     this.updateObject(item, { [key]: value });
   };
+  //Xóa Lab bắn  API và callback
   _onDeleteLab = () => {
     let { lab, onDelete } = this.props;
     this.ajaxPost({

@@ -26,7 +26,7 @@ class LisSystemItem extends Item {
       true
     );
   };
-
+  //Cập nhật LisSystem callback ra ngoài Lis
   _onUpdateItem = (newItem) => {
     let { lisSystem } = this.props;
     this.ajaxPost({
@@ -40,6 +40,7 @@ class LisSystemItem extends Item {
       },
     });
   };
+  //Xóa LisSystem và callback ra Lis
   _onDeleteItem = () => {
     let { lisSystem, isInLab, onDelete } = this.props;
     this.confirm("Delete this LIS system?", {

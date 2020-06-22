@@ -9,14 +9,16 @@ class LisItem extends Item {
   constructor(props) {
     super(props);
   }
-  _onUpdateItem = (oldItem, newItem) => {
-    this.updateObject(
-      oldItem,
-      newItem,
-      () => this.success("Updated Item"),
-      this.props.onUpdate
-    );
-  };
+  //Xóa LIS trong LAB
+  // _onUpdateItem = (oldItem, newItem) => {
+  //   this.updateObject(
+  //     oldItem,
+  //     newItem,
+  //     () => this.success("Updated Item"),
+  //     this.props.onUpdate
+  //   );
+  // };
+  //Xóa LIS bằng callback ra ngoài
   _onDeleteItem = () => {
     this.confirm("Delete this LIS system?", {
       cancel: {
@@ -33,6 +35,7 @@ class LisItem extends Item {
       },
     });
   };
+  //Cập nhật isMirror
   _onClickLisCheck = (e, item) => {
     this.updateObject(item, { isMirror: e.target.checked }, () => {
       //callback hàm ngoài

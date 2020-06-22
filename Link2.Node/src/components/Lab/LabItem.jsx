@@ -17,6 +17,7 @@ import CloneLabDetailModal from "./CloneLabDetailModal";
 import AddItemLabModal from "./AddItemLabModal";
 
 class LabItem extends BaseConsumer {
+  //Mở modal theo type thêm Instrument,LIS hoặc sửa Lab Detail
   _openModal = (title, type) => {
     let { lab, onDelete } = this.props;
     let body = "";
@@ -57,17 +58,22 @@ class LabItem extends BaseConsumer {
       true
     );
   };
+  //Xóa Lab  và callback ra ngoài
   _onUpdateLab = (newItem) => {
-    let { lab } = this.props;
+    let { lab, onUpdateLab } = this.props;
     console.log(newItem);
     this.ajaxPost({
       url: "/api/link/AddOrUpdateLab",
       data: newItem,
       success: (ack) => {
-        this.updateObject(lab, newItem, () => this.success("Updated Item"));
+        onUpdateLab(lab, ack.data);
+      },
+      error: (ack) => {
+        this.error(ack.ErrorMessage);
       },
     });
   };
+  //Thêm Instrument vào Lab
   _onAddInstrumentsInLab = (newItems) => {
     let { lab } = this.props;
     this.ajaxPost({
@@ -82,6 +88,7 @@ class LabItem extends BaseConsumer {
 
     // this.updateObject(oldItem, newItem, () => this.success("Updated Item"));
   };
+  //Xóa Instrument trong lab
   _onDeleteInstrument = (i) => {
     let { lab } = this.props;
     this.ajaxPost({
@@ -98,6 +105,7 @@ class LabItem extends BaseConsumer {
       },
     });
   };
+  //Render Instrument trong Lab
   _renderInstrument = (i) => {
     return (
       <InstrumentItem
@@ -110,6 +118,7 @@ class LabItem extends BaseConsumer {
       />
     );
   };
+  //Thêm Lis vào Lab
   _onAddLisSystemsInLab = (newItems) => {
     let { lab } = this.props;
     this.ajaxPost({
@@ -122,6 +131,7 @@ class LabItem extends BaseConsumer {
       },
     });
   };
+  //Xóa LIS trong LAB
   _onDeleteLis = (i) => {
     let { lab } = this.props;
     this.ajaxPost({
@@ -134,6 +144,7 @@ class LabItem extends BaseConsumer {
       },
     });
   };
+  //Render Lis trong Lab
   _renderLis = (i) => {
     return (
       <LisItem
@@ -191,6 +202,7 @@ class LabItem extends BaseConsumer {
           deviderMargin={["no", "md", "no", "md"]}
         />
         <I3Div margin={["xs", "no", "xs", "no"]}>
+          {/* Render Instrument */}
           <ListComponent
             title="Intruments"
             dataList={lab.lisInstruments}
@@ -204,6 +216,7 @@ class LabItem extends BaseConsumer {
               />
             }
           />
+          {/* Render LIS */}
           <ListComponent
             title="LIS"
             dataList={lab.lisInRouters}

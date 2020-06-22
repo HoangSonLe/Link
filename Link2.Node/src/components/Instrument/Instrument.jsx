@@ -7,6 +7,7 @@ import InstrumentItem from "./InstrumentItem";
 import PropTypes from "prop-types";
 
 export default class Instrument extends BaseConsumer {
+  //Lấy ds Instrument
   componentDidMount() {
     this.ajaxGet({
       url: "/api/link/GetInstruments",
@@ -18,6 +19,7 @@ export default class Instrument extends BaseConsumer {
       },
     });
   }
+  //Mở modal thêm mới Instrument
   _openModal = (title) => {
     this.openModal(
       () => ({
@@ -33,6 +35,7 @@ export default class Instrument extends BaseConsumer {
       true
     );
   };
+  //Thêm mới Instrument
   _onAddItem = (newItem) => {
     this.ajaxPost({
       url: "/api/link/AddOrUpdateInstrument",
@@ -53,12 +56,14 @@ export default class Instrument extends BaseConsumer {
       },
     });
   };
+  //Cập nhật Instrument Callback của Detail
   _onUpdateItem = (oldItem, newItem) => {
     this.updateObject(oldItem, newItem, () => {
       this.closeModal(-1);
       this.success("Updated Item");
     });
   };
+  //Xóa Instrument Callback của Detail
   _onDeleteItem = (i) => {
     this.removeElement(
       this.props.instrument.instrumentList,
@@ -66,6 +71,7 @@ export default class Instrument extends BaseConsumer {
       this.success("Removed Item")
     );
   };
+  //Hàm render từng Instrument Item
   _renderItem = (i) => {
     return (
       <InstrumentItem
@@ -78,6 +84,7 @@ export default class Instrument extends BaseConsumer {
       />
     );
   };
+  //Render Div cuối để add
   _renderAddItem = () => {
     return (
       <LastDivItem
@@ -86,6 +93,7 @@ export default class Instrument extends BaseConsumer {
       />
     );
   };
+  //Group Instrument theo Assigned
   _renderGroupInstrument = (condition) => {
     let arr = this.props.instrument.instrumentList.filter(
       (i) => i.isAssigned === condition

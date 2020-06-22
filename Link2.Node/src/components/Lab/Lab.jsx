@@ -14,6 +14,7 @@ export default class Lab extends BaseConsumer {
       },
     });
   }
+  //Mở modal chi tiết Lab
   _openModal = (title) => {
     this.openModal(
       () => ({
@@ -29,6 +30,7 @@ export default class Lab extends BaseConsumer {
       true
     );
   };
+  //Thêm lab mới
   _onAddItem = (newItem) => {
     let { lab } = this.props;
 
@@ -46,15 +48,21 @@ export default class Lab extends BaseConsumer {
       },
     });
   };
+  //Cập nhật Lab callback của children
   _onUpdateItem = (oldItem, newItem) => {
     this.updateObject(oldItem, newItem, () => {
       this.closeModal(-1);
       this.success("Updated Item");
     });
   };
+  //Xóa Lab callback của children
+
   _onDeleteLab = (i) => {
     let { lab } = this.props;
-    this.removeElement(lab.labList, i, this.success("Removed Item"));
+    this.removeElement(lab.labList, i, () => {
+      this.closeModal(-1);
+      this.success("Removed Item");
+    });
   };
   consumerContent() {
     let { lab } = this.props;
@@ -75,6 +83,7 @@ export default class Lab extends BaseConsumer {
               key={i.id + "lablist"}
               lab={i}
               onDelete={() => this._onDeleteLab(i)}
+              onUpdateLab={this._onUpdateItem}
             />
           );
         })}

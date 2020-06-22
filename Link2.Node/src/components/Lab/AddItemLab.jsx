@@ -20,6 +20,7 @@ class AddItemLab extends BaseConsumer {
       searchText: "",
     };
   }
+  //Thêm sản phẩm vào ds chọn
   _addSelectedItem = (i) => {
     let { selectedList } = this.state;
     let index = selectedList.findIndex((e) => e == i);
@@ -28,10 +29,11 @@ class AddItemLab extends BaseConsumer {
       ? this.addLocalElement(selectedList, i)
       : this.removeLocalElement(selectedList, i);
   };
-
+  //Thay đổi text Search
   _onChangeSearch = (e) => {
     this._debounceChange(e.target.value);
   };
+  // debounce and filter lấy ds khi search
   _debounceChange = _.debounce((text) => {
     let { dataList } = this.state;
     let { typeAdd } = this.props;
@@ -50,6 +52,7 @@ class AddItemLab extends BaseConsumer {
       searchText: text,
     });
   }, 300);
+  //Lấy ds lis, instrument
   componentDidMount() {
     let { typeAdd, lab } = this.props;
     let url =
@@ -63,6 +66,7 @@ class AddItemLab extends BaseConsumer {
       },
     });
   }
+  //Render nội dung hiện thị Istrument hay LIS
   _renderContent = (i) => {
     let { selectedList } = this.state;
     let { classes, typeAdd } = this.props;
@@ -119,6 +123,7 @@ class AddItemLab extends BaseConsumer {
             }}
           />
         </I3Div>
+        {/* Nếu có search thi hiện theo ds search , không thì hiện mặc định từ db về */}
         {searchList.length > 0 ? (
           searchList.map((i) => this._renderContent(i))
         ) : dataList.length > 0 && searchText === "" ? (

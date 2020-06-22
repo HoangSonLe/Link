@@ -16,6 +16,7 @@ export default class Lis extends BaseConsumer {
       },
     });
   }
+  //Mở modal thêm mới
   _openModal = (title, item) => {
     this.openModal(
       () => ({
@@ -31,21 +32,28 @@ export default class Lis extends BaseConsumer {
       true
     );
   };
+  //Xóa LIS, callback của children
   _onDeleteItem = (i) => {
     this.removeElement(this.props.lis.lisList, i, this.success("Removed Item"));
   };
+  //Cập nhật LIS, callback của children
+
   _onUpdateItem = (oldItem, newItem) => {
     this.updateObject(oldItem, newItem, () => {
       this.closeModal(-1);
       this.success("Updated Item");
     });
   };
+  //Thêm LisSystem
+
   _onAddItem = (newItem) => {
+    debugger;
     this.ajaxPost({
       url: "/api/link/AddOrUpdateLisSystem",
       data: newItem,
       success: (ack) => {
-        this.addElement(this.props.lis.lisList, ack.data, () => {
+        this.addElement(this.props.lis.lisList, ack.data, null, () => {
+          debugger;
           this.closeModal(-1);
           this.success("Added Item");
         });
@@ -55,6 +63,7 @@ export default class Lis extends BaseConsumer {
       },
     });
   };
+  //Render LisSystem
   _renderItem = (i) => {
     return (
       <LisSystemItem
@@ -67,6 +76,7 @@ export default class Lis extends BaseConsumer {
       />
     );
   };
+  //Render div cuối cùng để Adđ
   _renderAddItem = () => {
     return (
       <LastDivItem

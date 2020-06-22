@@ -549,6 +549,7 @@ namespace Link2.Web.Controllers
             if (index == -1)
             {
                 lisSystem.Id = listLisSytem.Count() + 1;
+                lisSystem.CanDelete = true;
                 listLisSytem.Add(lisSystem);
             }
             else
@@ -599,13 +600,13 @@ namespace Link2.Web.Controllers
         public Acknowledgement<LisSystem> ValidateLisSystem(LisSystem lisSystem)
         {
             var ack = new Acknowledgement<LisSystem>();
-            if(lisSystem.Name== null || lisSystem.Name== "")
+            if(string.IsNullOrEmpty(lisSystem.Name))
             {
                 ack.AddMessage("LIS name field must be filled");
                 ack.IsSuccess = false;
                 return ack;
             }
-            if (lisSystem.TimeZoneId == null || lisSystem.TimeZoneId == "")
+            if ( string.IsNullOrEmpty(lisSystem.TimeZoneId))
             {
                 ack.AddMessage("Value of TimeZone is invalid");
                 ack.IsSuccess = false;
@@ -613,19 +614,19 @@ namespace Link2.Web.Controllers
             }
             if (lisSystem.CommunicationMode== (int)EnumLink.LisSystemType.FolderChannel)
             {
-                if(lisSystem.FolderChannel.RootFolder== null || lisSystem.FolderChannel.RootFolder == "")
+                if(string.IsNullOrEmpty(lisSystem.FolderChannel.RootFolder))
                 {
                     ack.AddMessage("Root folder field must be filled");
                     ack.IsSuccess = false;
                     return ack;
                 }
-                if (lisSystem.FolderChannel.InputFile == null || lisSystem.FolderChannel.InputFile == "")
+                if ( string.IsNullOrEmpty(lisSystem.FolderChannel.InputFile))
                 {
                     ack.AddMessage("Input file field must be filled");
                     ack.IsSuccess = false;
                     return ack;
                 }
-                if (lisSystem.FolderChannel.OutputFile == null || lisSystem.FolderChannel.OutputFile == "")
+                if ( string.IsNullOrEmpty(lisSystem.FolderChannel.OutputFile))
                 {
                     ack.AddMessage("Output file field must be filled");
                     ack.IsSuccess = false;
@@ -634,24 +635,30 @@ namespace Link2.Web.Controllers
             }
             if (lisSystem.CommunicationMode == (int)EnumLink.LisSystemType.SerialChannel)
             {
-                if (lisSystem.SerialChannel.PortName == null || lisSystem.SerialChannel.PortName.Contains("COMP"))
+                if (string.IsNullOrEmpty(lisSystem.SerialChannel.PortName) || !lisSystem.SerialChannel.PortName.Contains("COM"))
                 {
                     ack.AddMessage("Value of Port Name is invalid");
+                    ack.IsSuccess = false;
+                    return ack;
+                }
+                if (lisSystem.SerialChannel.TimeOut <= 0)
+                {
+                    ack.AddMessage("Value of Timeout must be greater than or equal to 1");
                     ack.IsSuccess = false;
                     return ack;
                 }
             }
             if (lisSystem.CommunicationMode == (int)EnumLink.LisSystemType.TCPChannel)
             {
-                if (lisSystem.TCPChannel.Ip == null || lisSystem.TCPChannel.Ip=="")
+                if ( string.IsNullOrEmpty(lisSystem.TCPChannel.Ip))
                 {
                     ack.AddMessage("Value of TCP/IP Address must be filled");
                     ack.IsSuccess = false;
                     return ack;
                 }
-                if (lisSystem.TCPChannel.Port >0 )
+                if (lisSystem.TCPChannel.Port <=0 )
                 {
-                    ack.AddMessage("Value of TCP/IP Port must be greater than or equal to 1");
+                    ack.AddMessage("Valalue of TCP/IP Port must be greater than or equ to 1");
                     ack.IsSuccess = false;
                     return ack;
                 }
@@ -744,13 +751,13 @@ namespace Link2.Web.Controllers
         public Acknowledgement<Instrument> ValidateInstrument(Instrument ins)
         {
             var ack = new Acknowledgement<Instrument>();
-            if (ins.Name == null || ins.Name == "")
+            if (string.IsNullOrEmpty(ins.Name))
             {
                 ack.IsSuccess = false;
                 ack.AddMessage("Analyser name field must be filled");
                 return ack;
             }
-            if (ins.SerialNumber == null || ins.SerialNumber == "")
+            if ( string.IsNullOrEmpty(ins.SerialNumber))
             {
                 ack.IsSuccess = false;
                 ack.AddMessage("Serial number field must be filled");
@@ -762,13 +769,13 @@ namespace Link2.Web.Controllers
                 ack.AddMessage("Value of Machine type is invalid");
                 return ack;
             }
-            if (ins.TanFolder == null || ins.TanFolder == "")
+            if ( string.IsNullOrEmpty(ins.TanFolder))
             {
                 ack.IsSuccess = false;
                 ack.AddMessage("Tan Folder field must be filled");
                 return ack;
             }
-            if (ins.AstmFolder == null || ins.AstmFolder == "")
+            if ( string.IsNullOrEmpty(ins.AstmFolder))
             {
                 ack.IsSuccess = false;
                 ack.AddMessage("Astm Folder field must be filled");
@@ -826,12 +833,17 @@ namespace Link2.Web.Controllers
         {
             var ack = new Acknowledgement();
             //Check exist lab
-            if (id != null)
+            if (id == null)
             {
-
-                var tmp = listLaboratories.Find(p => p.Id == id);
+                ack.AddMessage("Lỗi");
+                ack.IsSuccess = false;
+                return ack;
+            }
+            var tmp = listLaboratories.FindIndex(p => p.Id == id);
+            if (tmp != -1)
+            {
                 //Remove instrument and set Assign for instrument
-                foreach(var i in tmp.LisInstruments)
+                foreach (var i in listLaboratories[tmp].LisInstruments)
                 {
                     var indexIns = listInstruments.FindIndex(x => x.Id == i.Id);
                     if (indexIns != -1)
@@ -840,13 +852,16 @@ namespace Link2.Web.Controllers
                     }
                 }
 
-                listLaboratories.Remove(tmp);
+                listLaboratories.Remove(listLaboratories[tmp]);
                 ack.IsSuccess = true;
                 return ack;
             }
-            ack.AddMessage("Lỗi");
+            ack.AddMessage("Không tìm thấy Lab");
             ack.IsSuccess = false;
             return ack;
+
+
+
         }
         [HttpGet]
         public Acknowledgement<List<Instrument>> GetInstrumentsForLab()
@@ -992,19 +1007,19 @@ namespace Link2.Web.Controllers
         public Acknowledgement<Laboratory> ValidateLab(Laboratory lab)
         {
             var ack = new Acknowledgement<Laboratory>();
-            if(lab.Name== null || lab.Name == "")
+            if(string.IsNullOrEmpty(lab.Name))
             {
                 ack.IsSuccess = false;
                 ack.AddMessage("Lab name field must be filled");
                 return ack;
             }
-            if (lab.TimeZoneId == null || lab.TimeZoneId == "")
+            if ( string.IsNullOrEmpty(lab.TimeZoneId))
             {
                 ack.IsSuccess = false;
                 ack.AddMessage("Value of TimeZone is invalid");
                 return ack;
             }
-            if (lab.Priority < 0 )
+            if (lab.Priority <= 0 )
             {
                 ack.IsSuccess = false;
                 ack.AddMessage("Priority mus be greater than or equal to 1");

@@ -40,7 +40,7 @@ export default class LabDetailModal extends ModalLayout {
         width="110px"
         onClick={(data) => {
           onSave(lab);
-          this.closeThisModal();
+          // this.closeThisModal();
         }}
       >
         Save
