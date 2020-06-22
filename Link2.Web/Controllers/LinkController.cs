@@ -175,7 +175,7 @@ namespace Link2.Web.Controllers
         {
             new LisSystem()
             {
-                CanDelete = false,
+                CanDelete = true,
                 Id =  33,
                 Image="serial.png",
                 Name = "Serial Channel",
@@ -201,7 +201,7 @@ namespace Link2.Web.Controllers
             },
             new LisSystem()
             {
-                CanDelete = false,
+                CanDelete = true,
                 Id =  34,
                 Name = "TCP Channel 233",
                 Image="tcp.png",
@@ -227,7 +227,7 @@ namespace Link2.Web.Controllers
             },
             new LisSystem()
             {
-                CanDelete = false,
+                CanDelete = true,
                 Id =  35,
                 Name = "Folder Channel",
                 Image="folder.png",
@@ -256,12 +256,10 @@ namespace Link2.Web.Controllers
         {
                 new Instrument(){
                     Id = 1,
-                    RouterId =1,
                     Image ="erytra.jpg",
                     MachineType =1,
                     AstmFolder =@"C:\TestFolder\57-0694\ASTM\1-1",
                     AutoSendToHost =false,
-                    CanDelete =true,
                     IsActive =true,
                     IsAssigned =false,
                     Name ="Erytra AT1000",
@@ -270,26 +268,22 @@ namespace Link2.Web.Controllers
                 },
                 new Instrument(){
                     Id = 2,
-                    RouterId =1,
                     Image ="dgreader.png",
                     MachineType =2,
                     AstmFolder =@"C:\TestFolder\57-0694\ASTM\2-1",
                     AutoSendToHost =false,
-                    CanDelete =true,
                     IsActive =true,
-                    IsAssigned =true,
+                    IsAssigned =false,
                     Name ="DGReader",
                     SerialNumber ="1560",
                     TanFolder =@"C:\TestFolder\57-0694\TAN"
                 },
                 new Instrument(){
                     Id = 3,
-                    RouterId =1,
                     Image ="diana.png",
                     MachineType =3,
                     AstmFolder =@"C:\TestFolder\57-0694\ASTM\3-1",
                     AutoSendToHost =false,
-                    CanDelete =true,
                     IsActive =true,
                     IsAssigned =false,
                     Name ="Waidiana3",
@@ -298,12 +292,10 @@ namespace Link2.Web.Controllers
                 },
                 new Instrument(){
                     Id = 4,
-                    RouterId =2,
                     Image ="erytra-eflexis.jpg",
                     MachineType =4,
                     AstmFolder =@"C:\TestFolder\57-0694\ASTM\1-2",
                     AutoSendToHost =false,
-                    CanDelete =true,
                     IsActive =true,
                     IsAssigned =false,
                     Name ="Eflexis",
@@ -312,12 +304,10 @@ namespace Link2.Web.Controllers
                 },
                 new Instrument(){
                     Id = 5,
-                    RouterId =2,
                     Image ="dgreader-net.jpg",
                     MachineType =5,
                     AstmFolder =@"C:\TestFolder\57-0694\ASTM\1-2",
                     AutoSendToHost =false,
-                    CanDelete =true,
                     IsActive =true,
                     IsAssigned =false,
                     Name ="DGReader Net",
@@ -342,27 +332,27 @@ namespace Link2.Web.Controllers
         {
                 new Laboratory(){
                     Id =1,
-                    LisInRouters =listLis.Where(i=>i.RouterID==1).ToList(),
+                    LisInRouters =new List<Lis>(),
                     Name ="Lab Vall",
                     Priority =1,
                     TimeZoneId ="Aleutian Standard Time",
-                    LisInstruments =listInstruments.Where(i=>i.RouterId==1).ToList()
+                    LisInstruments= new List<Instrument>()
                 },
                 new Laboratory(){
                     Id =2,
-                    LisInRouters =listLis.Where(i=>i.RouterID==2).ToList(),
+                    LisInRouters =new List<Lis>(),
                     Name ="Lab Test",
                     Priority =2,
                     TimeZoneId ="Romance Standard Time",
-                    LisInstruments =listInstruments.Where(i=>i.RouterId==2).ToList()
+                    LisInstruments= new List<Instrument>()
                 },
                 new Laboratory(){
                     Id =3,
-                    LisInRouters =listLis.Where(i=>i.RouterID==3).ToList(),
+                    LisInRouters =new List<Lis>(),
                     Name ="Lab 3",
                     Priority =2,
                     TimeZoneId ="Alaskan Standard Time",
-                    LisInstruments =listInstruments.Where(i=>i.RouterId==3).ToList()
+                    LisInstruments= new List<Instrument>()
                 }
 
         };
@@ -490,8 +480,17 @@ namespace Link2.Web.Controllers
                         AutoExport = true,
                         CommunicationMode = listLisCommunationModes[0].Value,
                         FolderChannel = new FolderChannel(),
-                        SerialChannel = new SerialChannel(),
+                        SerialChannel = new SerialChannel() {
+                            TimeOut=0,
+                            BaudRate=listBaudRates[0].Value,
+                            Handshake=listHandshakes[0].Value,
+                            Parity= listParities[0].Value,
+                            StopBits=listStopBitses[0].Value,
+                        },
                         TCPChannel = new TCPChannel()
+                        {
+                           TimeOut=10 
+                        }
                     }
                 },
                 Instrument = new InstrumentModelView()
@@ -504,18 +503,7 @@ namespace Link2.Web.Controllers
             return ack;
         }
         #region LisSystems
-        [HttpGet]
-        public Acknowledgement<LisModelView> GetLisSystemData()
-        {
-            var ack = new Acknowledgement<LisModelView>();
-            ack.Data = new LisModelView()
-            {
-                LisList = listLisSytem,
-                NewLis = new LisSystem()
-            };
-            ack.IsSuccess = true;
-            return ack;
-        }
+        
         [HttpGet]
         public Acknowledgement<List<LisSystem>> GetLisSystems()
         {
@@ -524,12 +512,72 @@ namespace Link2.Web.Controllers
             ack.IsSuccess = true;
             return ack;
         }
-        [HttpGet]
-        public Acknowledgement<LisSystem> GetDefaultLis()
+        [HttpPost]
+        public Acknowledgement<LisSystem> AddOrUpdateLisSystem(LisSystem lisSystem)
         {
             var ack = new Acknowledgement<LisSystem>();
-            ack.Data = new LisSystem();
+            //Validate
+            var validate = ValidateLisSystem(lisSystem);
+            if (validate.IsSuccess == false)
+            {
+                ack.ErrorMessage = validate.ErrorMessage;
+                ack.IsSuccess = false;
+                return ack;
+            }
+            //
+            var index = listLisSytem.FindIndex(p => p.Id == lisSystem.Id);
+            switch (lisSystem.CommunicationMode)
+            {
+                case (int)EnumLink.LisSystemType.FolderChannel:
+                    lisSystem.SerialChannel = new SerialChannel();
+                    lisSystem.TCPChannel = new TCPChannel();
+                    lisSystem.Image = "folder.png";
+                    break;
+                case (int)EnumLink.LisSystemType.SerialChannel:
+                    lisSystem.FolderChannel = new FolderChannel();
+                    lisSystem.TCPChannel = new TCPChannel();
+                    lisSystem.Image = "serial.png";
+                    break;
+                case (int)EnumLink.LisSystemType.TCPChannel:
+                    lisSystem.FolderChannel = new FolderChannel();
+                    lisSystem.SerialChannel = new SerialChannel();
+                    lisSystem.Image = "lan-icon.png";
+                    break;
+                default:
+                    break;
+            }
+            if (index == -1)
+            {
+                lisSystem.Id = listLisSytem.Count() + 1;
+                listLisSytem.Add(lisSystem);
+            }
+            else
+            {
+
+                listLisSytem[index] = lisSystem;
+            }
+            ack.Data = lisSystem;
             ack.IsSuccess = true;
+            return ack;
+            return ack;
+        }
+        [HttpPost]
+        public Acknowledgement DeleteLisSystem(int? id)
+        {
+            var ack = new Acknowledgement();
+            if (id != null)
+            {
+
+                var tmp = listLisSytem.Find(p => p.Id == id);
+                if (!tmp.CanDelete)
+                {
+                    listLisSytem.Remove(tmp);
+                    ack.IsSuccess = true;
+                }
+                ack.IsSuccess = false;
+                return ack;
+            }
+            ack.IsSuccess = false;
             return ack;
         }
         [HttpGet]
@@ -548,28 +596,74 @@ namespace Link2.Web.Controllers
             ack.IsSuccess = true;
             return ack;
         }
-        #endregion
-        #region Instrument
-        [HttpGet]
-        public Acknowledgement<InstrumentModelView> GetInstrumentData()
+        public Acknowledgement<LisSystem> ValidateLisSystem(LisSystem lisSystem)
         {
-            var ack = new Acknowledgement<InstrumentModelView>();
-            ack.Data = new InstrumentModelView()
+            var ack = new Acknowledgement<LisSystem>();
+            if(lisSystem.Name== null || lisSystem.Name== "")
             {
-                InstrumentList = listInstruments,
-                NewInstrument = new Instrument()
-            };
+                ack.AddMessage("LIS name field must be filled");
+                ack.IsSuccess = false;
+                return ack;
+            }
+            if (lisSystem.TimeZoneId == null || lisSystem.TimeZoneId == "")
+            {
+                ack.AddMessage("Value of TimeZone is invalid");
+                ack.IsSuccess = false;
+                return ack;
+            }
+            if (lisSystem.CommunicationMode== (int)EnumLink.LisSystemType.FolderChannel)
+            {
+                if(lisSystem.FolderChannel.RootFolder== null || lisSystem.FolderChannel.RootFolder == "")
+                {
+                    ack.AddMessage("Root folder field must be filled");
+                    ack.IsSuccess = false;
+                    return ack;
+                }
+                if (lisSystem.FolderChannel.InputFile == null || lisSystem.FolderChannel.InputFile == "")
+                {
+                    ack.AddMessage("Input file field must be filled");
+                    ack.IsSuccess = false;
+                    return ack;
+                }
+                if (lisSystem.FolderChannel.OutputFile == null || lisSystem.FolderChannel.OutputFile == "")
+                {
+                    ack.AddMessage("Output file field must be filled");
+                    ack.IsSuccess = false;
+                    return ack;
+                }
+            }
+            if (lisSystem.CommunicationMode == (int)EnumLink.LisSystemType.SerialChannel)
+            {
+                if (lisSystem.SerialChannel.PortName == null || lisSystem.SerialChannel.PortName.Contains("COMP"))
+                {
+                    ack.AddMessage("Value of Port Name is invalid");
+                    ack.IsSuccess = false;
+                    return ack;
+                }
+            }
+            if (lisSystem.CommunicationMode == (int)EnumLink.LisSystemType.TCPChannel)
+            {
+                if (lisSystem.TCPChannel.Ip == null || lisSystem.TCPChannel.Ip=="")
+                {
+                    ack.AddMessage("Value of TCP/IP Address must be filled");
+                    ack.IsSuccess = false;
+                    return ack;
+                }
+                if (lisSystem.TCPChannel.Port >0 )
+                {
+                    ack.AddMessage("Value of TCP/IP Port must be greater than or equal to 1");
+                    ack.IsSuccess = false;
+                    return ack;
+                }
+                
+            }
+
             ack.IsSuccess = true;
             return ack;
         }
-        [HttpGet]
-        public Acknowledgement<Instrument> GetDefaultInstrument()
-        {
-            var ack = new Acknowledgement<Instrument>();
-            ack.Data = new Instrument();
-            ack.IsSuccess = true;
-            return ack;
-        }
+        #endregion
+
+        #region Instrument
         [HttpGet]
         public Acknowledgement<List<Instrument>> GetInstruments()
         {
@@ -582,38 +676,171 @@ namespace Link2.Web.Controllers
         public Acknowledgement DeleteInstrument(int? id)
         {
             var ack = new Acknowledgement();
-            if (id == null)
-            {
-                ack.AddMessage("Lỗi");
-                ack.IsSuccess = false;
-            }
             if (id!= null)
             {
 
                 var tmp=listInstruments.Find(p=>p.Id== id);
-                listInstruments.Remove(tmp);
-                ack.IsSuccess = true;
+                if (!tmp.IsAssigned)
+                {
+                    listInstruments.Remove(tmp);
+                    ack.IsSuccess = true;
+                    return ack;
+                }
+                
             }
+            ack.AddMessage("Lỗi");
+            ack.IsSuccess = false;
             return ack;
         }
         [HttpPost]
         public Acknowledgement<Instrument> AddOrUpdateInstrument(Instrument ins)
         {
             var ack = new Acknowledgement<Instrument>();
-            if (ModelState.IsValid)
+            //Validate
+            var validate = ValidateInstrument(ins);
+            if (validate.IsSuccess == false)
             {
-                var index=listInstruments.FindIndex(p=>p.Id == ins.Id);
-                if (index == -1)
+                ack.ErrorMessage = validate.ErrorMessage;
+                ack.IsSuccess = false;
+                return ack;
+            }
+            //Gán ảnh
+            
+            switch (ins.MachineType)
+            {
+                case (int)EnumLink.InstrumentType.Erytra:
+                    ins.Image = "erytra.jpg";
+                    break;
+                case (int)EnumLink.InstrumentType.ErytraEflexis:
+                    ins.Image = "erytra-eflexis.jpg";
+                    break;
+                case (int)EnumLink.InstrumentType.DGReader:
+                    ins.Image = "dgreader.png";
+                    break;
+                case (int)EnumLink.InstrumentType.DGReaderNet:
+                    ins.Image = "dgreader-net.jpg";
+                    break;
+                case (int)EnumLink.InstrumentType.Wadiana:
+                    ins.Image = "diana.png";
+                    break;
+                default: break;
+            }
+            
+            //Kiểm tra Add or Update
+            var index = listInstruments.FindIndex(p => p.Id == ins.Id);
+            if (index == -1)
+            {
+                ins.Id = listInstruments.Count() + 1;
+                listInstruments.Add(ins);
+            }
+            else
+            {
+                listInstruments[index] = ins;
+            }
+            ack.Data = ins;
+            ack.IsSuccess = true;
+            return ack;
+        }
+        public Acknowledgement<Instrument> ValidateInstrument(Instrument ins)
+        {
+            var ack = new Acknowledgement<Instrument>();
+            if (ins.Name == null || ins.Name == "")
+            {
+                ack.IsSuccess = false;
+                ack.AddMessage("Analyser name field must be filled");
+                return ack;
+            }
+            if (ins.SerialNumber == null || ins.SerialNumber == "")
+            {
+                ack.IsSuccess = false;
+                ack.AddMessage("Serial number field must be filled");
+                return ack;
+            }
+            if (ins.MachineType == 0)
+            {
+                ack.IsSuccess = false;
+                ack.AddMessage("Value of Machine type is invalid");
+                return ack;
+            }
+            if (ins.TanFolder == null || ins.TanFolder == "")
+            {
+                ack.IsSuccess = false;
+                ack.AddMessage("Tan Folder field must be filled");
+                return ack;
+            }
+            if (ins.AstmFolder == null || ins.AstmFolder == "")
+            {
+                ack.IsSuccess = false;
+                ack.AddMessage("Astm Folder field must be filled");
+                return ack;
+            }
+            
+            ack.IsSuccess = true;
+            return ack;
+        }
+        #endregion
+        #region Lab
+        [HttpGet]
+        public Acknowledgement<List<Laboratory>> GetLabs()
+        {
+            var ack = new Acknowledgement<List<Laboratory>>();
+            ack.Data = listLaboratories;
+            ack.IsSuccess = true;
+            return ack;
+        }
+        //Add or Update Lab
+        [HttpPost]
+        public Acknowledgement<Laboratory> AddOrUpdateLab(Laboratory lab)
+        {
+            var ack = new Acknowledgement<Laboratory>();
+            //Validate
+            var validate = ValidateLab(lab);
+            if (validate.IsSuccess == false)
+            {
+                ack.ErrorMessage = validate.ErrorMessage;
+                ack.IsSuccess = false;
+                return ack;
+            }
+            //Kiểm tra Add or Update
+            var index = listLaboratories.FindIndex(p => p.Id == lab.Id);
+            if (index == -1)
+            {
+                lab.Id = listLaboratories.Count() + 1;
+                lab.LisInstruments = new List<Instrument>();
+                lab.LisInRouters = new List<Lis>();
+                listLaboratories.Add(lab);
+            }
+            else
+            {
+
+                listLaboratories[index] = lab;
+            }
+            ack.Data = lab;
+            ack.IsSuccess = true;
+            return ack;
+
+        }
+        //Delete lab
+        [HttpPost]
+        public Acknowledgement DeleteLab(int? id)
+        {
+            var ack = new Acknowledgement();
+            //Check exist lab
+            if (id != null)
+            {
+
+                var tmp = listLaboratories.Find(p => p.Id == id);
+                //Remove instrument and set Assign for instrument
+                foreach(var i in tmp.LisInstruments)
                 {
-                    ins.Id = listInstruments.Count() + 1;
-                    listInstruments.Add(ins);
+                    var indexIns = listInstruments.FindIndex(x => x.Id == i.Id);
+                    if (indexIns != -1)
+                    {
+                        listInstruments[indexIns].IsAssigned = false;
+                    }
                 }
-                else
-                {
-                    
-                    listInstruments[index] = ins;
-                }
-                ack.Data = ins;
+
+                listLaboratories.Remove(tmp);
                 ack.IsSuccess = true;
                 return ack;
             }
@@ -621,31 +848,168 @@ namespace Link2.Web.Controllers
             ack.IsSuccess = false;
             return ack;
         }
-        #endregion
-        #region Lab
         [HttpGet]
-        public Acknowledgement<LabModelView> GetLabData()
+        public Acknowledgement<List<Instrument>> GetInstrumentsForLab()
         {
-            var ack = new Acknowledgement<LabModelView>();
-            ack.Data = new LabModelView() {
-                LabList = listLaboratories,
-                NewLab = new Laboratory()
-            };
+            var ack = new Acknowledgement<List<Instrument>>();
+            ack.Data= listInstruments.Where(p => p.IsAssigned == false).ToList();
             ack.IsSuccess = true;
             return ack;
         }
-        public Acknowledgement<Laboratory> GetDefaultLab()
+        [HttpPost]
+        public Acknowledgement<List<Instrument>> AddInstrumentToLab(List<Instrument> instruments,int id)
+        {
+            var ack = new Acknowledgement<List<Instrument>>();
+            //Check exist Lab
+            var indexLab = listLaboratories.FindIndex(x => x.Id == id);
+            if (indexLab != -1)
+            {
+                //Set Assign for Instrument
+                foreach (var i in instruments)
+                {
+                    var indexIns = listInstruments.FindIndex(x => x.Id == i.Id);
+                    if (indexIns != -1)
+                    {
+                        listInstruments[indexIns].IsAssigned = true;
+                        listLaboratories[indexLab].LisInstruments.Add(i);
+                    }
+                };
+                ack.Data = listLaboratories[indexLab].LisInstruments.ToList();
+                ack.IsSuccess = true;
+                return ack;
+            }
+            ack.IsSuccess = false;
+            
+            return ack;
+        }
+        [HttpPost] 
+        public Acknowledgement DeleteInstrumentInLab(int idLab,int idInstrument)
+        {
+            var ack = new Acknowledgement();
+            //Check exist Lab
+            var indexLab = listLaboratories.FindIndex(x => x.Id == idLab);
+            if (indexLab != -1)
+            {
+                //Find Id of Instrument in Lab
+                var indexInsLab = listLaboratories[indexLab].LisInstruments.FindIndex(x => x.Id == idInstrument);
+                //Find index of Instrument
+                var indexIns = listInstruments.FindIndex(x => x.Id == idInstrument);
+                //Set Assign for Instrument and Remove instrument from Lab
+                if (indexIns != -1 && indexInsLab!=-1)
+                {
+                    listInstruments[indexIns].IsAssigned = false;
+                    listLaboratories[indexLab].LisInstruments.RemoveAt(indexInsLab);
+                }
+                ack.IsSuccess = true;
+                return ack;
+            }
+            ack.IsSuccess = false;
+            return ack;
+        }
+        [HttpGet]
+        public Acknowledgement<List<LisSystem>> GetLisSystemForLab(int idLab)
+        {
+            var ack = new Acknowledgement<List<LisSystem>>();
+            //Get list of LisSystem in lab
+            var lisInRouters = listLaboratories.Find(x => x.Id == idLab).LisInRouters.ToList();
+            var data = new List<LisSystem>();
+            //Get list LisSystem is not in Lab's list of LisSystem 
+            foreach(var i in listLisSytem)
+            {
+                var index = lisInRouters.FindIndex(p => p.LisSystem.Id == i.Id);
+                if (index == -1 ) data.Add(i);
+            }
+            ack.Data = data;
+            ack.IsSuccess = true;
+            return ack;
+        }
+        [HttpPost]
+        public Acknowledgement<List<Lis>> AddLisSystemToLab(List<LisSystem> lisSystems, int id)
+        {
+            var ack = new Acknowledgement<List<Lis>>();
+            var indexLab = listLaboratories.FindIndex(x => x.Id == id);
+            if (indexLab != -1)
+            {
+                foreach (var i in lisSystems)
+                {
+                    var indexLisSystem = listLisSytem.FindIndex(x => x.Id == i.Id);
+                    //Create new Lis
+                    if (indexLisSystem != -1)
+                    {
+                        var tmp = new Lis()
+                        {
+                            LisSystem = i,
+                            IsMirror = false,
+                            LisId = listLaboratories[indexLab].LisInRouters.Count() + 1
+                        };
+                        //Set CanDelete for LisSystem
+                        listLisSytem[indexLisSystem].CanDelete = false;
+
+                        listLaboratories[indexLab].LisInRouters.Add(tmp);
+                    }
+                };
+                ack.Data = listLaboratories[indexLab].LisInRouters.ToList();
+                ack.IsSuccess = true;
+                return ack;
+            }
+            ack.IsSuccess = false;
+
+            return ack;
+        }
+        [HttpPost]
+        public Acknowledgement DeleteLisInLab(int idLab, int idLis)
+        {
+            var ack = new Acknowledgement();
+            var indexLab = listLaboratories.FindIndex(x => x.Id == idLab);
+            if (indexLab != -1)
+            {
+                var indexLisLab = listLaboratories[indexLab].LisInRouters.FindIndex(x => x.LisId == idLis);
+                var indexLisSystem = listLaboratories[indexLab].LisInRouters[indexLisLab].LisSystem.Id;
+                if (indexLisLab != -1)
+                {
+                    listLaboratories[indexLab].LisInRouters.RemoveAt(indexLisLab);
+                    var checkExist = false;
+                    foreach(var i in listLaboratories)
+                    {
+                        var indexLisInLab = i.LisInRouters.FindIndex(x => x.LisId == idLis);
+                        if (indexLisInLab != -1)
+                        {
+                            checkExist = true;
+                            break;
+                        }
+                    }
+                    if (!checkExist)
+                    {
+                        listLisSytem.Find(x => x.Id == indexLisSystem).CanDelete = true;
+                    }
+                }
+                ack.IsSuccess = true;
+                return ack;
+            }
+            ack.IsSuccess = false;
+            return ack;
+        }
+        public Acknowledgement<Laboratory> ValidateLab(Laboratory lab)
         {
             var ack = new Acknowledgement<Laboratory>();
-            ack.Data = new Laboratory();
-            ack.IsSuccess = true;
-            return ack;
-        }
-        [HttpGet]
-        public Acknowledgement<List<Laboratory>> GetLabs()
-        {
-            var ack = new Acknowledgement<List<Laboratory>>();
-            ack.Data = listLaboratories;
+            if(lab.Name== null || lab.Name == "")
+            {
+                ack.IsSuccess = false;
+                ack.AddMessage("Lab name field must be filled");
+                return ack;
+            }
+            if (lab.TimeZoneId == null || lab.TimeZoneId == "")
+            {
+                ack.IsSuccess = false;
+                ack.AddMessage("Value of TimeZone is invalid");
+                return ack;
+            }
+            if (lab.Priority < 0 )
+            {
+                ack.IsSuccess = false;
+                ack.AddMessage("Priority mus be greater than or equal to 1");
+                return ack;
+            }
             ack.IsSuccess = true;
             return ack;
         }

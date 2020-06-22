@@ -7,6 +7,8 @@ import {
   I3Select,
 } from "../../importer";
 import TypeComunationMode from "./TypeComunationMode";
+import PropTypes from "prop-types";
+
 export default class LisDetail extends BaseConsumer {
   constructor(props) {
     super(props);
@@ -40,6 +42,7 @@ export default class LisDetail extends BaseConsumer {
   consumerContent() {
     let { lis } = this.props;
     let { optionsForLisEdit } = this.state;
+    window.a = lis;
     return (
       <I3Div margin="xs">
         <RowTextField
@@ -94,3 +97,6 @@ export default class LisDetail extends BaseConsumer {
     );
   }
 }
+LisDetail.protoTypes = {
+  lis: PropTypes.object.isRequired,
+};

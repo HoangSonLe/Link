@@ -46,8 +46,8 @@ class TypeComunationMode extends BaseConsumer {
 
   //Serial Channel
   _changeActiveSerialChannel = (key) => {
-    this.updateObject(this.props.lis.SerialChannel, {
-      [key]: !this.props.lis.SerialChannel[key],
+    this.updateObject(this.props.lis.serialChannel, {
+      [key]: !this.props.lis.serialChannel[key],
     });
   };
   _renderSerialChannel = () => {
@@ -92,7 +92,7 @@ class TypeComunationMode extends BaseConsumer {
           </I3Div>
           <I3Select
             onChange={(item) =>
-              this.updateObject(this.props.serialChannel, {
+              this.updateObject(lis.serialChannel, {
                 baudRate: item.value,
               })
             }
@@ -105,7 +105,7 @@ class TypeComunationMode extends BaseConsumer {
             getOptionValue={(opt) => {
               return opt.value;
             }}
-            placeholder="Select Timezone"
+            placeholder="Select BaudRate"
             options={data.baudRate}
             color="lighterGray"
           />
@@ -116,7 +116,7 @@ class TypeComunationMode extends BaseConsumer {
           </I3Div>
           <I3Select
             onChange={(item) =>
-              this.updateObject(this.props.serialChannel, {
+              this.updateObject(lis.serialChannel, {
                 handshake: item.value,
               })
             }
@@ -140,7 +140,7 @@ class TypeComunationMode extends BaseConsumer {
           </I3Div>
           <I3Select
             onChange={(item) =>
-              this.updateObject(this.props.serialChannel, {
+              this.updateObject(lis.serialChannel, {
                 parity: item.value,
               })
             }
@@ -164,7 +164,7 @@ class TypeComunationMode extends BaseConsumer {
           </I3Div>
           <I3Select
             onChange={(item) =>
-              this.updateObject(this.props.serialChannel, {
+              this.updateObject(lis.serialChannel, {
                 stopBits: item.value,
               })
             }
@@ -187,8 +187,8 @@ class TypeComunationMode extends BaseConsumer {
   };
   //FolderChannel
   _changeActiveFolderChannel = (key) => {
-    this.updateObject(this.props.lis.FolderChannel, {
-      [key]: !this.props.lis.FolderChannel[key],
+    this.updateObject(this.props.lis.folderChannel, {
+      [key]: !this.props.lis.folderChannel[key],
     });
   };
   _changeTextFolderChannel = (item, key, value) => {
@@ -200,8 +200,10 @@ class TypeComunationMode extends BaseConsumer {
       <Fragment>
         <RowSwitch
           title="Need Ack"
-          isActive={lis.lisCommunationMode ? lisCommunationMode : false}
-          onChange={() => this._changeActiveFolderChannel("lisCommunationMode")}
+          isActive={
+            lis.folderChannel.needAck ? lis.folderChannel.needAck : false
+          }
+          onChange={() => this._changeActiveFolderChannel("needAck")}
         />
         <RowTextField
           title="Shared folder"
@@ -251,8 +253,6 @@ class TypeComunationMode extends BaseConsumer {
   };
   consumerContent() {
     let { classes, data, lis } = this.props;
-    console.log("TypeComunationMode", data);
-
     return (
       <Fragment>
         {data && data.lisCommunationMode ? (
@@ -298,7 +298,7 @@ const Styles = {
   },
 };
 TypeComunationMode.protoTypes = {
-  dataList: PropTypes.object,
+  data: PropTypes.object,
   lis: PropTypes.object,
 };
 export default withStyles(Styles)(TypeComunationMode);

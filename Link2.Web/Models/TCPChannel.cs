@@ -11,6 +11,6 @@ namespace Link2.Web.Models
         public int Id { get; set; }
         public string Ip { get; set; }
         public int Port { get; set; }
-        public int? TimeOut { get; set; }
+        public int TimeOut { get; set; }
     }
 }

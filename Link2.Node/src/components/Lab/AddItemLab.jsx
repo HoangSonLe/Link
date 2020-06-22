@@ -1,55 +1,153 @@
-import React from "react"
-import { BaseConsumer, I3Div, RowTextField, RowSwitch, I3Select } from "../../importer";
-export default class InstrumentDetail extends BaseConsumer {
-    constructor(props) {
-        super(props);
-        this.state = {
-            OptionsInstrumentType: {}
+import React from "react";
+import {
+  BaseConsumer,
+  I3Div,
+  I3TextField,
+  I3Icon,
+  I3Component,
+} from "../../importer";
+import { withStyles } from "@material-ui/core";
+import { LabTypeModal } from "../../general/enum";
+import InstrumentItem from "../Instrument/InstrumentItem";
+import LisSystemItem from "../Lis/LisSystemItem";
+class AddItemLab extends BaseConsumer {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataList: [],
+      selectedList: [],
+      searchList: [],
+      searchText: "",
+    };
+  }
+  _addSelectedItem = (i) => {
+    let { selectedList } = this.state;
+    let index = selectedList.findIndex((e) => e == i);
+    console.log("i", i);
+    index == -1
+      ? this.addLocalElement(selectedList, i)
+      : this.removeLocalElement(selectedList, i);
+  };
+
+  _onChangeSearch = (e) => {
+    this._debounceChange(e.target.value);
+  };
+  _debounceChange = _.debounce((text) => {
+    let { dataList } = this.state;
+    let { typeAdd } = this.props;
+    let data =
+      typeAdd == LabTypeModal.AddInstrument
+        ? dataList.filter(
+            (i) =>
+              i.name.toUpperCase().match(text.toUpperCase()) ||
+              i.serialNumber.toUpperCase().match(text.toUpperCase())
+          )
+        : dataList.filter((i) =>
+            i.name.toUpperCase().match(text.toUpperCase())
+          );
+    this.updateLocalObject(this.state, {
+      searchList: data,
+      searchText: text,
+    });
+  }, 300);
+  componentDidMount() {
+    let { typeAdd, lab } = this.props;
+    let url =
+      typeAdd == LabTypeModal.AddInstrument
+        ? "/api/link/GetInstrumentsForLab"
+        : "/api/link/GetLisSystemForLab?idLab=" + lab.id;
+    this.ajaxGet({
+      url: url,
+      success: (ack) => {
+        this.setState({ dataList: ack.data });
+      },
+    });
+  }
+  _renderContent = (i) => {
+    let { selectedList } = this.state;
+    let { classes, typeAdd } = this.props;
+    return (
+      <I3Div
+        key={i.id + "instrument"}
+        cursor="pointer"
+        margin="xs"
+        className={
+          selectedList.findIndex((e) => e == i) != -1 ? classes.ActiveDiv : ""
         }
-        window.detail = this;
-    }
-    _changeActive = (key) => {
-        this.updateObject(this.props.instrument, { [key]: !this.props.instrument[key] });
-    }
-    _changeText = (item, key, value) => {
-        this.updateObject(item, { [key]: value });
-    }
-    componentDidMount() {
-        this.ajaxGet({
-            url: '/api/link/GetOptionsForLisEdit',
-            success: ack => {
-                this.updateLocalObject(this.state._optionsInstrumentType, ack.data)
+        onClick={() => this._addSelectedItem(i)}
+      >
+        {typeAdd == LabTypeModal.AddInstrument ? (
+          <InstrumentItem
+            header={i.name}
+            isActive={i.isActive}
+            instrument={i}
+          />
+        ) : (
+          <LisSystemItem header={i.name} isActive={i.isActive} lisSystem={i} />
+        )}
+      </I3Div>
+    );
+  };
+  consumerContent() {
+    let { dataList, selectedList, searchList, searchText } = this.state;
+    let { classes, typeAdd } = this.props;
+    this.props.onAddInstrumentToLab(selectedList);
+
+    console.log("search", this.state.searchList);
+    return (
+      <I3Div margin="md">
+        <I3Div margin={["md", "no", "md", "no"]}>
+          <I3TextField
+            className={classes.InputSearch}
+            variant="outlined"
+            value={searchText}
+            placeholder={
+              typeAdd == LabTypeModal.AddInstrument
+                ? "Search by name, searial number"
+                : "Search by name"
             }
-        })
-    }
-    consumerContent() {
-        let { instrument } = this.props;
-        let { OptionsInstrumentType } = this.state;
-
-        return (
-            <I3Div margin="xs">
-                <RowTextField title="Instrument name" value={instrument.name ? instrument.name : ""} onChange={text => this._changeText(instrument, "name", text)} />
-                <RowSwitch title={"Active"} isActive={instrument.isActive} onChange={() => this._changeActive("isActive")} />
-                <RowSwitch title={"Auto Send to instrument"} isActive={instrument.autoSendToHost} onChange={() => this._changeActive("autoSendToHost")} />
-                <RowTextField title="Serial Number" value={instrument.serialNumber ? instrument.serialNumber : ""} onChange={text => this._changeText(instrument, "serialNumber", text)} />
-                <I3Div margin={"md"}>
-                    <I3Div variant="h6" fontWeight="bold" margin="xs">Instrument type</I3Div>
-                    <I3Select
-                        onChange={item => {
-                            this.updateObject(this.props.instrument, { machineType: item.value })
-                        }}
-                        value={OptionsInstrumentType.find(opt => opt.value == this.props.instrument.machineType)}
-                        getOptionLabel={opt => { return opt.label }}
-                        getOptionValue={opt => { return opt.value }}
-                        placeholder="Select Type"
-                        options={OptionsInstrumentType}
-                        color="lighterGray"
-                    />
-                </I3Div>
-                <RowTextField title="TAN folder" value={instrument.tanFolder ? instrument.tanFolder : ""} onChange={text => this._changeText(instrument, "tanFolder", text)} />
-                <RowTextField title="ASTM folder" value={instrument.astmFolder ? instrument.astmFolder : ""} onChange={text => this._changeText(instrument, "astmFolder", text)} />
-
-            </I3Div>
-        )
-    }
+            onChange={(e) => this._onChangeSearch(e)}
+            InputProps={{
+              endAdornment: (
+                <I3Icon
+                  lineHeight="20px"
+                  className="fas fa-search"
+                  color="blue"
+                  margin={["no", "sm", "no", "no"]}
+                />
+              ),
+            }}
+          />
+        </I3Div>
+        {searchList.length > 0 ? (
+          searchList.map((i) => this._renderContent(i))
+        ) : dataList.length > 0 && searchText === "" ? (
+          dataList.map((i) => this._renderContent(i))
+        ) : (
+          <I3Component variant="h6" color="gray" margin="md">
+            No Options
+          </I3Component>
+        )}
+      </I3Div>
+    );
+  }
 }
+
+const Styles = {
+  ActiveDiv: {
+    border: "2px solid #004e87",
+  },
+  InputSearch: {
+    "& .I3TextField-input": {
+      height: "45px",
+    },
+    "& .MuiOutlinedInput-root": {
+      paddingLeft: "15px !important",
+      "& fieldset": {
+        borderRadius: "30px",
+      },
+    },
+  },
+};
+
+export default withStyles(Styles)(AddItemLab);

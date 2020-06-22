@@ -38,12 +38,13 @@ class InstrumentItem extends Item {
         this.props.onUpdate(this.props.instrument, ack.data);
       },
       error: (ack) => {
-        this.error("Lỗi !!!");
+        this.error(ack.ErrorMessage);
       },
     });
   };
   _onDeleteItem = () => {
-    this.confirm("Delete this LIS system?", {
+    let { instrument, isInLab, onDelete } = this.props;
+    this.confirm("Delete this Instrument?", {
       cancel: {
         title: "Cancle", // text hiển thị trên nút cancel
         handle: () => {
@@ -53,15 +54,17 @@ class InstrumentItem extends Item {
       okay: {
         title: "Delete", // text hiển thị trên nút oke
         handle: () => {
-          this.ajaxPost({
-            url: "/api/link/DeleteInstrument/?id=" + this.props.instrument.id,
-            success: (ack) => {
-              this.props.onDelete(this.props.instrument);
-            },
-            error: (ack) => {
-              this.error("Lỗi !!!");
-            },
-          });
+          !isInLab
+            ? this.ajaxPost({
+                url: "/api/link/DeleteInstrument/?id=" + instrument.id,
+                success: (ack) => {
+                  onDelete(instrument);
+                },
+                error: (ack) => {
+                  this.error("Lỗi !!!");
+                },
+              })
+            : onDelete(instrument);
         },
       },
     });
@@ -84,7 +87,7 @@ class InstrumentItem extends Item {
   }
 
   renderRightFooter() {
-    let { instrument } = this.props;
+    let { instrument, canDelete } = this.props;
     let component = [];
     typeof this.props.onUpdate === "function"
       ? component.push({
@@ -93,7 +96,7 @@ class InstrumentItem extends Item {
         })
       : null;
 
-    !instrument.isAssigned && typeof this.props.onDelete === "function"
+    canDelete && typeof this.props.onDelete === "function"
       ? component.push({
           className: "far fa-trash-alt",
           onClick: () => this._onDeleteItem(),
@@ -103,10 +106,18 @@ class InstrumentItem extends Item {
   }
 }
 InstrumentItem.protoTypes = {
+  isInLab: PropTypes.bool,
+  canDelete: PropTypes.bool,
   onDelete: PropTypes.func,
   onUpdate: PropTypes.func,
   instrument: PropTypes.object.isRequired,
+  //Some protoTypes of Item
 };
+
+InstrumentItem.defaultProps = {
+  isInLab: false,
+};
+
 const Style = {
   ...Styles,
 };

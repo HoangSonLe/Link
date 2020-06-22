@@ -5,8 +5,9 @@ import { LastDivItem, ListComponent } from "../../importer";
 import { EModalType } from "../../general/enum";
 import LisSystemItem from "./LisSystemItem";
 import CloneLisDetailModal from "./CloneLisDetailModal";
+import PropTypes from "prop-types";
 
-class Lis extends BaseConsumer {
+export default class Lis extends BaseConsumer {
   componentDidMount() {
     this.ajaxGet({
       url: "/api/link/GetLisSystems",
@@ -19,25 +20,41 @@ class Lis extends BaseConsumer {
     this.openModal(
       () => ({
         title: title,
-        body:
+        body: (
           <CloneLisDetailModal
-            onSave={newItem => isAdd ? this._onAddItem(newItem) : this._onUpdateItem(item, newItem)}
+            onSave={(newItem) => this._onAddItem(newItem)}
             data={this.props.lis.newLis}
           />
-        ,
+        ),
       }),
       EModalType.Right,
       true
-    )
-  }
+    );
+  };
   _onDeleteItem = (i) => {
-    this.removeElement(this.props.lis.lisList, i, this.success("Removed Item"))
-
-  }
+    this.removeElement(this.props.lis.lisList, i, this.success("Removed Item"));
+  };
   _onUpdateItem = (oldItem, newItem) => {
-    this.updateObject(oldItem, newItem, () => this.success("Updated Item"))
-
-  }
+    this.updateObject(oldItem, newItem, () => {
+      this.closeModal(-1);
+      this.success("Updated Item");
+    });
+  };
+  _onAddItem = (newItem) => {
+    this.ajaxPost({
+      url: "/api/link/AddOrUpdateLisSystem",
+      data: newItem,
+      success: (ack) => {
+        this.addElement(this.props.lis.lisList, ack.data, () => {
+          this.closeModal(-1);
+          this.success("Added Item");
+        });
+      },
+      error: (ack) => {
+        this.error(ack.ErrorMessage);
+      },
+    });
+  };
   _renderItem = (i) => {
     return (
       <LisSystemItem
@@ -49,26 +66,28 @@ class Lis extends BaseConsumer {
         onUpdate={this._onUpdateItem}
       />
     );
-  }
+  };
   _renderAddItem = () => {
-    return <LastDivItem title="Add new Lis" onClick={() => this._openModal("New Lis", this.props.lis.newLis)} />
-  }
-  _
+    return (
+      <LastDivItem
+        title="Add new Lis"
+        onClick={() => this._openModal("New Lis", this.props.lis.newLis)}
+      />
+    );
+  };
+  _;
   consumerContent() {
     let { lis } = this.props;
-
-    if (!lis.lisList || lis.lisList.length <= 0) {
-      return null;
-    }
     return (
       <ListComponent
         margin={["no", "md", "md", "md"]}
         dataList={lis.lisList}
-        renderItem={item => this._renderItem(item)}
+        renderItem={(item) => this._renderItem(item)}
         renderAddItem={this._renderAddItem()}
       />
     );
   }
 }
-const Styles = {};
-export default withStyles(Styles)(Lis);
+Lis.protoTypes = {
+  instrument: PropTypes.object.isRequired,
+};
