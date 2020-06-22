@@ -25,11 +25,15 @@ export default class LisDetail extends BaseConsumer {
           optionsForLisEdit.lisCommunationMode
             ? this.updateLocalObject(
                 selectedOption,
-                optionsForLisEdit.lisCommunationMode[1],
-                () => console.log("hh", selectedOption)
+                optionsForLisEdit.lisCommunationMode[1]
               )
             : null;
         });
+      },
+      error: (ack) => {
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
       },
     });
   }
@@ -42,7 +46,6 @@ export default class LisDetail extends BaseConsumer {
   consumerContent() {
     let { lis } = this.props;
     let { optionsForLisEdit } = this.state;
-    window.a = lis;
     return (
       <I3Div margin="xs">
         <RowTextField

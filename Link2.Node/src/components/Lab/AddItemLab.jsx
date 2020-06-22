@@ -95,7 +95,7 @@ class AddItemLab extends BaseConsumer {
   consumerContent() {
     let { dataList, selectedList, searchList, searchText } = this.state;
     let { classes, typeAdd } = this.props;
-    this.props.onAddInstrumentToLab(selectedList);
+    this.props.onAddItemToLab(selectedList);
 
     console.log("search", this.state.searchList);
     return (

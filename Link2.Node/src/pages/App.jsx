@@ -13,6 +13,7 @@ class App extends BasePage {
       routeData: {},
     };
     this._firstRender = true;
+    window.x = this;
   }
   componentDidMount() {
     this.ajaxGet({
@@ -102,13 +103,9 @@ class App extends BasePage {
     let { routeData } = this.state;
     if (this._firstRender) {
       this._firstRender = false;
-      return (
-        null
-      );
+      return null;
     }
-    return (
-      <MainContent routeData={routeData} />
-    );
+    return <MainContent routeData={routeData} />;
   }
 }
 
@@ -127,7 +124,6 @@ const Styles = {
     width: "520px",
     right: "0px",
     position: "absolute",
-
   },
 
   rootDialogContent: {

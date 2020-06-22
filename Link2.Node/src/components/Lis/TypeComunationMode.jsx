@@ -12,6 +12,7 @@ class TypeComunationMode extends BaseConsumer {
   _changeText = (item, key, value) => {
     this.updateObject(item, { [key]: value });
   };
+  //render TCP
   _renderTCPChannel = () => {
     let { lis, classes } = this.props;
     return (
@@ -19,9 +20,7 @@ class TypeComunationMode extends BaseConsumer {
         <RowTextField
           title="TCP/IP Address"
           value={lis.tcpChannel.ip ? lis.tcpChannel.ip : ""}
-          onChange={(text) =>
-            this._changeText(lis.tcpChannel, "rootFoldiper", text)
-          }
+          onChange={(text) => this._changeText(lis.tcpChannel, "ip", text)}
         />
         <RowTextField
           title="TCP/IP Port"
@@ -52,7 +51,6 @@ class TypeComunationMode extends BaseConsumer {
   };
   _renderSerialChannel = () => {
     let { data, lis, classes } = this.props;
-    console.log("serial", data);
     return (
       <Fragment>
         <RowTextField
@@ -233,6 +231,7 @@ class TypeComunationMode extends BaseConsumer {
       </Fragment>
     );
   };
+  //render Content
   _renderTypeComunationMode = () => {
     let component = <Fragment></Fragment>;
     let { lis } = this.props;

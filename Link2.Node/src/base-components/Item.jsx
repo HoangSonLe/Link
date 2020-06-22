@@ -4,7 +4,6 @@ import { withStyles } from "@material-ui/core";
 import {
   GridContainer,
   GridItem,
-  BaseCheckboxItem,
   I3Icon,
   I3Div,
   I3Component,
@@ -15,19 +14,23 @@ class Item extends BaseConsumer {
   constructor(props) {
     super(props);
   }
-
   renderImage() {
-    return "renderImage";
+    throw "Should render Image";
   }
-
+  renderLeftHeader() {
+    throw "Should render Left Header";
+  }
   renderRightHeader() {
-    return "renderRightHeader";
+    throw "Should render Right Header";
+  }
+  renderLeftFooter() {
+    throw "Should render Left Footer";
   }
   renderRightFooter() {
-    return "renderRightFooter";
+    throw "Should render Right Footer";
   }
   consumerContent() {
-    let { classes, header, isActive } = this.props;
+    let { classes } = this.props;
     return (
       <GridContainer className={classes.DivContainer}>
         <GridItem
@@ -46,9 +49,10 @@ class Item extends BaseConsumer {
               xs={8}
               className={classes.HeadStart + " " + classes.DetroyPaddingRight}
             >
-              <I3Component variant="body2" fontWeight="bolder" margin={"xs"}>
+              {this.renderLeftHeader()}
+              {/* <I3Component variant="body2" fontWeight="bolder" margin={"xs"}>
                 {header}
-              </I3Component>
+              </I3Component> */}
             </GridItem>
             <GridItem
               xs={4}
@@ -64,7 +68,8 @@ class Item extends BaseConsumer {
               <I3Div
                 className={classes.HeadStart + " " + classes.DetroyPadding}
               >
-                <I3Icon
+                {this.renderLeftFooter()}
+                {/* <I3Icon
                   className={isActive ? "far fa-circle" : "fas fa-circle"}
                   fontSize="caption"
                   color={isActive ? "lightGreen" : "danger"}
@@ -72,7 +77,7 @@ class Item extends BaseConsumer {
                 />
                 <I3Component variant="caption" component="span">
                   {isActive ? "Active" : "Inactive"}
-                </I3Component>
+                </I3Component> */}
               </I3Div>
             </GridItem>
             <GridItem xs={8} sm={8} xs={8}>
@@ -145,10 +150,7 @@ const Styles = {
     justifyContent: "center",
   },
 };
-Item.protoTypes = {
-  isActive: PropTypes.string,
-  header: PropTypes.bool,
-};
+Item.protoTypes = {};
 export default withStyles(Styles)(Item);
 
 export { Item, Styles };

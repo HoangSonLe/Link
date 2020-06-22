@@ -10,14 +10,14 @@ export default class AddItemLabModal extends ModalLayout {
     this.selectedItem = [];
   }
   //thêm vào danh sách chọn
-  _onAddInstrumentToLab = (newItems) => {
+  _onAddItemToLab = (newItems) => {
     this.selectedItem = newItems;
   };
   modalBody() {
     const { typeAdd, lab, ...others } = this.props;
     return (
       <AddItemLab
-        onAddInstrumentToLab={this._onAddInstrumentToLab}
+        onAddItemToLab={this._onAddItemToLab}
         lab={lab}
         typeAdd={typeAdd}
       />

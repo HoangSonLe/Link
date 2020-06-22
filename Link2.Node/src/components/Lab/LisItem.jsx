@@ -1,6 +1,11 @@
 import React from "react";
 import { withStyles } from "@material-ui/core";
-import { IconButtonGroup, BaseCheckboxItem } from "../../importer";
+import {
+  IconButtonGroup,
+  BaseCheckboxItem,
+  I3Icon,
+  I3Component,
+} from "../../importer";
 import PropTypes from "prop-types";
 
 import { Item, Styles } from "../../base-components/Item";
@@ -69,7 +74,33 @@ class LisItem extends Item {
 
     return <IconButtonGroup components={component} />;
   }
+  renderLeftHeader() {
+    let { lis } = this.props;
+    return (
+      <I3Component variant="body2" fontWeight="bolder" margin={"xs"}>
+        {lis.lisSystem.name}
+      </I3Component>
+    );
+  }
+  renderLeftFooter() {
+    let { lis } = this.props;
+    let isActive = lis.lisSystem.isActive;
+    return (
+      <React.Fragment>
+        <I3Icon
+          className={isActive ? "far fa-circle" : "fas fa-circle"}
+          fontSize="caption"
+          color={isActive ? "lightGreen" : "danger"}
+          margin={["no", "xs", "no", "no"]}
+        />
+        <I3Component variant="caption" component="span">
+          {isActive ? "Active" : "Inactive"}
+        </I3Component>
+      </React.Fragment>
+    );
+  }
 }
+
 LisItem.protoTypes = {
   onDelete: PropTypes.func,
   onUpdate: PropTypes.func,

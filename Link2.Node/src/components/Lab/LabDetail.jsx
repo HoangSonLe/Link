@@ -5,12 +5,9 @@ import {
   BaseConsumer,
   I3Div,
   RowTextField,
-  RowSwitch,
   I3Select,
   GridContainer,
   GridItem,
-  I3TextField,
-  Button,
   BaseButton,
 } from "../../importer";
 class LabDetail extends BaseConsumer {
@@ -38,7 +35,9 @@ class LabDetail extends BaseConsumer {
         onDelete();
       },
       error: (ack) => {
-        this.error(ack.ErrorMessage);
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
       },
     });
   };
@@ -49,7 +48,9 @@ class LabDetail extends BaseConsumer {
         this.updateLocalObject(this.state._optionsTimeZones, ack.data);
       },
       error: (ack) => {
-        this.error(ack.ErrorMessage);
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
       },
     });
   }

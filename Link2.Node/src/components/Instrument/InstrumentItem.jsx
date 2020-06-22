@@ -1,6 +1,6 @@
 import React from "react";
 import { withStyles } from "@material-ui/core";
-import { IconButtonGroup, I3Component, I3Div } from "../../importer";
+import { IconButtonGroup, I3Component, I3Div, I3Icon } from "../../importer";
 import { EModalType } from "../../general/enum";
 import CloneInstrumentDetailModal from "./CloneInstrumentDetailModal";
 import PropTypes from "prop-types";
@@ -39,7 +39,9 @@ class InstrumentItem extends Item {
         this.props.onUpdate(this.props.instrument, ack.data);
       },
       error: (ack) => {
-        this.error(ack.ErrorMessage);
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
       },
     });
   };
@@ -63,7 +65,9 @@ class InstrumentItem extends Item {
                   onDelete(instrument);
                 },
                 error: (ack) => {
-                  this.error("Lỗi !!!");
+                  for (let i of ack.ErrorMessage) {
+                    this.error(i);
+                  }
                 },
               })
             : onDelete(instrument);
@@ -89,8 +93,15 @@ class InstrumentItem extends Item {
   }
 
   renderRightFooter() {
-    let { instrument, canDelete } = this.props;
+    let { instrument, isInLab } = this.props;
+    let canDelete = isInLab ? true : !instrument.isAssigned;
     let component = [];
+    !isInLab
+      ? component.push({
+          className: "fas fa-cogs",
+          onClick: () => alert("Chưa có data"),
+        })
+      : null;
     typeof this.props.onUpdate === "function"
       ? component.push({
           className: "fas fa-pen",
@@ -104,12 +115,37 @@ class InstrumentItem extends Item {
           onClick: () => this._onDeleteItem(),
         })
       : null;
+
     return <IconButtonGroup components={component} />;
+  }
+  renderLeftHeader() {
+    let { instrument } = this.props;
+    return (
+      <I3Component variant="body2" fontWeight="bolder" margin={"xs"}>
+        {instrument.name}
+      </I3Component>
+    );
+  }
+  renderLeftFooter() {
+    let { instrument } = this.props;
+    let isActive = instrument.isActive;
+    return (
+      <React.Fragment>
+        <I3Icon
+          className={isActive ? "far fa-circle" : "fas fa-circle"}
+          fontSize="caption"
+          color={isActive ? "lightGreen" : "danger"}
+          margin={["no", "xs", "no", "no"]}
+        />
+        <I3Component variant="caption" component="span">
+          {isActive ? "Active" : "Inactive"}
+        </I3Component>
+      </React.Fragment>
+    );
   }
 }
 InstrumentItem.protoTypes = {
   isInLab: PropTypes.bool,
-  canDelete: PropTypes.bool,
   onDelete: PropTypes.func,
   onUpdate: PropTypes.func,
   instrument: PropTypes.object.isRequired,

@@ -1,12 +1,14 @@
 ﻿using i3Solution.Library.Model;
 using Link2.Web.Models;
 using Link2.Web.ModelsView;
+using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web.Http;
 
 namespace Link2.Web.Controllers
@@ -338,22 +340,6 @@ namespace Link2.Web.Controllers
                     TimeZoneId ="Aleutian Standard Time",
                     LisInstruments= new List<Instrument>()
                 },
-                new Laboratory(){
-                    Id =2,
-                    LisInRouters =new List<Lis>(),
-                    Name ="Lab Test",
-                    Priority =2,
-                    TimeZoneId ="Romance Standard Time",
-                    LisInstruments= new List<Instrument>()
-                },
-                new Laboratory(){
-                    Id =3,
-                    LisInRouters =new List<Lis>(),
-                    Name ="Lab 3",
-                    Priority =2,
-                    TimeZoneId ="Alaskan Standard Time",
-                    LisInstruments= new List<Instrument>()
-                }
 
         };
         private static List<TimeZones> listTimeZones = new List<TimeZones>()
@@ -525,7 +511,7 @@ namespace Link2.Web.Controllers
                 return ack;
             }
             //
-            var index = listLisSytem.FindIndex(p => p.Id == lisSystem.Id);
+            var lis = listLisSytem.Find(p => p.Id == lisSystem.Id);
             switch (lisSystem.CommunicationMode)
             {
                 case (int)EnumLink.LisSystemType.FolderChannel:
@@ -546,7 +532,7 @@ namespace Link2.Web.Controllers
                 default:
                     break;
             }
-            if (index == -1)
+            if (lis == null)
             {
                 lisSystem.Id = listLisSytem.Count() + 1;
                 lisSystem.CanDelete = true;
@@ -555,11 +541,21 @@ namespace Link2.Web.Controllers
             else
             {
 
-                listLisSytem[index] = lisSystem;
+                lis.Name = lisSystem.Name;
+                lis.IsActive = lisSystem.IsActive;
+                lis.Image = lisSystem.Image;
+                lis.SendQCResult = lisSystem.SendQCResult;
+                lis.SerialChannel = lisSystem.SerialChannel;
+                lis.TCPChannel = lisSystem.TCPChannel;
+                lis.FolderChannel = lisSystem.FolderChannel;
+                lis.CanDelete = lisSystem.CanDelete;
+                lis.AutoExport = lisSystem.AutoExport;
+                lis.ChannelId = lisSystem.ChannelId;
+                lis.CommunicationMode = lisSystem.CommunicationMode;
+                lis.TimeZoneId = lisSystem.TimeZoneId;
             }
             ack.Data = lisSystem;
             ack.IsSuccess = true;
-            return ack;
             return ack;
         }
         [HttpPost]
@@ -662,11 +658,31 @@ namespace Link2.Web.Controllers
                     ack.IsSuccess = false;
                     return ack;
                 }
-                
+                if (!IsValidateIP(lisSystem.TCPChannel.Ip))
+                {
+                    ack.AddMessage("TCP/IP does not match the input pattern");
+                    ack.IsSuccess = false;
+                    return ack;
+                }
             }
 
             ack.IsSuccess = true;
             return ack;
+        }
+        public bool IsValidateIP(string Address)
+        {
+            //Match pattern for IP address    
+            string Pattern = @"^([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3}$";
+            //Regular Expression object    
+            Regex check = new Regex(Pattern);
+
+            //check to make sure an ip address was provided    
+            if (string.IsNullOrEmpty(Address))
+                //returns false if IP is not provided    
+                return false;
+            else
+                //Matching the pattern    
+                return check.IsMatch(Address, 0);
         }
         #endregion
 
@@ -734,15 +750,24 @@ namespace Link2.Web.Controllers
             }
             
             //Kiểm tra Add or Update
-            var index = listInstruments.FindIndex(p => p.Id == ins.Id);
-            if (index == -1)
+            var inst = listInstruments.Find(p => p.Id == ins.Id);
+            if (inst == null)
             {
                 ins.Id = listInstruments.Count() + 1;
                 listInstruments.Add(ins);
             }
             else
             {
-                listInstruments[index] = ins;
+                inst.IsActive = ins.IsActive;
+                inst.IsAssigned = ins.IsAssigned;
+                inst.AutoSendToHost = ins.AutoSendToHost;
+                inst.MachineType = ins.MachineType;
+                inst.Image = ins.Image;
+                inst.Name = ins.Name;
+                inst.SerialNumber = ins.SerialNumber;
+                inst.TanFolder = ins.TanFolder;
+                inst.AstmFolder = ins.AstmFolder;
+
             }
             ack.Data = ins;
             ack.IsSuccess = true;
@@ -876,20 +901,20 @@ namespace Link2.Web.Controllers
         {
             var ack = new Acknowledgement<List<Instrument>>();
             //Check exist Lab
-            var indexLab = listLaboratories.FindIndex(x => x.Id == id);
-            if (indexLab != -1)
+            var lab = listLaboratories.Where(x => x.Id == id).FirstOrDefault();
+            if (lab != null)
             {
+                var idIns = instruments.Select(i => i.Id).ToList();
+                var ist = listInstruments.Where(i => idIns.Contains(i.Id)).ToList();
                 //Set Assign for Instrument
-                foreach (var i in instruments)
+
+                ist.ForEach(i =>
                 {
-                    var indexIns = listInstruments.FindIndex(x => x.Id == i.Id);
-                    if (indexIns != -1)
-                    {
-                        listInstruments[indexIns].IsAssigned = true;
-                        listLaboratories[indexLab].LisInstruments.Add(i);
-                    }
-                };
-                ack.Data = listLaboratories[indexLab].LisInstruments.ToList();
+                    i.IsAssigned = true;
+                });
+                lab.LisInstruments.AddRange(ist);
+                
+                ack.Data = lab.LisInstruments.ToList();
                 ack.IsSuccess = true;
                 return ack;
             }
@@ -942,28 +967,32 @@ namespace Link2.Web.Controllers
         public Acknowledgement<List<Lis>> AddLisSystemToLab(List<LisSystem> lisSystems, int id)
         {
             var ack = new Acknowledgement<List<Lis>>();
-            var indexLab = listLaboratories.FindIndex(x => x.Id == id);
-            if (indexLab != -1)
+            var lab = listLaboratories.Where(x => x.Id == id).FirstOrDefault();
+            if (lab != null)
             {
+                var idLis = lisSystems.Select(i => i.Id).ToList();
+                var lis = listLisSytem.Where(i => idLis.Contains(i.Id)).ToList();
+                //Set Assign for Instrument
                 foreach (var i in lisSystems)
                 {
-                    var indexLisSystem = listLisSytem.FindIndex(x => x.Id == i.Id);
+                    var tmpLis = listLisSytem.Find(x => x.Id == i.Id);
                     //Create new Lis
-                    if (indexLisSystem != -1)
+                    if (tmpLis != null)
                     {
                         var tmp = new Lis()
                         {
-                            LisSystem = i,
+                            LisSystem = tmpLis,
                             IsMirror = false,
-                            LisId = listLaboratories[indexLab].LisInRouters.Count() + 1
+                            LisId = lab.LisInRouters.Count() + 1
                         };
                         //Set CanDelete for LisSystem
-                        listLisSytem[indexLisSystem].CanDelete = false;
+                        tmpLis.CanDelete = false;
 
-                        listLaboratories[indexLab].LisInRouters.Add(tmp);
+                        lab.LisInRouters.Add(tmp);
                     }
                 };
-                ack.Data = listLaboratories[indexLab].LisInRouters.ToList();
+                
+                ack.Data = lab.LisInRouters.ToList();
                 ack.IsSuccess = true;
                 return ack;
             }

@@ -69,13 +69,16 @@ class LabItem extends BaseConsumer {
         onUpdateLab(lab, ack.data);
       },
       error: (ack) => {
-        this.error(ack.ErrorMessage);
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
       },
     });
   };
   //Thêm Instrument vào Lab
   _onAddInstrumentsInLab = (newItems) => {
     let { lab } = this.props;
+    let postData = newItems.map((i) => i.Id);
     this.ajaxPost({
       url: "/api/link/AddInstrumentToLab?id=" + lab.id,
       data: newItems,
@@ -83,6 +86,11 @@ class LabItem extends BaseConsumer {
         this.clearListAndPushNewItems(lab.lisInstruments, ack.data, () => {
           console.log("ack", lab);
         });
+      },
+      error: (ack) => {
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
       },
     });
 
@@ -101,7 +109,9 @@ class LabItem extends BaseConsumer {
         this.removeElement(lab.lisInstruments, i, this.success("Removed Item"));
       },
       error: (ack) => {
-        this.error(ack.ErrorMessage);
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
       },
     });
   };
@@ -109,11 +119,8 @@ class LabItem extends BaseConsumer {
   _renderInstrument = (i) => {
     return (
       <InstrumentItem
-        header={i.name}
-        isActive={i.isActive}
         isInLab={true}
         instrument={i}
-        canDelete={true}
         onDelete={this._onDeleteInstrument}
       />
     );
@@ -129,6 +136,11 @@ class LabItem extends BaseConsumer {
           console.log("ack", lab);
         });
       },
+      error: (ack) => {
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
+      },
     });
   };
   //Xóa LIS trong LAB
@@ -140,21 +152,15 @@ class LabItem extends BaseConsumer {
         this.removeElement(lab.lisInRouters, i, this.success("Removed Item"));
       },
       error: (ack) => {
-        this.error(ack.ErrorMessage);
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
       },
     });
   };
   //Render Lis trong Lab
   _renderLis = (i) => {
-    return (
-      <LisItem
-        key={i.id}
-        header={i.lisSystem.name}
-        isActive={i.lisSystem.isActive}
-        onDelete={this._onDeleteLis}
-        lis={i}
-      />
-    );
+    return <LisItem key={i.id} onDelete={this._onDeleteLis} lis={i} />;
   };
 
   consumerContent() {

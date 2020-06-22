@@ -59,7 +59,9 @@ export default class Lis extends BaseConsumer {
         });
       },
       error: (ack) => {
-        this.error(ack.ErrorMessage);
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
       },
     });
   };
@@ -68,8 +70,6 @@ export default class Lis extends BaseConsumer {
     return (
       <LisSystemItem
         key={i.id}
-        header={i.name}
-        isActive={i.isActive}
         lisSystem={i}
         onDelete={this._onDeleteItem}
         onUpdate={this._onUpdateItem}
@@ -85,7 +85,6 @@ export default class Lis extends BaseConsumer {
       />
     );
   };
-  _;
   consumerContent() {
     let { lis } = this.props;
     return (

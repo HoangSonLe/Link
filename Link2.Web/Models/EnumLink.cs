@@ -11,7 +11,7 @@ namespace Link2.Web.Models
         {
             FolderChannel=4000,
             SerialChannel = 4001,
-            TCPChannel = 40002
+            TCPChannel = 4002
         }
         public enum InstrumentType
         {

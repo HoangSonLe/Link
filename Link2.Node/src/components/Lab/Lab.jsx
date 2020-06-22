@@ -44,7 +44,9 @@ export default class Lab extends BaseConsumer {
         });
       },
       error: (ack) => {
-        this.error(ack.ErrorMessage);
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
       },
     });
   };

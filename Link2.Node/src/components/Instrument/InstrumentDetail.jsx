@@ -31,6 +31,11 @@ export default class InstrumentDetail extends BaseConsumer {
       success: (ack) => {
         this.updateLocalObject(this.state._optionsInstrumentType, ack.data);
       },
+      error: (ack) => {
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
+      },
     });
   }
   consumerContent() {

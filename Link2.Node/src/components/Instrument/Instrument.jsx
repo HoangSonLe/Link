@@ -15,7 +15,9 @@ export default class Instrument extends BaseConsumer {
         this.updateObject(this.props.instrument, { instrumentList: ack.data });
       },
       error: (ack) => {
-        this.error("Lỗi");
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
       },
     });
   }
@@ -52,7 +54,9 @@ export default class Instrument extends BaseConsumer {
         );
       },
       error: (ack) => {
-        this.error(ack.ErrorMessage);
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
       },
     });
   };
@@ -75,10 +79,7 @@ export default class Instrument extends BaseConsumer {
   _renderItem = (i) => {
     return (
       <InstrumentItem
-        header={i.name}
-        isActive={i.isActive}
         instrument={i}
-        canDelete={!i.isAssigned}
         onDelete={this._onDeleteItem}
         onUpdate={this._onUpdateItem}
       />
