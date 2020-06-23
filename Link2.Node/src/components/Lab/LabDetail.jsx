@@ -10,19 +10,20 @@ import {
   GridItem,
   BaseButton,
 } from "../../importer";
+import PropTypes from "prop-types";
+
 class LabDetail extends BaseConsumer {
   constructor(props) {
     super(props);
     this.state = {
       _optionsTimeZones: [],
     };
-    window.detail = this;
   }
-  _changeActive = (key) => {
-    this.updateObject(this.props.instrument, {
-      [key]: !this.props.instrument[key],
-    });
-  };
+  // _changeActive = (key) => {
+  //   this.updateObject(this.props.instrument, {
+  //     [key]: !this.props.instrument[key],
+  //   });
+  // };
   _changeText = (item, key, value) => {
     this.updateObject(item, { [key]: value });
   };
@@ -133,5 +134,9 @@ const Styles = {
       margin: 0,
     },
   },
+};
+LabDetail.propTypes = {
+  onDelete: PropTypes.func,
+  lab: PropTypes.object,
 };
 export default withStyles(Styles)(LabDetail);

@@ -3,6 +3,7 @@ import helper from "../../general/helper";
 
 import BaseCloneConsumer from "BaseComponent/BaseCloneConsumer";
 import LabDetailModal from "./LabDetailModal";
+import PropTypes from "prop-types";
 
 export default class CloneLabDetailModal extends BaseCloneConsumer {
   constructor(props) {
@@ -28,4 +29,9 @@ export default class CloneLabDetailModal extends BaseCloneConsumer {
     );
   }
 }
+CloneLabDetailModal.propTypes = {
+  data: PropTypes.object,
+  onSave: PropTypes.func,
+  onDelete: PropTypes.func,
+};
 CloneLabDetailModal.displayName = "CloneLabDetailModal";

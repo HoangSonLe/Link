@@ -149,7 +149,6 @@ InstrumentItem.protoTypes = {
   onDelete: PropTypes.func,
   onUpdate: PropTypes.func,
   instrument: PropTypes.object.isRequired,
-  //Some protoTypes of Item
 };
 
 InstrumentItem.defaultProps = {

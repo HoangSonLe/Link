@@ -3,6 +3,7 @@ import ModalLayout from "../../layout/ModalLayout";
 
 import { BaseButton } from "../../importer";
 import AddItemLab from "./AddItemLab";
+import PropTypes from "prop-types";
 
 export default class AddItemLabModal extends ModalLayout {
   constructor(props) {
@@ -47,3 +48,8 @@ export default class AddItemLabModal extends ModalLayout {
     );
   }
 }
+AddItemLabModal.propTypes = {
+  data: PropTypes.object,
+  onSave: PropTypes.func,
+  onDelete: PropTypes.func,
+};

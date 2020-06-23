@@ -253,6 +253,7 @@ const Styles = {
 };
 LabItem.protoTypes = {
   onUpdateLab: PropTypes.func,
+  onDelete: PropTypes.func,
   lab: PropTypes.object.isRequired,
 };
 

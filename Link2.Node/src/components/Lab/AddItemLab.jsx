@@ -10,6 +10,8 @@ import { withStyles } from "@material-ui/core";
 import { LabTypeModal } from "../../general/enum";
 import InstrumentItem from "../Instrument/InstrumentItem";
 import LisSystemItem from "../Lis/LisSystemItem";
+import PropTypes from "prop-types";
+
 class AddItemLab extends BaseConsumer {
   constructor(props) {
     super(props);
@@ -19,6 +21,20 @@ class AddItemLab extends BaseConsumer {
       searchList: [],
       searchText: "",
     };
+  }
+  //Lấy ds lis, instrument
+  componentDidMount() {
+    let { typeAdd, lab } = this.props;
+    let url =
+      typeAdd == LabTypeModal.AddInstrument
+        ? "/api/link/GetInstrumentsForLab"
+        : "/api/link/GetLisSystemForLab?idLab=" + lab.id;
+    this.ajaxGet({
+      url: url,
+      success: (ack) => {
+        this.setState({ dataList: ack.data });
+      },
+    });
   }
   //Thêm sản phẩm vào ds chọn
   _addSelectedItem = (i) => {
@@ -52,20 +68,7 @@ class AddItemLab extends BaseConsumer {
       searchText: text,
     });
   }, 300);
-  //Lấy ds lis, instrument
-  componentDidMount() {
-    let { typeAdd, lab } = this.props;
-    let url =
-      typeAdd == LabTypeModal.AddInstrument
-        ? "/api/link/GetInstrumentsForLab"
-        : "/api/link/GetLisSystemForLab?idLab=" + lab.id;
-    this.ajaxGet({
-      url: url,
-      success: (ack) => {
-        this.setState({ dataList: ack.data });
-      },
-    });
-  }
+
   //Render nội dung hiện thị Istrument hay LIS
   _renderContent = (i) => {
     let { selectedList } = this.state;
@@ -153,6 +156,11 @@ const Styles = {
       },
     },
   },
+};
+AddItemLab.propTypes = {
+  onAddItemToLab: PropTypes.func,
+  lab: PropTypes.object,
+  typeAdd: PropTypes.number,
 };
 
 export default withStyles(Styles)(AddItemLab);

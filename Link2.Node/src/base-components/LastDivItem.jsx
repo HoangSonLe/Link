@@ -1,10 +1,11 @@
 import React from "react";
 import BaseConsumer from "BaseComponent/BaseConsumer";
 import { I3Div, I3Icon } from "../importer";
+import PropTypes from "prop-types";
 
 export default class LastDivItem extends BaseConsumer {
   consumerContent() {
-    const { classes, title, margin, iconClassName, onClick } = this.props;
+    const { title, iconClassName, onClick } = this.props;
     return (
       <I3Div
         onClick={onClick}
@@ -32,3 +33,8 @@ export default class LastDivItem extends BaseConsumer {
     );
   }
 }
+LastDivItem.propType = {
+  title: PropTypes.string,
+  iconClassName: PropTypes.string,
+  onClick: PropTypes.func,
+};

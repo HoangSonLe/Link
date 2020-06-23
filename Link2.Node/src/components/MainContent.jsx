@@ -1,6 +1,7 @@
 import React from "react";
 import BaseConsumer from "BaseComponent/BaseConsumer";
 import { I3Div, I3CustomTabs, Lab, Instrument, Lis } from "../importer";
+import PropTypes from "prop-types";
 
 export default class MainContent extends BaseConsumer {
   _createTab = () => {
@@ -29,3 +30,6 @@ export default class MainContent extends BaseConsumer {
     );
   }
 }
+MainContent.propTypes = {
+  routeData: PropTypes.object,
+};

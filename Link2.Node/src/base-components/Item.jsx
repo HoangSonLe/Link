@@ -1,13 +1,7 @@
-import React, { Fragment } from "react";
+import React from "react";
 import BaseConsumer from "BaseComponent/BaseConsumer";
 import { withStyles } from "@material-ui/core";
-import {
-  GridContainer,
-  GridItem,
-  I3Icon,
-  I3Div,
-  I3Component,
-} from "../importer";
+import { GridContainer, GridItem, I3Div } from "../importer";
 import PropTypes from "prop-types";
 
 class Item extends BaseConsumer {

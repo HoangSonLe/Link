@@ -51,4 +51,5 @@ export default class LabDetailModal extends ModalLayout {
 LabDetailModal.protoTypes = {
   lab: PropTypes.object,
   onSave: PropTypes.func,
+  onDelete: PropTypes.func,
 };

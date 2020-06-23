@@ -4,6 +4,7 @@ import LabItem from "./LabItem";
 import { I3Div, BaseButton } from "../../importer";
 import { EModalType } from "../../general/enum";
 import CloneLabDetailModal from "./CloneLabDetailModal";
+import PropTypes from "prop-types";
 
 export default class Lab extends BaseConsumer {
   componentDidMount() {
@@ -93,3 +94,6 @@ export default class Lab extends BaseConsumer {
     );
   }
 }
+Lab.propTypes = {
+  lab: PropTypes.object,
+};
