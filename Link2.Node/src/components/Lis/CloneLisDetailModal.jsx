@@ -19,7 +19,14 @@ export default class CloneLisDetailModal extends BaseCloneConsumer {
   childrenCloneContent() {
     let { data, onSave, ...otherProps } = this.props;
     let cloneData = this.getCloneStateByKey(this._randomId);
-    return <LisDetailModal onSave={onSave} lis={cloneData} {...otherProps} />;
+    return (
+      <LisDetailModal
+        onSave={onSave}
+        lis={cloneData}
+        commitData={this.commitData}
+        {...otherProps}
+      />
+    );
   }
 }
 CloneLisDetailModal.protoTypes = {

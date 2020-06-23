@@ -28,7 +28,14 @@ class InstrumentItem extends Item {
           EModalType.Right,
           true
         )
-      : null;
+      : this.openModal(
+          () => ({
+            title: title,
+            body: <CloneInstrumentDetailModal />,
+          }),
+          EModalType.Right,
+          true
+        );
   };
   //Cập nhật Instrument
   _onUpdateItem = (oldItem, newItem) => {
@@ -99,7 +106,7 @@ class InstrumentItem extends Item {
     !isInLab
       ? component.push({
           className: "fas fa-cogs",
-          onClick: () => alert("Chưa có data"),
+          onClick: () => this._openModal("Communication test results", true),
         })
       : null;
     typeof this.props.onUpdate === "function"

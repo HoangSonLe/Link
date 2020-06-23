@@ -15,7 +15,7 @@ export default class AddItemLabModal extends ModalLayout {
     this.selectedItem = newItems;
   };
   modalBody() {
-    const { typeAdd, lab, ...others } = this.props;
+    const { typeAdd, lab, isInLab, ...others } = this.props;
     return (
       <AddItemLab
         onAddItemToLab={this._onAddItemToLab}
@@ -52,4 +52,5 @@ AddItemLabModal.propTypes = {
   data: PropTypes.object,
   onSave: PropTypes.func,
   onDelete: PropTypes.func,
+  isInLab: PropTypes.bool,
 };

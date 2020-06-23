@@ -20,22 +20,22 @@ namespace Link2.Web.Controllers
         private static List<Handshake> listHandshakes = new List<Handshake>() {
             new Handshake()
             {
-                Value = 0,
+                Value = 1,
                 Label = "None"
             },
             new Handshake()
             {
-                Value = 1,
+                Value = 2,
                 Label = "XOnXOff"
             },
             new Handshake()
             {
-                Value = 2,
+                Value = 3,
                 Label = "RequestToSend"
             },
             new Handshake()
             {
-                Value = 3,
+                Value = 4,
                 Label = "RequestToSendXOnXOff"
             }
         };
@@ -43,27 +43,27 @@ namespace Link2.Web.Controllers
         {
             new Parity()
             {
-                Value = 0,
+                Value = 1,
                 Label = "None"
             },
             new Parity()
             {
-                Value = 1,
+                Value = 2,
                 Label = "Odd"
             },
             new Parity()
             {
-                Value = 2,
+                Value = 3,
                 Label = "Even"
             },
             new Parity()
             {
-                Value = 3,
+                Value = 4,
                 Label = "Mark"
             },
             new Parity()
             {
-                Value = 4,
+                Value = 5,
                 Label = "Space"
             }
         };
@@ -179,10 +179,8 @@ namespace Link2.Web.Controllers
             {
                 CanDelete = true,
                 Id =  33,
-                Image="serial.png",
                 Name = "Serial Channel",
-                CommunicationMode =  4001,
-                ChannelId= 47,
+                CommunicationMode =  (int)EnumLink.LisSystemType.SerialChannel,
                 IsActive = true,
                 SendQCResult = false,
                 AutoExport = true,
@@ -206,51 +204,38 @@ namespace Link2.Web.Controllers
                 CanDelete = true,
                 Id =  34,
                 Name = "TCP Channel 233",
-                Image="tcp.png",
-                CommunicationMode =  4001,
-                ChannelId= 47,
+                CommunicationMode = (int)EnumLink.LisSystemType.TCPChannel,
                 IsActive = true,
                 SendQCResult = true,
                 AutoExport = true,
                 TimeZoneId = "Aleutian Standard Time",
-                SerialChannel = new SerialChannel(){
-                    Id= 47,
-                    PortName="COM1",
-                    BaudRate= 9600,
-                    DTSDSR = false,
-                    RTSCTS = false,
-                    Handshake= 1,
-                    TimeOut=  1,
-                    Parity=  1,
-                    StopBits = 3
-              },
+                SerialChannel = new SerialChannel(),
               FolderChannel = new FolderChannel(),
-              TCPChannel = new TCPChannel()
+              TCPChannel = new TCPChannel(){
+                  Id=12,
+                  Ip="192.168.1.1",
+                  Port=10,
+                  TimeOut=10
+              }
             },
             new LisSystem()
             {
                 CanDelete = true,
                 Id =  35,
                 Name = "Folder Channel",
-                Image="folder.png",
-                CommunicationMode =  4001,
-                ChannelId= 47,
+                CommunicationMode =  (int)EnumLink.LisSystemType.FolderChannel,
                 IsActive = true,
                 SendQCResult = true,
                 AutoExport = true,
                 TimeZoneId = "Aleutian Standard Time",
-                SerialChannel = new SerialChannel(){
-                    Id= 47,
-                    PortName="COM1",
-                    BaudRate= 9600,
-                    DTSDSR = false,
-                    RTSCTS = false,
-                    Handshake= 1,
-                    TimeOut=  1,
-                    Parity=  1,
-                    StopBits = 3
+                SerialChannel = new SerialChannel(),
+              FolderChannel = new FolderChannel(){ 
+                Id=13,
+                InputFile="E:\\DevSource",
+                OutputFile="E:\\DevSource",
+                RootFolder="E:\\DevSource",
+                NeedAck= true
               },
-              FolderChannel = new FolderChannel(),
               TCPChannel = new TCPChannel()
             }
         };
@@ -467,15 +452,15 @@ namespace Link2.Web.Controllers
                         CommunicationMode = listLisCommunationModes[0].Value,
                         FolderChannel = new FolderChannel(),
                         SerialChannel = new SerialChannel() {
-                            TimeOut=0,
-                            BaudRate=listBaudRates[0].Value,
-                            Handshake=listHandshakes[0].Value,
-                            Parity= listParities[0].Value,
-                            StopBits=listStopBitses[0].Value,
+                            TimeOut = 0,
+                            BaudRate = listBaudRates[0].Value,
+                            Handshake = listHandshakes[0].Value,
+                            Parity = listParities[0].Value,
+                            StopBits = listStopBitses[0].Value,
                         },
                         TCPChannel = new TCPChannel()
                         {
-                           TimeOut=10 
+                            TimeOut = 10
                         }
                     }
                 },
@@ -483,6 +468,9 @@ namespace Link2.Web.Controllers
                 {
                     InstrumentList = new List<Instrument>(),
                     NewInstrument = new Instrument()
+                    {
+                        IsAssigned = false
+                    }
                 }
             };
             ack.IsSuccess = true;
@@ -517,17 +505,14 @@ namespace Link2.Web.Controllers
                 case (int)EnumLink.LisSystemType.FolderChannel:
                     lisSystem.SerialChannel = new SerialChannel();
                     lisSystem.TCPChannel = new TCPChannel();
-                    lisSystem.Image = "folder.png";
                     break;
                 case (int)EnumLink.LisSystemType.SerialChannel:
                     lisSystem.FolderChannel = new FolderChannel();
                     lisSystem.TCPChannel = new TCPChannel();
-                    lisSystem.Image = "serial.png";
                     break;
                 case (int)EnumLink.LisSystemType.TCPChannel:
                     lisSystem.FolderChannel = new FolderChannel();
                     lisSystem.SerialChannel = new SerialChannel();
-                    lisSystem.Image = "lan-icon.png";
                     break;
                 default:
                     break;
@@ -543,14 +528,12 @@ namespace Link2.Web.Controllers
 
                 lis.Name = lisSystem.Name;
                 lis.IsActive = lisSystem.IsActive;
-                lis.Image = lisSystem.Image;
                 lis.SendQCResult = lisSystem.SendQCResult;
                 lis.SerialChannel = lisSystem.SerialChannel;
                 lis.TCPChannel = lisSystem.TCPChannel;
                 lis.FolderChannel = lisSystem.FolderChannel;
                 lis.CanDelete = lisSystem.CanDelete;
                 lis.AutoExport = lisSystem.AutoExport;
-                lis.ChannelId = lisSystem.ChannelId;
                 lis.CommunicationMode = lisSystem.CommunicationMode;
                 lis.TimeZoneId = lisSystem.TimeZoneId;
             }
@@ -566,13 +549,12 @@ namespace Link2.Web.Controllers
             {
 
                 var tmp = listLisSytem.Find(p => p.Id == id);
-                if (!tmp.CanDelete)
+                if (tmp.CanDelete)
                 {
                     listLisSytem.Remove(tmp);
                     ack.IsSuccess = true;
+                    return ack;
                 }
-                ack.IsSuccess = false;
-                return ack;
             }
             ack.IsSuccess = false;
             return ack;
@@ -643,6 +625,30 @@ namespace Link2.Web.Controllers
                     ack.IsSuccess = false;
                     return ack;
                 }
+
+                if (listBaudRates.Find(x=>x.Value==lisSystem.SerialChannel.BaudRate) == null) {
+                    ack.AddMessage("Value of BaudRate must be selected");
+                    ack.IsSuccess = false;
+                    return ack;
+                }
+                if (listHandshakes.Find(x => x.Value == lisSystem.SerialChannel.Handshake) == null)
+                {
+                    ack.AddMessage("Value of Handshake must be selected");
+                    ack.IsSuccess = false;
+                    return ack;
+                }
+                if (listParities.Find(x => x.Value == lisSystem.SerialChannel.Parity) == null)
+                {
+                    ack.AddMessage("Value of Parity must be selected");
+                    ack.IsSuccess = false;
+                    return ack;
+                }
+                if (listStopBitses.Find(x => x.Value == lisSystem.SerialChannel.StopBits) == null)
+                {
+                    ack.AddMessage("Value of StopBits must be selected");
+                    ack.IsSuccess = false;
+                    return ack;
+                }
             }
             if (lisSystem.CommunicationMode == (int)EnumLink.LisSystemType.TCPChannel)
             {
@@ -664,6 +670,7 @@ namespace Link2.Web.Controllers
                     ack.IsSuccess = false;
                     return ack;
                 }
+                
             }
 
             ack.IsSuccess = true;
@@ -816,7 +823,7 @@ namespace Link2.Web.Controllers
         public Acknowledgement<List<Laboratory>> GetLabs()
         {
             var ack = new Acknowledgement<List<Laboratory>>();
-            ack.Data = listLaboratories;
+            ack.Data = listLaboratories.OrderBy(p=>p.Priority).ToList();
             ack.IsSuccess = true;
             return ack;
         }
@@ -834,8 +841,8 @@ namespace Link2.Web.Controllers
                 return ack;
             }
             //Kiểm tra Add or Update
-            var index = listLaboratories.FindIndex(p => p.Id == lab.Id);
-            if (index == -1)
+            var checkLab = listLaboratories.Find(p => p.Id == lab.Id);
+            if (checkLab == null)
             {
                 lab.Id = listLaboratories.Count() + 1;
                 lab.LisInstruments = new List<Instrument>();
@@ -844,8 +851,9 @@ namespace Link2.Web.Controllers
             }
             else
             {
-
-                listLaboratories[index] = lab;
+                checkLab.Name = lab.Name;
+                checkLab.TimeZoneId = lab.TimeZoneId;
+                checkLab.Priority = lab.Priority;
             }
             ack.Data = lab;
             ack.IsSuccess = true;
@@ -864,20 +872,17 @@ namespace Link2.Web.Controllers
                 ack.IsSuccess = false;
                 return ack;
             }
-            var tmp = listLaboratories.FindIndex(p => p.Id == id);
-            if (tmp != -1)
+            var lab = listLaboratories.Find(p => p.Id == id);
+            if (lab != null)
             {
                 //Remove instrument and set Assign for instrument
-                foreach (var i in listLaboratories[tmp].LisInstruments)
+                var idIns = lab.LisInstruments.Select(i => i.Id).ToList();
+                var ist = listInstruments.Where(i => idIns.Contains(i.Id)).ToList();
+                ist.ForEach(i =>
                 {
-                    var indexIns = listInstruments.FindIndex(x => x.Id == i.Id);
-                    if (indexIns != -1)
-                    {
-                        listInstruments[indexIns].IsAssigned = false;
-                    }
-                }
-
-                listLaboratories.Remove(listLaboratories[tmp]);
+                    i.IsAssigned = false;
+                });
+                listLaboratories.Remove(lab);
                 ack.IsSuccess = true;
                 return ack;
             }
@@ -927,18 +932,18 @@ namespace Link2.Web.Controllers
         {
             var ack = new Acknowledgement();
             //Check exist Lab
-            var indexLab = listLaboratories.FindIndex(x => x.Id == idLab);
-            if (indexLab != -1)
+            var lab = listLaboratories.Find(x => x.Id == idLab);
+            if (lab != null)
             {
                 //Find Id of Instrument in Lab
-                var indexInsLab = listLaboratories[indexLab].LisInstruments.FindIndex(x => x.Id == idInstrument);
+                var insLab = lab.LisInstruments.Find(x => x.Id == idInstrument);
                 //Find index of Instrument
-                var indexIns = listInstruments.FindIndex(x => x.Id == idInstrument);
+                var ins = listInstruments.Find(x => x.Id == idInstrument);
                 //Set Assign for Instrument and Remove instrument from Lab
-                if (indexIns != -1 && indexInsLab!=-1)
+                if (ins != null && insLab!=null)
                 {
-                    listInstruments[indexIns].IsAssigned = false;
-                    listLaboratories[indexLab].LisInstruments.RemoveAt(indexInsLab);
+                    ins.IsAssigned = false;
+                    lab.LisInstruments.Remove(insLab);
                 }
                 ack.IsSuccess = true;
                 return ack;
@@ -951,14 +956,11 @@ namespace Link2.Web.Controllers
         {
             var ack = new Acknowledgement<List<LisSystem>>();
             //Get list of LisSystem in lab
-            var lisInRouters = listLaboratories.Find(x => x.Id == idLab).LisInRouters.ToList();
+            var lisInRouters = listLaboratories.Find(x => x.Id == idLab).LisInRouters.Select(p=>p.LisSystem.Id).ToList();
             var data = new List<LisSystem>();
             //Get list LisSystem is not in Lab's list of LisSystem 
-            foreach(var i in listLisSytem)
-            {
-                var index = lisInRouters.FindIndex(p => p.LisSystem.Id == i.Id);
-                if (index == -1 ) data.Add(i);
-            }
+            var lis = listLisSytem.Where(i => !lisInRouters.Contains(i.Id)).ToList();
+            data.AddRange(lis);
             ack.Data = data;
             ack.IsSuccess = true;
             return ack;
@@ -973,23 +975,19 @@ namespace Link2.Web.Controllers
                 var idLis = lisSystems.Select(i => i.Id).ToList();
                 var lis = listLisSytem.Where(i => idLis.Contains(i.Id)).ToList();
                 //Set Assign for Instrument
-                foreach (var i in lisSystems)
+                foreach (var i in lis)
                 {
-                    var tmpLis = listLisSytem.Find(x => x.Id == i.Id);
                     //Create new Lis
-                    if (tmpLis != null)
+                    var tmp = new Lis()
                     {
-                        var tmp = new Lis()
-                        {
-                            LisSystem = tmpLis,
-                            IsMirror = false,
-                            LisId = lab.LisInRouters.Count() + 1
-                        };
-                        //Set CanDelete for LisSystem
-                        tmpLis.CanDelete = false;
+                        LisSystem = i,
+                        IsMirror = false,
+                        LisId = lab.LisInRouters.Count() + 1
+                    };
+                    //Set CanDelete for LisSystem
+                    i.CanDelete = false;
 
-                        lab.LisInRouters.Add(tmp);
-                    }
+                    lab.LisInRouters.Add(tmp);
                 };
                 
                 ack.Data = lab.LisInRouters.ToList();
@@ -1007,16 +1005,20 @@ namespace Link2.Web.Controllers
             var indexLab = listLaboratories.FindIndex(x => x.Id == idLab);
             if (indexLab != -1)
             {
-                var indexLisLab = listLaboratories[indexLab].LisInRouters.FindIndex(x => x.LisId == idLis);
-                var indexLisSystem = listLaboratories[indexLab].LisInRouters[indexLisLab].LisSystem.Id;
-                if (indexLisLab != -1)
+                
+                var lab = listLaboratories.Find(x => x.Id == idLab);
+                //Find Lis in lab
+                var lisLab = lab.LisInRouters.Find(x => x.LisId == idLis);
+               
+                if (lisLab != null)
                 {
-                    listLaboratories[indexLab].LisInRouters.RemoveAt(indexLisLab);
+                    //Remove Lis in Lab
+                    lab.LisInRouters.Remove(lisLab);
                     var checkExist = false;
-                    foreach(var i in listLaboratories)
+                    foreach (var i in listLaboratories)
                     {
-                        var indexLisInLab = i.LisInRouters.FindIndex(x => x.LisId == idLis);
-                        if (indexLisInLab != -1)
+                        var lisInLab = i.LisInRouters.Find(x => x.LisSystem.Id == lisLab.LisSystem.Id);
+                        if (lisInLab != null)
                         {
                             checkExist = true;
                             break;
@@ -1024,13 +1026,29 @@ namespace Link2.Web.Controllers
                     }
                     if (!checkExist)
                     {
-                        listLisSytem.Find(x => x.Id == indexLisSystem).CanDelete = true;
+                        listLisSytem.Find(x => x.Id == lisLab.LisSystem.Id).CanDelete = true;
                     }
                 }
                 ack.IsSuccess = true;
                 return ack;
             }
             ack.IsSuccess = false;
+            return ack;
+        }
+        [HttpPost]
+        public Acknowledgement CheckMirrorLisInLab(int idLis,int idLab)
+        {
+            var ack = new Acknowledgement();
+            var lab = listLaboratories.Find(p => p.Id == idLab);
+            var lis = lab.LisInRouters.Find(p => p.LisId == idLis);
+            if(lis!= null)
+            {
+                lis.IsMirror = !lis.IsMirror;
+                ack.IsSuccess = true;
+                return ack;
+            }
+            ack.IsSuccess = false;
+            ack.AddMessage("Can not find LIS");
             return ack;
         }
         public Acknowledgement<Laboratory> ValidateLab(Laboratory lab)
@@ -1048,7 +1066,7 @@ namespace Link2.Web.Controllers
                 ack.AddMessage("Value of TimeZone is invalid");
                 return ack;
             }
-            if (lab.Priority <= 0 )
+            if (lab.Priority <= 0)
             {
                 ack.IsSuccess = false;
                 ack.AddMessage("Priority mus be greater than or equal to 1");

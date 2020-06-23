@@ -42,8 +42,21 @@ class LisItem extends Item {
   };
   //Cập nhật isMirror
   _onClickLisCheck = (e, item) => {
-    this.updateObject(item, { isMirror: e.target.checked }, () => {
-      //callback hàm ngoài
+    var { checked } = e.target;
+    this.ajaxPost({
+      url:
+        "/api/link/CheckMirrorLisInLab?idLis=" +
+        item.lisId +
+        "&idLab=" +
+        this.props.lab.id,
+      success: (ack) => {
+        this.updateObject(item, { isMirror: checked });
+      },
+      error: (ack) => {
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
+      },
     });
   };
   renderImage() {
@@ -105,6 +118,7 @@ LisItem.protoTypes = {
   onDelete: PropTypes.func,
   onUpdate: PropTypes.func,
   lis: PropTypes.object.isRequired,
+  lab: PropTypes.object.isRequired,
 };
 const Style = {
   ...Styles,

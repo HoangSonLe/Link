@@ -160,7 +160,14 @@ class LabItem extends BaseConsumer {
   };
   //Render Lis trong Lab
   _renderLis = (i) => {
-    return <LisItem key={i.id} onDelete={this._onDeleteLis} lis={i} />;
+    return (
+      <LisItem
+        key={i.id}
+        lab={this.props.lab}
+        onDelete={this._onDeleteLis}
+        lis={i}
+      />
+    );
   };
 
   consumerContent() {

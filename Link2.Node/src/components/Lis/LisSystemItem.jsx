@@ -1,7 +1,7 @@
 import React from "react";
 import { withStyles } from "@material-ui/core";
 import { IconButtonGroup, I3Component, I3Icon } from "../../importer";
-import { EModalType } from "../../general/enum";
+import { EModalType, LisCommunicationMode, ImageLis } from "../../general/enum";
 import PropTypes from "prop-types";
 
 import { Item, Styles } from "../../base-components/Item";
@@ -15,12 +15,7 @@ class LisSystemItem extends Item {
     this.openModal(
       () => ({
         title: title,
-        body: (
-          <CloneLisDetailModal
-            onSave={(newItem) => this._onUpdateItem(newItem)}
-            data={this.props.lisSystem}
-          />
-        ),
+        body: <CloneLisDetailModal data={this.props.lisSystem} />,
       }),
       EModalType.Right,
       true
@@ -55,8 +50,9 @@ class LisSystemItem extends Item {
       okay: {
         title: "Delete", // text hiển thị trên nút oke
         handle: () => {
-          !isInLab
-            ? this.ajaxPost({
+          isInLab
+            ? onDelete(lisSystem)
+            : this.ajaxPost({
                 url: "/api/link/DeleteLisSystem?id=" + lisSystem.id,
                 success: (ack) => {
                   onDelete(lisSystem);
@@ -66,15 +62,29 @@ class LisSystemItem extends Item {
                     this.error(i);
                   }
                 },
-              })
-            : onDelete(lisSystem);
+              });
         },
       },
     });
   };
 
   renderImage() {
-    return <img src={"/dist/contents/images/" + this.props.lisSystem.image} />;
+    let image = "";
+
+    switch (this.props.lisSystem.communicationMode) {
+      case LisCommunicationMode.FolderChannel:
+        image = ImageLis.FolderChannel;
+        break;
+      case LisCommunicationMode.SerialChannel:
+        image = ImageLis.SerialChannel;
+        break;
+      case LisCommunicationMode.TCPChannel:
+        image = ImageLis.TCPChannel;
+        break;
+      default:
+        break;
+    }
+    return <img src={"/dist/contents/images/" + image} />;
   }
   renderRightHeader() {}
   renderLeftHeader() {
@@ -104,9 +114,9 @@ class LisSystemItem extends Item {
   }
 
   renderRightFooter() {
-    let { lisSystem } = this.props;
+    let { lisSystem, isInLab } = this.props;
     let component = [];
-    typeof this.props.onUpdate === "function"
+    !isInLab
       ? component.push({
           className: "fas fa-pen",
           onClick: () => this._openModal("Edit Lis", false),
@@ -124,7 +134,6 @@ class LisSystemItem extends Item {
 }
 LisSystemItem.protoTypes = {
   onDelete: PropTypes.func,
-  onUpdate: PropTypes.func,
   lisSystem: PropTypes.object.isRequired,
 };
 LisSystemItem.defaultProps = {

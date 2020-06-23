@@ -1,7 +1,7 @@
 import React from "react";
 import _ from "lodash";
 import BaseConsumer from "BaseComponent/BaseConsumer";
-import { I3Div, I3TextField } from "../importer";
+import { I3Div, I3TextField, ShouldUpdateWrapper } from "../importer";
 import PropTypes from "prop-types";
 
 export default class RowTextField extends BaseConsumer {
@@ -13,6 +13,7 @@ export default class RowTextField extends BaseConsumer {
   }, 300);
   consumerContent() {
     const { title, value, onChange, ...otherProps } = this.props;
+    console.log(title, value);
     return (
       <I3Div margin={"md"}>
         {title ? (
@@ -20,6 +21,7 @@ export default class RowTextField extends BaseConsumer {
             {title}
           </I3Div>
         ) : null}
+
         <I3TextField
           variant="outlined"
           value={value}

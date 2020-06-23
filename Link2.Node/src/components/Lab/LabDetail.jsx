@@ -9,6 +9,7 @@ import {
   GridContainer,
   GridItem,
   BaseButton,
+  ShouldUpdateWrapper,
 } from "../../importer";
 import PropTypes from "prop-types";
 
@@ -60,49 +61,56 @@ class LabDetail extends BaseConsumer {
 
     return (
       <I3Div margin="xs">
-        <RowTextField
-          title="Laboratory name"
+        <ShouldUpdateWrapper
           value={lab.name ? lab.name : ""}
           onChange={(text) => this._changeText(lab, "name", text)}
-        />
+        >
+          <RowTextField title="Laboratory name" />
+        </ShouldUpdateWrapper>
         <I3Div margin={"md"}>
           <I3Div variant="h6" fontWeight="bold" margin="xs">
             Timezone
           </I3Div>
-          <I3Select
+          <ShouldUpdateWrapper
             onChange={(item) => {
               this.updateObject(this.props.lab, { timeZoneId: item.value });
             }}
             value={this.state._optionsTimeZones.find(
               (opt) => opt.value == this.props.lab.timeZoneId
             )}
-            getOptionLabel={(opt) => {
-              return opt.label;
-            }}
-            getOptionValue={(opt) => {
-              return opt.value;
-            }}
-            placeholder="Select Timezone"
             options={this.state._optionsTimeZones}
-            color="lighterGray"
-          />
+          >
+            <I3Select
+              getOptionLabel={(opt) => {
+                return opt.label;
+              }}
+              getOptionValue={(opt) => {
+                return opt.value;
+              }}
+              placeholder="Select Timezone"
+              color="lighterGray"
+            />
+          </ShouldUpdateWrapper>
         </I3Div>
         <GridContainer margin={"md"}>
           <GridItem xs={6} className={classes.Div}>
             Priority
           </GridItem>
           <GridItem xs={6}>
-            <RowTextField
-              className={classes.inputText}
+            <ShouldUpdateWrapper
               value={lab.priority ? lab.priority : ""}
-              type="number"
-              InputProps={{
-                classes: {
-                  notchedOutline: classes.notchedOutline,
-                },
-              }}
               onChange={(e) => this._changeText(lab, "priority", e)}
-            />
+            >
+              <RowTextField
+                className={classes.inputText}
+                type="number"
+                InputProps={{
+                  classes: {
+                    notchedOutline: classes.notchedOutline,
+                  },
+                }}
+              />
+            </ShouldUpdateWrapper>
           </GridItem>
         </GridContainer>
         <I3Div display="flex" alignItems="center" justifyContent="flex-end">

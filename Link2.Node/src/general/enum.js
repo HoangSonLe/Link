@@ -16,3 +16,8 @@ export const LisCommunicationMode = {
     SerialChannel: 4001,
     TCPChannel: 4002,
 }
+export const ImageLis = {
+    FolderChannel: "folder.png",
+    SerialChannel: "serial.png",
+    TCPChannel: "lan-icon.png",
+}

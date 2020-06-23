@@ -5,6 +5,7 @@ import {
   I3TextField,
   I3Icon,
   I3Component,
+  ShouldUpdateWrapper,
 } from "../../importer";
 import { withStyles } from "@material-ui/core";
 import { LabTypeModal } from "../../general/enum";
@@ -84,13 +85,9 @@ class AddItemLab extends BaseConsumer {
         onClick={() => this._addSelectedItem(i)}
       >
         {typeAdd == LabTypeModal.AddInstrument ? (
-          <InstrumentItem
-            header={i.name}
-            isActive={i.isActive}
-            instrument={i}
-          />
+          <InstrumentItem instrument={i} isInLab={true} />
         ) : (
-          <LisSystemItem header={i.name} isActive={i.isActive} lisSystem={i} />
+          <LisSystemItem lisSystem={i} />
         )}
       </I3Div>
     );
@@ -104,27 +101,30 @@ class AddItemLab extends BaseConsumer {
     return (
       <I3Div margin="md">
         <I3Div margin={["md", "no", "md", "no"]}>
-          <I3TextField
-            className={classes.InputSearch}
-            variant="outlined"
+          <ShouldUpdateWrapper
             value={searchText}
-            placeholder={
-              typeAdd == LabTypeModal.AddInstrument
-                ? "Search by name, searial number"
-                : "Search by name"
-            }
             onChange={(e) => this._onChangeSearch(e)}
-            InputProps={{
-              endAdornment: (
-                <I3Icon
-                  lineHeight="20px"
-                  className="fas fa-search"
-                  color="blue"
-                  margin={["no", "sm", "no", "no"]}
-                />
-              ),
-            }}
-          />
+          >
+            <I3TextField
+              className={classes.InputSearch}
+              variant="outlined"
+              placeholder={
+                typeAdd == LabTypeModal.AddInstrument
+                  ? "Search by name, searial number"
+                  : "Search by name"
+              }
+              InputProps={{
+                endAdornment: (
+                  <I3Icon
+                    lineHeight="20px"
+                    className="fas fa-search"
+                    color="blue"
+                    margin={["no", "sm", "no", "no"]}
+                  />
+                ),
+              }}
+            />
+          </ShouldUpdateWrapper>
         </I3Div>
         {/* Nếu có search thi hiện theo ds search , không thì hiện mặc định từ db về */}
         {searchList.length > 0 ? (

@@ -25,22 +25,54 @@ export default class LisDetailModal extends ModalLayout {
   }
 
   rightFooter() {
-    const { lis, onSave } = this.props;
-
+    let { lis, onSave } = this.props;
     return (
       <BaseButton
         width="110px"
         onClick={() => {
-          onSave(lis);
-          // this.closeThisModal();
+          typeof onSave === "function"
+            ? this._onAddItem(lis)
+            : this._onUpdateItem(lis);
         }}
       >
         Save
       </BaseButton>
     );
   }
+  _onUpdateItem = (newItem) => {
+    this.ajaxPost({
+      url: "/api/link/AddOrUpdateLisSystem",
+      data: newItem,
+      success: (ack) => {
+        this.props.commitData();
+        this.closeThisModal();
+      },
+      error: (ack) => {
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
+      },
+    });
+  };
+
+  _onAddItem = (newItem) => {
+    this.ajaxPost({
+      url: "/api/link/AddOrUpdateLisSystem",
+      data: newItem,
+      success: (ack) => {
+        this.props.onSave(ack.data);
+        this.closeThisModal();
+      },
+      error: (ack) => {
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
+      },
+    });
+  };
 }
 LisDetail.protoTypes = {
   lis: PropTypes.object,
   onSave: PropTypes.func,
+  commitData: PropTypes.func,
 };

@@ -17,13 +17,13 @@ export default class Lis extends BaseConsumer {
     });
   }
   //Mở modal thêm mới
-  _openModal = (title, item) => {
+  _openModal = (title) => {
     this.openModal(
       () => ({
         title: title,
         body: (
           <CloneLisDetailModal
-            onSave={(newItem) => this._onAddItem(newItem)}
+            onSave={this._onAddItem}
             data={this.props.lis.newLis}
           />
         ),
@@ -34,46 +34,21 @@ export default class Lis extends BaseConsumer {
   };
   //Xóa LIS, callback của children
   _onDeleteItem = (i) => {
-    this.removeElement(this.props.lis.lisList, i, this.success("Removed Item"));
-  };
-  //Cập nhật LIS, callback của children
+    debugger;
 
-  _onUpdateItem = (oldItem, newItem) => {
-    this.updateObject(oldItem, newItem, () => {
-      this.closeModal(-1);
-      this.success("Updated Item");
-    });
+    this.removeElement(this.props.lis.lisList, i, this.success("Removed Item"));
   };
   //Thêm LisSystem
 
   _onAddItem = (newItem) => {
-    debugger;
-    this.ajaxPost({
-      url: "/api/link/AddOrUpdateLisSystem",
-      data: newItem,
-      success: (ack) => {
-        this.addElement(this.props.lis.lisList, ack.data, null, () => {
-          debugger;
-          this.closeModal(-1);
-          this.success("Added Item");
-        });
-      },
-      error: (ack) => {
-        for (let i of ack.ErrorMessage) {
-          this.error(i);
-        }
-      },
+    this.addElement(this.props.lis.lisList, newItem, null, () => {
+      this.success("Added Item");
     });
   };
   //Render LisSystem
   _renderItem = (i) => {
     return (
-      <LisSystemItem
-        key={i.id}
-        lisSystem={i}
-        onDelete={this._onDeleteItem}
-        onUpdate={this._onUpdateItem}
-      />
+      <LisSystemItem key={i.id} lisSystem={i} onDelete={this._onDeleteItem} />
     );
   };
   //Render div cuối cùng để Adđ
@@ -81,7 +56,7 @@ export default class Lis extends BaseConsumer {
     return (
       <LastDivItem
         title="Add new Lis"
-        onClick={() => this._openModal("New Lis", this.props.lis.newLis)}
+        onClick={() => this._openModal("New Lis")}
       />
     );
   };

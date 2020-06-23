@@ -1,7 +1,13 @@
 import React, { Fragment } from "react";
 import BaseConsumer from "BaseComponent/BaseConsumer";
 import { withStyles } from "@material-ui/core";
-import { RowTextField, RowSwitch, I3Div, I3Select } from "../../importer";
+import {
+  RowTextField,
+  RowSwitch,
+  I3Div,
+  I3Select,
+  ShouldUpdateWrapper,
+} from "../../importer";
 import PropTypes from "prop-types";
 import { LisCommunicationMode } from "../../general/enum";
 
@@ -17,28 +23,33 @@ class TypeComunationMode extends BaseConsumer {
     let { lis, classes } = this.props;
     return (
       <Fragment>
-        <RowTextField
-          title="TCP/IP Address"
+        <ShouldUpdateWrapper
           value={lis.tcpChannel.ip ? lis.tcpChannel.ip : ""}
           onChange={(text) => this._changeText(lis.tcpChannel, "ip", text)}
-        />
-        <RowTextField
-          title="TCP/IP Port"
+        >
+          <RowTextField title="TCP/IP Address" />
+        </ShouldUpdateWrapper>
+        <ShouldUpdateWrapper
           value={lis.tcpChannel.port ? lis.tcpChannel.port : ""}
           onChange={(text) => this._changeText(lis.tcpChannel, "port", text)}
-        />
-        <RowTextField
-          title="Time out (second)"
-          className={classes.inputText}
-          value={lis.tcpChannel.timeOut ? lis.tcpChannel.timeOut : 10}
-          type="number"
-          InputProps={{
-            classes: {
-              notchedOutline: classes.notchedOutline,
-            },
-          }}
+        >
+          <RowTextField title="TCP/IP Port" />
+        </ShouldUpdateWrapper>
+        <ShouldUpdateWrapper
+          value={lis.tcpChannel.timeOut ? lis.tcpChannel.timeOut : 0}
           onChange={(text) => this._changeText(lis.tcpChannel, "timeOut", text)}
-        />
+        >
+          <RowTextField
+            title="Time out (second)"
+            className={classes.inputText}
+            type="number"
+            InputProps={{
+              classes: {
+                notchedOutline: classes.notchedOutline,
+              },
+            }}
+          />
+        </ShouldUpdateWrapper>
       </Fragment>
     );
   };
@@ -53,13 +64,14 @@ class TypeComunationMode extends BaseConsumer {
     let { data, lis, classes } = this.props;
     return (
       <Fragment>
-        <RowTextField
-          title="Port name (eg. COM1)"
+        <ShouldUpdateWrapper
           value={lis.serialChannel.portName ? lis.serialChannel.portName : ""}
           onChange={(text) =>
             this._changeText(lis.serialChannel, "portName", text)
           }
-        />
+        >
+          <RowTextField title="Port name (eg. COM1)" />
+        </ShouldUpdateWrapper>
         <RowSwitch
           title="DTSDSR"
           isActive={lis.serialChannel.dtsdsr ? lis.serialChannel.dtsdsr : false}
@@ -70,25 +82,29 @@ class TypeComunationMode extends BaseConsumer {
           isActive={lis.serialChannel.rtscts ? lis.serialChannel.rtscts : false}
           onChange={() => this._changeActiveSerialChannel("rtscts")}
         />
-        <RowTextField
-          title="Time out (second)"
-          className={classes.inputText}
+        <ShouldUpdateWrapper
           value={lis.serialChannel.timeOut ? lis.serialChannel.timeOut : 0}
-          type="number"
-          InputProps={{
-            classes: {
-              notchedOutline: classes.notchedOutline,
-            },
-          }}
           onChange={(text) =>
             this._changeText(lis.serialChannel, "timeOut", text)
           }
-        />
+        >
+          <RowTextField
+            title="Time out (second)"
+            className={classes.inputText}
+            type="number"
+            InputProps={{
+              classes: {
+                notchedOutline: classes.notchedOutline,
+              },
+            }}
+          />
+        </ShouldUpdateWrapper>
         <I3Div margin={"md"}>
           <I3Div variant="h6" fontWeight="bold" margin="xs">
             Baud rate
           </I3Div>
-          <I3Select
+          <ShouldUpdateWrapper
+            options={data.baudRate}
             onChange={(item) =>
               this.updateObject(lis.serialChannel, {
                 baudRate: item.value,
@@ -97,22 +113,25 @@ class TypeComunationMode extends BaseConsumer {
             value={data.baudRate.find(
               (opt) => opt.value == lis.serialChannel.baudRate
             )}
-            getOptionLabel={(opt) => {
-              return opt.label;
-            }}
-            getOptionValue={(opt) => {
-              return opt.value;
-            }}
-            placeholder="Select BaudRate"
-            options={data.baudRate}
-            color="lighterGray"
-          />
+          >
+            <I3Select
+              getOptionLabel={(opt) => {
+                return opt.label;
+              }}
+              getOptionValue={(opt) => {
+                return opt.value;
+              }}
+              placeholder="Select BaudRate"
+              color="lighterGray"
+            />
+          </ShouldUpdateWrapper>
         </I3Div>
         <I3Div margin={"md"}>
           <I3Div variant="h6" fontWeight="bold" margin="xs">
             Handshake
           </I3Div>
-          <I3Select
+          <ShouldUpdateWrapper
+            options={data.handshake}
             onChange={(item) =>
               this.updateObject(lis.serialChannel, {
                 handshake: item.value,
@@ -121,22 +140,25 @@ class TypeComunationMode extends BaseConsumer {
             value={data.handshake.find(
               (opt) => opt.value == lis.serialChannel.handshake
             )}
-            getOptionLabel={(opt) => {
-              return opt.label;
-            }}
-            getOptionValue={(opt) => {
-              return opt.value;
-            }}
-            placeholder="Select Timezone"
-            options={data.handshake}
-            color="lighterGray"
-          />
+          >
+            <I3Select
+              getOptionLabel={(opt) => {
+                return opt.label;
+              }}
+              getOptionValue={(opt) => {
+                return opt.value;
+              }}
+              placeholder="Select Handshake"
+              color="lighterGray"
+            />
+          </ShouldUpdateWrapper>
         </I3Div>
         <I3Div margin={"md"}>
           <I3Div variant="h6" fontWeight="bold" margin="xs">
             Parity
           </I3Div>
-          <I3Select
+          <ShouldUpdateWrapper
+            options={data.parity}
             onChange={(item) =>
               this.updateObject(lis.serialChannel, {
                 parity: item.value,
@@ -145,22 +167,25 @@ class TypeComunationMode extends BaseConsumer {
             value={data.parity.find(
               (opt) => opt.value == lis.serialChannel.parity
             )}
-            getOptionLabel={(opt) => {
-              return opt.label;
-            }}
-            getOptionValue={(opt) => {
-              return opt.value;
-            }}
-            placeholder="Select Timezone"
-            options={data.parity}
-            color="lighterGray"
-          />
+          >
+            <I3Select
+              getOptionLabel={(opt) => {
+                return opt.label;
+              }}
+              getOptionValue={(opt) => {
+                return opt.value;
+              }}
+              placeholder="Select Parity"
+              color="lighterGray"
+            />
+          </ShouldUpdateWrapper>
         </I3Div>
         <I3Div margin={"md"}>
           <I3Div variant="h6" fontWeight="bold" margin="xs">
             Stop bits
           </I3Div>
-          <I3Select
+          <ShouldUpdateWrapper
+            options={data.stopBits}
             onChange={(item) =>
               this.updateObject(lis.serialChannel, {
                 stopBits: item.value,
@@ -169,16 +194,18 @@ class TypeComunationMode extends BaseConsumer {
             value={data.stopBits.find(
               (opt) => opt.value == lis.serialChannel.stopBits
             )}
-            getOptionLabel={(opt) => {
-              return opt.label;
-            }}
-            getOptionValue={(opt) => {
-              return opt.value;
-            }}
-            placeholder="Select Timezone"
-            options={data.stopBits}
-            color="lighterGray"
-          />
+          >
+            <I3Select
+              getOptionLabel={(opt) => {
+                return opt.label;
+              }}
+              getOptionValue={(opt) => {
+                return opt.value;
+              }}
+              placeholder="Select  Stop bits"
+              color="lighterGray"
+            />
+          </ShouldUpdateWrapper>
         </I3Div>
       </Fragment>
     );
@@ -203,31 +230,34 @@ class TypeComunationMode extends BaseConsumer {
           }
           onChange={() => this._changeActiveFolderChannel("needAck")}
         />
-        <RowTextField
-          title="Shared folder"
+        <ShouldUpdateWrapper
           value={
             lis.folderChannel.rootFolder ? lis.folderChannel.rootFolder : ""
           }
           onChange={(text) =>
             this._changeText(lis.folderChannel, "rootFolder", text)
           }
-        />
-        <RowTextField
-          title="Input File"
+        >
+          <RowTextField title="Shared folder" />
+        </ShouldUpdateWrapper>
+        <ShouldUpdateWrapper
           value={lis.folderChannel.inputFile ? lis.folderChannel.inputFile : ""}
           onChange={(text) =>
             this._changeText(lis.folderChannel, "inputFile", text)
           }
-        />
-        <RowTextField
-          title="Output File"
+        >
+          <RowTextField title="Input File" />
+        </ShouldUpdateWrapper>
+        <ShouldUpdateWrapper
           value={
             lis.folderChannel.outputFile ? lis.folderChannel.outputFile : ""
           }
           onChange={(text) =>
             this._changeText(lis.folderChannel, "outputFile", text)
           }
-        />
+        >
+          <RowTextField title="Output File" />
+        </ShouldUpdateWrapper>
       </Fragment>
     );
   };
@@ -260,23 +290,26 @@ class TypeComunationMode extends BaseConsumer {
               <I3Div variant="h6" fontWeight="bold" margin="xs">
                 Type
               </I3Div>
-              <I3Select
+              <ShouldUpdateWrapper
+                options={data.lisCommunationMode}
                 onChange={(item) => {
                   this.updateObject(lis, { communicationMode: item.value });
                 }}
                 value={data.lisCommunationMode.find(
                   (opt) => opt.value == lis.communicationMode
                 )}
-                getOptionLabel={(opt) => {
-                  return opt.label;
-                }}
-                getOptionValue={(opt) => {
-                  return opt.value;
-                }}
-                placeholder="Select Timezone"
-                options={data.lisCommunationMode}
-                color="lighterGray"
-              />
+              >
+                <I3Select
+                  getOptionLabel={(opt) => {
+                    return opt.label;
+                  }}
+                  getOptionValue={(opt) => {
+                    return opt.value;
+                  }}
+                  placeholder="Select Timezone"
+                  color="lighterGray"
+                />
+              </ShouldUpdateWrapper>
             </I3Div>
             {this._renderTypeComunationMode()}
           </>

@@ -5,6 +5,7 @@ import {
   RowTextField,
   RowSwitch,
   I3Select,
+  ShouldUpdateWrapper,
 } from "../../importer";
 import TypeComunationMode from "./TypeComunationMode";
 import PropTypes from "prop-types";
@@ -46,13 +47,15 @@ export default class LisDetail extends BaseConsumer {
   consumerContent() {
     let { lis } = this.props;
     let { optionsForLisEdit } = this.state;
+    console.log("LisDetail");
     return (
       <I3Div margin="xs">
-        <RowTextField
-          title="LIS name"
+        <ShouldUpdateWrapper
           value={lis.name ? lis.name : ""}
           onChange={(text) => this._changeText(lis, "name", text)}
-        />
+        >
+          <RowTextField title="LIS name" />
+        </ShouldUpdateWrapper>
         <RowSwitch
           title={"Active"}
           isActive={lis.isActive}
@@ -74,23 +77,26 @@ export default class LisDetail extends BaseConsumer {
               <I3Div variant="h6" fontWeight="bold" margin="xs">
                 Timezone
               </I3Div>
-              <I3Select
+              <ShouldUpdateWrapper
+                options={optionsForLisEdit.timeZones}
                 onChange={(item) => {
                   this.updateObject(this.props.lis, { timeZoneId: item.value });
                 }}
                 value={optionsForLisEdit.timeZones.find(
                   (opt) => opt.value == lis.timeZoneId
                 )}
-                getOptionLabel={(opt) => {
-                  return opt.label;
-                }}
-                getOptionValue={(opt) => {
-                  return opt.value;
-                }}
-                placeholder="Select Timezone"
-                options={optionsForLisEdit.timeZones}
-                color="lighterGray"
-              />
+              >
+                <I3Select
+                  getOptionLabel={(opt) => {
+                    return opt.label;
+                  }}
+                  getOptionValue={(opt) => {
+                    return opt.value;
+                  }}
+                  placeholder="Select Timezone"
+                  color="lighterGray"
+                />
+              </ShouldUpdateWrapper>
             </I3Div>
           </>
         ) : null}

@@ -39,8 +39,9 @@ export default class Lab extends BaseConsumer {
       url: "/api/link/AddOrUpdateLab",
       data: newItem,
       success: (ack) => {
+        this.closeModal(-1);
+
         this.addElement(lab.labList, ack.data, null, () => {
-          this.closeModal(-1);
           this.success("Added Item");
         });
       },
@@ -53,8 +54,8 @@ export default class Lab extends BaseConsumer {
   };
   //Cập nhật Lab callback của children
   _onUpdateItem = (oldItem, newItem) => {
+    this.closeModal(-1);
     this.updateObject(oldItem, newItem, () => {
-      this.closeModal(-1);
       this.success("Updated Item");
     });
   };
@@ -62,14 +63,14 @@ export default class Lab extends BaseConsumer {
 
   _onDeleteLab = (i) => {
     let { lab } = this.props;
+    this.closeModal(-1);
+
     this.removeElement(lab.labList, i, () => {
-      this.closeModal(-1);
       this.success("Removed Item");
     });
   };
   consumerContent() {
     let { lab } = this.props;
-
     return (
       <>
         <I3Div backgroundColor="lighterGray" margin={["no", "md", "md", "md"]}>
@@ -80,16 +81,19 @@ export default class Lab extends BaseConsumer {
             Create New Laboratory
           </BaseButton>
         </I3Div>
-        {lab.labList.map((i) => {
-          return (
-            <LabItem
-              key={i.id + "lablist"}
-              lab={i}
-              onDelete={() => this._onDeleteLab(i)}
-              onUpdateLab={this._onUpdateItem}
-            />
-          );
-        })}
+        {lab.labList
+          .sort((a, b) => a.priority - b.priority)
+          .map((i) => {
+            console.log(1);
+            return (
+              <LabItem
+                key={i.id + "lablist"}
+                lab={i}
+                onDelete={() => this._onDeleteLab(i)}
+                onUpdateLab={this._onUpdateItem}
+              />
+            );
+          })}
       </>
     );
   }

@@ -5,6 +5,7 @@ import {
   RowTextField,
   RowSwitch,
   I3Select,
+  ShouldUpdateWrapper,
 } from "../../importer";
 import PropTypes from "prop-types";
 export default class InstrumentDetail extends BaseConsumer {
@@ -42,11 +43,12 @@ export default class InstrumentDetail extends BaseConsumer {
     let { instrument } = this.props;
     return (
       <I3Div margin="xs">
-        <RowTextField
-          title="Instrument name"
+        <ShouldUpdateWrapper
           value={instrument.name ? instrument.name : ""}
           onChange={(text) => this._changeText(instrument, "name", text)}
-        />
+        >
+          <RowTextField title="Instrument name" />
+        </ShouldUpdateWrapper>
         <RowSwitch
           title={"Active"}
           isActive={instrument.isActive}
@@ -57,18 +59,20 @@ export default class InstrumentDetail extends BaseConsumer {
           isActive={instrument.autoSendToHost}
           onChange={() => this._changeActive("autoSendToHost")}
         />
-        <RowTextField
-          title="Serial Number"
+        <ShouldUpdateWrapper
           value={instrument.serialNumber ? instrument.serialNumber : ""}
           onChange={(text) =>
             this._changeText(instrument, "serialNumber", text)
           }
-        />
+        >
+          <RowTextField title="Serial Number" />
+        </ShouldUpdateWrapper>
         <I3Div margin={"md"}>
           <I3Div variant="h6" fontWeight="bold" margin="xs">
             Instrument type
           </I3Div>
-          <I3Select
+          <ShouldUpdateWrapper
+            options={this.state._optionsInstrumentType}
             onChange={(item) => {
               this.updateObject(this.props.instrument, {
                 machineType: item.value,
@@ -77,27 +81,31 @@ export default class InstrumentDetail extends BaseConsumer {
             value={this.state._optionsInstrumentType.find(
               (opt) => opt.value == this.props.instrument.machineType
             )}
-            getOptionLabel={(opt) => {
-              return opt.label;
-            }}
-            getOptionValue={(opt) => {
-              return opt.value;
-            }}
-            placeholder="Select Type"
-            options={this.state._optionsInstrumentType}
-            color="lighterGray"
-          />
+          >
+            <I3Select
+              getOptionLabel={(opt) => {
+                return opt.label;
+              }}
+              getOptionValue={(opt) => {
+                return opt.value;
+              }}
+              placeholder="Select Type"
+              color="lighterGray"
+            />
+          </ShouldUpdateWrapper>
         </I3Div>
-        <RowTextField
-          title="TAN folder"
+        <ShouldUpdateWrapper
           value={instrument.tanFolder ? instrument.tanFolder : ""}
           onChange={(text) => this._changeText(instrument, "tanFolder", text)}
-        />
-        <RowTextField
-          title="ASTM folder"
+        >
+          <RowTextField title="TAN folder" />
+        </ShouldUpdateWrapper>
+        <ShouldUpdateWrapper
           value={instrument.astmFolder ? instrument.astmFolder : ""}
           onChange={(text) => this._changeText(instrument, "astmFolder", text)}
-        />
+        >
+          <RowTextField title="ASTM folder" />
+        </ShouldUpdateWrapper>
       </I3Div>
     );
   }
