@@ -39,25 +39,8 @@ export default class Instrument extends BaseConsumer {
   };
   //Thêm mới Instrument
   _onAddItem = (newItem) => {
-    this.ajaxPost({
-      url: "/api/link/AddOrUpdateInstrument",
-      data: newItem,
-      success: (ack) => {
-        this.addElement(
-          this.props.instrument.instrumentList,
-          ack.data,
-          null,
-          () => {
-            this.closeModal(-1);
-            this.success("Added Item");
-          }
-        );
-      },
-      error: (ack) => {
-        for (let i of ack.ErrorMessage) {
-          this.error(i);
-        }
-      },
+    this.addElement(this.props.instrument.instrumentList, newItem, null, () => {
+      this.success("Added Item");
     });
   };
   //Cập nhật Instrument Callback của Detail

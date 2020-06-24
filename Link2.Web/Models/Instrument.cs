@@ -16,7 +16,6 @@ namespace Link2.Web.Models
         public int MachineType { get; set; }
         public string SerialNumber { get; set; }
         public string TanFolder { get; set; }
-        public string Image { get; set; }
 
     }
 }

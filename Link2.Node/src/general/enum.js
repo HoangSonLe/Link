@@ -10,6 +10,20 @@ export const LabTypeModal = {
     AddLis: 3
 
 }
+export const LisMachineType = {
+    Erytra: 1,
+    DGReader: 2,
+    Wadiana: 3,
+    ErytraEflexis: 4,
+    DGReaderNet: 5
+}
+export const ImageInstrument = {
+    Erytra: "erytra.jpg",
+    DGReader: "dgreader.png",
+    Wadiana: "diana.png",
+    ErytraEflexis: "erytra-eflexis.jpg",
+    DGReaderNet: "dgreader-net.jpg"
+}
 
 export const LisCommunicationMode = {
     FolderChannel: 4000,

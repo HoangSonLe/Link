@@ -87,7 +87,7 @@ class AddItemLab extends BaseConsumer {
         {typeAdd == LabTypeModal.AddInstrument ? (
           <InstrumentItem instrument={i} isInLab={true} />
         ) : (
-          <LisSystemItem lisSystem={i} />
+          <LisSystemItem lisSystem={i} isInLab={true} />
         )}
       </I3Div>
     );

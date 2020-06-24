@@ -34,8 +34,6 @@ export default class Lis extends BaseConsumer {
   };
   //Xóa LIS, callback của children
   _onDeleteItem = (i) => {
-    debugger;
-
     this.removeElement(this.props.lis.lisList, i, this.success("Removed Item"));
   };
   //Thêm LisSystem

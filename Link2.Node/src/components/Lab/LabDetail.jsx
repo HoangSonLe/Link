@@ -20,11 +20,6 @@ class LabDetail extends BaseConsumer {
       _optionsTimeZones: [],
     };
   }
-  // _changeActive = (key) => {
-  //   this.updateObject(this.props.instrument, {
-  //     [key]: !this.props.instrument[key],
-  //   });
-  // };
   _changeText = (item, key, value) => {
     this.updateObject(item, { [key]: value });
   };

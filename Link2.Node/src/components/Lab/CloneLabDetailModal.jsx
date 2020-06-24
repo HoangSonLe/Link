@@ -21,6 +21,7 @@ export default class CloneLabDetailModal extends BaseCloneConsumer {
     let cloneData = this.getCloneStateByKey(this._randomId);
     return (
       <LabDetailModal
+        commitData={this.commitData}
         onDelete={onDelete}
         onSave={onSave}
         lab={cloneData}

@@ -18,7 +18,7 @@ export default class InstrumenteDetailModal extends ModalLayout {
   }
   leftFooter() {
     return (
-      <BaseButton variant="outlined" onClick={this.closeThisModal}>
+      <BaseButton variant="outlined" onClick={this._close}>
         Cancel
       </BaseButton>
     );
@@ -31,16 +31,50 @@ export default class InstrumenteDetailModal extends ModalLayout {
       <BaseButton
         width="110px"
         onClick={() => {
-          onSave(instrument);
-          // this.closeThisModal();
+          typeof onSave === "function"
+            ? this._onAddItem(instrument)
+            : this._onUpdateItem(instrument);
         }}
       >
         Save
       </BaseButton>
     );
   }
+  _onUpdateItem = (newItem) => {
+    this.ajaxPost({
+      url: "/api/link/AddOrUpdateInstrument",
+      data: newItem,
+      success: (ack) => {
+        this.props.commitData(() => this.success("Updated Item"));
+        this.closeThisModal();
+      },
+      error: (ack) => {
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
+      },
+    });
+  };
+
+  _onAddItem = (newItem) => {
+    this.ajaxPost({
+      url: "/api/link/AddOrUpdateInstrument",
+      data: newItem,
+      success: (ack) => {
+        this.props.onSave(ack.data);
+        this.closeThisModal();
+      },
+      error: (ack) => {
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
+      },
+    });
+  };
 }
+
 InstrumenteDetailModal.protoTypes = {
   instrument: PropTypes.object.isRequired,
   onSave: PropTypes.func,
+  commitData: PropTypes.func,
 };

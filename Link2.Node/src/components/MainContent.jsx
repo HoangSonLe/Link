@@ -7,14 +7,14 @@ export default class MainContent extends BaseConsumer {
   _createTab = () => {
     let { routeData } = this.props;
     return [
-      // {
-      //   tabName: "Labss",
-      //   tabContent: <Lab lab={routeData.lab}></Lab>,
-      // },
-      // {
-      //   tabName: "Instruments",
-      //   tabContent: <Instrument instrument={routeData.instrument}></Instrument>,
-      // },
+      {
+        tabName: "Labs",
+        tabContent: <Lab lab={routeData.lab}></Lab>,
+      },
+      {
+        tabName: "Instruments",
+        tabContent: <Instrument instrument={routeData.instrument}></Instrument>,
+      },
       {
         tabName: "Lis",
         tabContent: <Lis lis={routeData.lis}></Lis>,

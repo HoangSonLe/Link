@@ -243,7 +243,6 @@ namespace Link2.Web.Controllers
         {
                 new Instrument(){
                     Id = 1,
-                    Image ="erytra.jpg",
                     MachineType =1,
                     AstmFolder =@"C:\TestFolder\57-0694\ASTM\1-1",
                     AutoSendToHost =false,
@@ -255,7 +254,6 @@ namespace Link2.Web.Controllers
                 },
                 new Instrument(){
                     Id = 2,
-                    Image ="dgreader.png",
                     MachineType =2,
                     AstmFolder =@"C:\TestFolder\57-0694\ASTM\2-1",
                     AutoSendToHost =false,
@@ -267,7 +265,6 @@ namespace Link2.Web.Controllers
                 },
                 new Instrument(){
                     Id = 3,
-                    Image ="diana.png",
                     MachineType =3,
                     AstmFolder =@"C:\TestFolder\57-0694\ASTM\3-1",
                     AutoSendToHost =false,
@@ -279,7 +276,6 @@ namespace Link2.Web.Controllers
                 },
                 new Instrument(){
                     Id = 4,
-                    Image ="erytra-eflexis.jpg",
                     MachineType =4,
                     AstmFolder =@"C:\TestFolder\57-0694\ASTM\1-2",
                     AutoSendToHost =false,
@@ -291,7 +287,6 @@ namespace Link2.Web.Controllers
                 },
                 new Instrument(){
                     Id = 5,
-                    Image ="dgreader-net.jpg",
                     MachineType =5,
                     AstmFolder =@"C:\TestFolder\57-0694\ASTM\1-2",
                     AutoSendToHost =false,
@@ -736,25 +731,25 @@ namespace Link2.Web.Controllers
             }
             //Gán ảnh
             
-            switch (ins.MachineType)
-            {
-                case (int)EnumLink.InstrumentType.Erytra:
-                    ins.Image = "erytra.jpg";
-                    break;
-                case (int)EnumLink.InstrumentType.ErytraEflexis:
-                    ins.Image = "erytra-eflexis.jpg";
-                    break;
-                case (int)EnumLink.InstrumentType.DGReader:
-                    ins.Image = "dgreader.png";
-                    break;
-                case (int)EnumLink.InstrumentType.DGReaderNet:
-                    ins.Image = "dgreader-net.jpg";
-                    break;
-                case (int)EnumLink.InstrumentType.Wadiana:
-                    ins.Image = "diana.png";
-                    break;
-                default: break;
-            }
+            //switch (ins.MachineType)
+            //{
+            //    case (int)EnumLink.InstrumentType.Erytra:
+            //        ins.Image = "erytra.jpg";
+            //        break;
+            //    case (int)EnumLink.InstrumentType.ErytraEflexis:
+            //        ins.Image = "erytra-eflexis.jpg";
+            //        break;
+            //    case (int)EnumLink.InstrumentType.DGReader:
+            //        ins.Image = "dgreader.png";
+            //        break;
+            //    case (int)EnumLink.InstrumentType.DGReaderNet:
+            //        ins.Image = "dgreader-net.jpg";
+            //        break;
+            //    case (int)EnumLink.InstrumentType.Wadiana:
+            //        ins.Image = "diana.png";
+            //        break;
+            //    default: break;
+            //}
             
             //Kiểm tra Add or Update
             var inst = listInstruments.Find(p => p.Id == ins.Id);
@@ -769,7 +764,6 @@ namespace Link2.Web.Controllers
                 inst.IsAssigned = ins.IsAssigned;
                 inst.AutoSendToHost = ins.AutoSendToHost;
                 inst.MachineType = ins.MachineType;
-                inst.Image = ins.Image;
                 inst.Name = ins.Name;
                 inst.SerialNumber = ins.SerialNumber;
                 inst.TanFolder = ins.TanFolder;

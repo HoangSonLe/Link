@@ -12,6 +12,7 @@ export default class LabDetailModal extends ModalLayout {
   componentDidMount() {
     this.setInitDataToCompare(this.props.lab);
   }
+
   modalBody() {
     const { lab, onDelete } = this.props;
     return (
@@ -26,7 +27,7 @@ export default class LabDetailModal extends ModalLayout {
   }
   leftFooter() {
     return (
-      <BaseButton variant="outlined" onClick={this.closeThisModal}>
+      <BaseButton variant="outlined" onClick={this._close}>
         Cancel
       </BaseButton>
     );
@@ -39,17 +40,50 @@ export default class LabDetailModal extends ModalLayout {
       <BaseButton
         width="110px"
         onClick={(data) => {
-          onSave(lab);
-          // this.closeThisModal();
+          typeof onSave === "function"
+            ? this._onAddItem(lab)
+            : this._onUpdateItem(lab);
         }}
       >
         Save
       </BaseButton>
     );
   }
+  _onUpdateItem = (newItem) => {
+    this.ajaxPost({
+      url: "/api/link/AddOrUpdateLab",
+      data: newItem,
+      success: (ack) => {
+        this.props.commitData(() => this.success("Updated Item"));
+        this.closeThisModal();
+      },
+      error: (ack) => {
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
+      },
+    });
+  };
+
+  _onAddItem = (newItem) => {
+    this.ajaxPost({
+      url: "/api/link/AddOrUpdateLab",
+      data: newItem,
+      success: (ack) => {
+        this.props.onSave(ack.data);
+        this.closeThisModal();
+      },
+      error: (ack) => {
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
+      },
+    });
+  };
 }
 LabDetailModal.protoTypes = {
   lab: PropTypes.object,
   onSave: PropTypes.func,
   onDelete: PropTypes.func,
+  commitData: PropTypes.func,
 };

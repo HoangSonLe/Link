@@ -21,22 +21,6 @@ class LisSystemItem extends Item {
       true
     );
   };
-  //Cập nhật LisSystem callback ra ngoài Lis
-  _onUpdateItem = (newItem) => {
-    let { lisSystem } = this.props;
-    this.ajaxPost({
-      url: "/api/link/AddOrUpdateLisSystem",
-      data: newItem,
-      success: (ack) => {
-        this.props.onUpdate(lisSystem, ack.data);
-      },
-      error: (ack) => {
-        for (let i of ack.ErrorMessage) {
-          this.error(i);
-        }
-      },
-    });
-  };
   //Xóa LisSystem và callback ra Lis
   _onDeleteItem = () => {
     let { lisSystem, isInLab, onDelete } = this.props;

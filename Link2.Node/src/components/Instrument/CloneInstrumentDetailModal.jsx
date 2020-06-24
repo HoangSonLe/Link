@@ -22,6 +22,7 @@ export default class CloneInstrumentDetailModal extends BaseCloneConsumer {
       <InstrumenteDetailModal
         onSave={onSave}
         instrument={cloneData}
+        commitData={this.commitData}
         {...otherProps}
       />
     );

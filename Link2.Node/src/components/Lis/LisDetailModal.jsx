@@ -12,13 +12,14 @@ export default class LisDetailModal extends ModalLayout {
   componentDidMount() {
     this.setInitDataToCompare(this.props.lis);
   }
+
   modalBody() {
     const { lis } = this.props;
     return <LisDetail lis={lis} />;
   }
   leftFooter() {
     return (
-      <BaseButton variant="outlined" onClick={this.closeThisModal}>
+      <BaseButton variant="outlined" onClick={this._close}>
         Cancel
       </BaseButton>
     );
@@ -44,7 +45,7 @@ export default class LisDetailModal extends ModalLayout {
       url: "/api/link/AddOrUpdateLisSystem",
       data: newItem,
       success: (ack) => {
-        this.props.commitData();
+        this.props.commitData(() => this.success("Updated Item"));
         this.closeThisModal();
       },
       error: (ack) => {

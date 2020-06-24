@@ -31,40 +31,17 @@ export default class Lab extends BaseConsumer {
       true
     );
   };
-  //Thêm lab mới
+  //Thêm lab mới callback của clonelabdetail
   _onAddItem = (newItem) => {
     let { lab } = this.props;
-
-    this.ajaxPost({
-      url: "/api/link/AddOrUpdateLab",
-      data: newItem,
-      success: (ack) => {
-        this.closeModal(-1);
-
-        this.addElement(lab.labList, ack.data, null, () => {
-          this.success("Added Item");
-        });
-      },
-      error: (ack) => {
-        for (let i of ack.ErrorMessage) {
-          this.error(i);
-        }
-      },
+    this.addElement(lab.labList, newItem, null, () => {
+      this.success("Added Item");
     });
   };
-  //Cập nhật Lab callback của children
-  _onUpdateItem = (oldItem, newItem) => {
-    this.closeModal(-1);
-    this.updateObject(oldItem, newItem, () => {
-      this.success("Updated Item");
-    });
-  };
-  //Xóa Lab callback của children
 
+  //Xóa Lab callback của labitem->...->labdetail
   _onDeleteLab = (i) => {
     let { lab } = this.props;
-    this.closeModal(-1);
-
     this.removeElement(lab.labList, i, () => {
       this.success("Removed Item");
     });
@@ -90,7 +67,6 @@ export default class Lab extends BaseConsumer {
                 key={i.id + "lablist"}
                 lab={i}
                 onDelete={() => this._onDeleteLab(i)}
-                onUpdateLab={this._onUpdateItem}
               />
             );
           })}

@@ -7,6 +7,7 @@ import {
   I3Component,
 } from "../../importer";
 import PropTypes from "prop-types";
+import { LisCommunicationMode, ImageLis } from "../../general/enum";
 
 import { Item, Styles } from "../../base-components/Item";
 
@@ -60,10 +61,24 @@ class LisItem extends Item {
     });
   };
   renderImage() {
-    return (
-      <img src={"/dist/contents/images/" + this.props.lis.lisSystem.image} />
-    );
+    let image = "";
+
+    switch (this.props.lis.lisSystem.communicationMode) {
+      case LisCommunicationMode.FolderChannel:
+        image = ImageLis.FolderChannel;
+        break;
+      case LisCommunicationMode.SerialChannel:
+        image = ImageLis.SerialChannel;
+        break;
+      case LisCommunicationMode.TCPChannel:
+        image = ImageLis.TCPChannel;
+        break;
+      default:
+        break;
+    }
+    return <img src={"/dist/contents/images/" + image} />;
   }
+
   renderRightHeader() {
     return (
       <BaseCheckboxItem

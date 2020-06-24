@@ -42,11 +42,7 @@ class LabItem extends BaseConsumer {
         break;
       default:
         body = (
-          <CloneLabDetailModal
-            onDelete={onDelete}
-            data={this.props.lab}
-            onSave={(newItem) => this._onUpdateLab(newItem)}
-          />
+          <CloneLabDetailModal onDelete={onDelete} data={this.props.lab} />
         );
     }
     this.openModal(
@@ -58,33 +54,15 @@ class LabItem extends BaseConsumer {
       true
     );
   };
-  //Xóa Lab  và callback ra ngoài
-  _onUpdateLab = (newItem) => {
-    let { lab, onUpdateLab } = this.props;
-    console.log(newItem);
-    this.ajaxPost({
-      url: "/api/link/AddOrUpdateLab",
-      data: newItem,
-      success: (ack) => {
-        onUpdateLab(lab, ack.data);
-      },
-      error: (ack) => {
-        for (let i of ack.ErrorMessage) {
-          this.error(i);
-        }
-      },
-    });
-  };
   //Thêm Instrument vào Lab
   _onAddInstrumentsInLab = (newItems) => {
     let { lab } = this.props;
-    let postData = newItems.map((i) => i.Id);
     this.ajaxPost({
       url: "/api/link/AddInstrumentToLab?id=" + lab.id,
       data: newItems,
       success: (ack) => {
         this.clearListAndPushNewItems(lab.lisInstruments, ack.data, () => {
-          console.log("ack", lab);
+          this.success("Added new items");
         });
       },
       error: (ack) => {
@@ -259,7 +237,6 @@ const Styles = {
   },
 };
 LabItem.protoTypes = {
-  onUpdateLab: PropTypes.func,
   onDelete: PropTypes.func,
   lab: PropTypes.object.isRequired,
 };

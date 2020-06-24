@@ -1,12 +1,16 @@
 import React from "react";
 import { withStyles } from "@material-ui/core";
 import { IconButtonGroup, I3Component, I3Div, I3Icon } from "../../importer";
-import { EModalType } from "../../general/enum";
+import {
+  EModalType,
+  LisMachineType,
+  ImageInstrument,
+} from "../../general/enum";
 import CloneInstrumentDetailModal from "./CloneInstrumentDetailModal";
 import PropTypes from "prop-types";
 
 import { Item, Styles } from "../../base-components/Item";
-
+import CommunicationModal from "./CommunicationModal";
 class InstrumentItem extends Item {
   constructor(props) {
     super(props);
@@ -16,14 +20,7 @@ class InstrumentItem extends Item {
       ? this.openModal(
           () => ({
             title: title,
-            body: (
-              <CloneInstrumentDetailModal
-                onSave={(newItem) =>
-                  this._onUpdateItem(this.props.instrument, newItem)
-                }
-                data={this.props.instrument}
-              />
-            ),
+            body: <CloneInstrumentDetailModal data={this.props.instrument} />,
           }),
           EModalType.Right,
           true
@@ -31,26 +28,11 @@ class InstrumentItem extends Item {
       : this.openModal(
           () => ({
             title: title,
-            body: <CloneInstrumentDetailModal />,
+            body: <CommunicationModal />,
           }),
           EModalType.Right,
           true
         );
-  };
-  //Cập nhật Instrument
-  _onUpdateItem = (oldItem, newItem) => {
-    this.ajaxPost({
-      url: "/api/link/AddOrUpdateInstrument",
-      data: newItem,
-      success: (ack) => {
-        this.props.onUpdate(this.props.instrument, ack.data);
-      },
-      error: (ack) => {
-        for (let i of ack.ErrorMessage) {
-          this.error(i);
-        }
-      },
-    });
   };
   //Hàm xóa instrument, check nếu là xóa trong Lab thì gọi API khác
   _onDeleteItem = () => {
@@ -84,12 +66,28 @@ class InstrumentItem extends Item {
   };
 
   renderImage() {
-    return (
-      <img
-        height="80%"
-        src={"/dist/contents/images/" + this.props.instrument.image}
-      />
-    );
+    let image = "";
+
+    switch (this.props.instrument.machineType) {
+      case LisMachineType.DGReader:
+        image = ImageInstrument.DGReader;
+        break;
+      case LisMachineType.DGReaderNet:
+        image = ImageInstrument.DGReaderNet;
+        break;
+      case LisMachineType.Erytra:
+        image = ImageInstrument.Erytra;
+        break;
+      case LisMachineType.ErytraEflexis:
+        image = ImageInstrument.ErytraEflexis;
+        break;
+      case LisMachineType.Wadiana:
+        image = ImageInstrument.Wadiana;
+        break;
+      default:
+        break;
+    }
+    return <img height="80%" src={"/dist/contents/images/" + image} />;
   }
   renderRightHeader() {
     return (
