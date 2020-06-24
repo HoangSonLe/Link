@@ -121,7 +121,9 @@ const Styles = {
   },
 
   rightPopupModalPaper: {
-    width: "520px",
+    width: "auto",
+    minWidth: "400px",
+    // width: "520px",
     right: "0px",
     position: "absolute",
   },

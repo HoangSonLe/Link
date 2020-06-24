@@ -49,6 +49,7 @@ export default class LabDetailModal extends ModalLayout {
       </BaseButton>
     );
   }
+  //Cập nhật Lab
   _onUpdateItem = (newItem) => {
     this.ajaxPost({
       url: "/api/link/AddOrUpdateLab",
@@ -64,7 +65,7 @@ export default class LabDetailModal extends ModalLayout {
       },
     });
   };
-
+  //Thêm lab mới
   _onAddItem = (newItem) => {
     this.ajaxPost({
       url: "/api/link/AddOrUpdateLab",

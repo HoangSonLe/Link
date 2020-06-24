@@ -18,6 +18,7 @@ import AddItemLabModal from "./AddItemLabModal";
 
 class LabItem extends BaseConsumer {
   //Mở modal theo type thêm Instrument,LIS hoặc sửa Lab Detail
+  //Có 2 dạng mở modal: Mở để thêm item và mở để sửa item
   _openModal = (title, type) => {
     let { lab, onDelete } = this.props;
     let body = "";
@@ -59,6 +60,7 @@ class LabItem extends BaseConsumer {
     );
   };
   //Add Item to Lab
+  //Có 2 trường hợp thêm Lis và thêm Instrument vào Lab
   _onAddItemInLab = (type, newItems) => {
     let { lab } = this.props;
     let url = "";
@@ -86,6 +88,8 @@ class LabItem extends BaseConsumer {
         });
   };
   //Removed Item in Lab
+  //Có 2 trường hợp xóa Lis và xóa Instrument vào Lab
+
   _onDeleteItemInLab = (type, i) => {
     let { lab } = this.props;
     let url = "";

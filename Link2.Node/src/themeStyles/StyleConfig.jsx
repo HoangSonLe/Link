@@ -1,8 +1,13 @@
 import React from "react";
 import Colors from "./Color";
 
-function createColor(color, textColorWithBackground, lighterColor, textColorWithLighter) {
-  return ({ color, textColorWithBackground, lighterColor, textColorWithLighter });
+function createColor(
+  color,
+  textColorWithBackground,
+  lighterColor,
+  textColorWithLighter
+) {
+  return { color, textColorWithBackground, lighterColor, textColorWithLighter };
 }
 
 export const ColorObject = {
@@ -18,11 +23,10 @@ export const ColorObject = {
   white: createColor("#ffffff", Colors.black),
   lightGray: createColor(Colors.lightGray, Colors.white),
   lighterGray: createColor(Colors.lighterGray, Colors.black),
-  lightGreen: createColor(Colors.lightgreen, Colors.white)
-
-}
+  lightGreen: createColor(Colors.lightgreen, Colors.white),
+};
 const globalStyle = {
-  containerPadding: '10pt',
+  containerPadding: "10pt",
   defaultBoxShadowColor: "grey", //màu mặc định cho boxShadow
   drawerWidth: 260, // width of sidebar (left) when opened
   drawerWidthUser: 260, //width of sidebar user (right) when opened
@@ -31,10 +35,10 @@ const globalStyle = {
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif', // FontFamily default
   fontWeight: "300", //Font weight default
   fontWeightValues: {
-    "normal": 400,
-    "lighter": 300,
-    "bold": 500,
-    "bolder": 600,
+    normal: 400,
+    lighter: 300,
+    bold: 500,
+    bolder: 600,
   },
   marginAndPaddingSpacing: 0.3, // hệ số mặc định của padding và margin
   marginAndPaddingSpacingUnit: "rem", //đơn vị của hệ số padding và margin
@@ -68,7 +72,7 @@ const globalStyle = {
     fontWeight: "300",
     marginTop: "30px",
     marginBottom: "25px",
-    minHeight: "32px"
+    minHeight: "32px",
   },
 
   style1BoxShadow: "0px 3px 8px 1px {color}",
@@ -97,9 +101,7 @@ const globalStyle = {
   lg4MarginAndPadding: "30px",
   lg5MarginAndPadding: "35px",
   lg6MarginAndPadding: "40px",
-
 };
-
 
 const headdingStyle = {
   headingMargin: "0 0 30px", // Margin của toàn bộ heading
@@ -108,7 +110,7 @@ const headdingStyle = {
   titleColor: "red", //màu chữ title
   categoryFontSize: "14px", //size chữ category
   titleFontSize: "1.825em", //sizze chữ title
-  categoryColor: "green" // màu chữ category
+  categoryColor: "green", // màu chữ category
 };
 
 const tooltipStyle = {
@@ -119,7 +121,7 @@ const tooltipStyle = {
   background: "rgba(85,85,85,0.9)", //hex or rgb
   textAlign: "center",
   fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
-  fontSize: "12px"
+  fontSize: "12px",
 };
 
 const cardStyles = {
@@ -169,22 +171,22 @@ const cardStyles = {
     contentIcon: {
       //ảnh hưởng đến CardIcon có truyền props color.
       padding: "15px",
-      iconAndTitleSpacing: "15px" // khoảng cách giữa icon và Title(Nếu có)
+      iconAndTitleSpacing: "15px", // khoảng cách giữa icon và Title(Nếu có)
     },
     contentText: {
       //ảnh hưởng đến CardText.
       padding: "15px",
-      cardTextAndTitleSpacing: "15px" // khoảng cách giữa card và Title(Nếu có)
-    }
+      cardTextAndTitleSpacing: "15px", // khoảng cách giữa card và Title(Nếu có)
+    },
   },
   cardBodyStyle: {
     padding: "15px 0px 15px 0px", //khoảng cách trên phải dưới trái của body
-    textAlign: "unset"
+    textAlign: "unset",
   },
   cardFooterStyle: {
     divideLineWidth: "100%", //độ dài của divide line footer
     divideLineThickness: "1px", // độ dày của divide line footer
-    padding: "15px 0px 0px 0px" //khoảng cách trên phải dưới trái của footer
+    padding: "15px 0px 0px 0px", //khoảng cách trên phải dưới trái của footer
   },
   cardAvatarStyle: {
     xsSize: "40px", //Kích thước size xs của avatar
@@ -194,10 +196,10 @@ const cardStyles = {
     xlSize: "160px", //Kích thước size xl của avatar
     xxlSize: "200px", //Kích thước size xxl của avatar
     squareAvatarBorderRadius: "6px", // borderRadius của avatar không tròn,
-    boxShadowColor: "#000000c2" //màu shadow
+    boxShadowColor: "#000000c2", //màu shadow
     //borderColor: "purple" //màu của border
     //borderRadius: "30px"
-  }
+  },
 };
 
 const buttonStyles = {
@@ -210,20 +212,20 @@ const buttonStyles = {
   buttonLarge: {
     padding: "1.125rem 2.25rem",
     fontSize: "0.875rem",
-    borderRadius: "0.2rem"
+    borderRadius: "0.2rem",
   },
   buttonSmall: {
     padding: "0.40625rem 1.25rem",
     fontSize: "0.6875rem",
-    borderRadius: "0.2rem"
+    borderRadius: "0.2rem",
   },
   buttonWidth: {
     lg: "240pt",
     md: "150pt",
-    sm: "100pt"
+    sm: "100pt",
   },
   buttonRound: {
-    borderRadius: "30px"
+    borderRadius: "30px",
   },
   justIcon: {
     paddingLeft: "12px",
@@ -231,8 +233,8 @@ const buttonStyles = {
     fontSize: "20px",
     height: "41px",
     minWidth: "41px",
-    width: "41px"
-  }
+    width: "41px",
+  },
 };
 
 //text fields
@@ -244,7 +246,7 @@ const textFieldStyle = {
   // labelFontSizeWhenFocus: "14px", //khi focus vào text field thì label thu về cỡ bao nhiêu,
   placeholderPaddingLeft: "5px",
   borderRadius: "4px",
-  textFieldStyle: globalStyle.defaultFontColor
+  textFieldStyle: globalStyle.defaultFontColor,
 };
 
 //table
@@ -252,44 +254,42 @@ const tableStyle = {
   cellPadding: "12px 8px", //padding của từng ô
   headFontSize: "1.25em", //cở chữ của header
   cellFontSize: "1em", // cở chữ của các ô
-  defaultBorderWidth: "1px" //border mặc định của các ô
+  defaultBorderWidth: "1px", //border mặc định của các ô
 };
 
 //select/dropdown
 const selectStyle = {
   multiSelectedStyle: {
-    height: "30px" //chiều cao của mỗi phần tử sau khi được chọn (trường hợp chọn multiple)
+    height: "30px", //chiều cao của mỗi phần tử sau khi được chọn (trường hợp chọn multiple)
   },
-  optionBackground: "#fff"
+  optionBackground: "#fff",
   //chiều cao, chiều ngang, cỡ chữ apply giống như textFieldStyle
 };
 
 //modal
 const modalManagerStyle = {
-  largeWidth: '90%',
-  mediumWidth: '70%',
-  smallWidth: '50%',
-  extraSmallWidth: '30%',
+  largeWidth: "90%",
+  mediumWidth: "70%",
+  smallWidth: "50%",
+  extraSmallWidth: "30%",
   header: {
-    height: '65px',
-    padding: '24px',
-    titleFontSize: '1.5rem',
+    height: "65px",
+    padding: "24px",
+    titleFontSize: "1.5rem",
   },
   body: {
-    padding: '24px'
+    padding: "24px",
   },
   closeIcon: {
     color: "#999999",
-    fontSize: '18px'
+    fontSize: "18px",
   },
   footer: {
-    padding: 'unset'
-  }
+    padding: "unset",
+  },
+};
 
-}
-
-const accordionStyle =
-{
+const accordionStyle = {
   root: {
     border: "none",
     margin: "0px 0px 20px 0px",
@@ -309,7 +309,7 @@ const accordionStyle =
       padding: "25px 10px 5px 0px",
       borderTopLeftRadius: "3px",
       borderTopRightRadius: "3px",
-      margin: "none"
+      margin: "none",
       // color: "#3C4858",
       // colorHover: globalStyle.primaryColor, //
     },
@@ -317,13 +317,12 @@ const accordionStyle =
       icon: {
         topUp: "auto !important",
         topDown: "10px !important",
-        color: "inherit"
-      }
+        color: "inherit",
+      },
     },
     content: {
-      margin: "0 !important"
+      margin: "0 !important",
     },
-
   },
   panelDetails: {
     padding: "15px 0px 5px",
@@ -334,12 +333,12 @@ const accordionStyle =
     fontWeight: "bolder",
     marginTop: "0",
     marginBottom: "0",
-    color: "inherit"
+    color: "inherit",
   },
   defaultContent: {
     fontSize: "14px",
   },
-}
+};
 const badgeStyle = {
   borderRadius: "12px", //bo tron border
   padding: "5px 6px", //padding default(5px 6px)
@@ -351,7 +350,7 @@ const navPillsStyles = {
   root: {
     padding: "0px",
     margin: "20px 0px 0px 0px",
-    border: "none"
+    border: "none",
   },
   pills: {
     // style button trên thanh header
@@ -363,14 +362,14 @@ const navPillsStyles = {
     margin: "0 5px",
     height: "auto",
     border: "none",
-    fontSize: "14px"
+    fontSize: "14px",
   },
   contentWrapper: {
     // style wrapper content , content nên truyền component riêng chỉnh css
     margin: "20px 0px 0px 0px",
     padding: "none",
     border: "none",
-    fontSize: "unset"
+    fontSize: "unset",
   },
   color: {
     // shadow từng loại color truyền vào
@@ -387,39 +386,39 @@ const navPillsStyles = {
     boxShadowDanger:
       "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(255, 152, 0, 0.4)",
     boxShadowDefault:
-      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(211, 211, 211, 0.4)"
-  }
+      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(211, 211, 211, 0.4)",
+  },
 };
 const gridSystemStyles = {
   gridContainer: {
     padding: "unset",
-    margin: "0 0 15px 0"
+    margin: "0 0 15px 0",
   },
   gridItem: {
     border: "none",
-    paddingDefault: "0 15px !important"
-  }
+    paddingDefault: "0 15px !important",
+  },
 };
 const snackbarStyles = {
   // arletify
   info: {
-    color: globalStyle.textColorWithInfoBackground
+    color: globalStyle.textColorWithInfoBackground,
   },
   success: {
-    color: globalStyle.textColorWithSuccessBackground
+    color: globalStyle.textColorWithSuccessBackground,
   },
   warning: {
-    color: globalStyle.textColorWithWarningBackground
+    color: globalStyle.textColorWithWarningBackground,
   },
   danger: {
-    color: globalStyle.textColorWithDangerBackground
+    color: globalStyle.textColorWithDangerBackground,
   },
   primary: {
-    color: globalStyle.textColorWithPrimaryBackground
+    color: globalStyle.textColorWithPrimaryBackground,
   },
   rose: {
     backgroundColor: "#eb3573",
-    color: "#ffffff"
+    color: "#ffffff",
   },
   root: {
     padding: "20px 15px",
@@ -427,47 +426,54 @@ const snackbarStyles = {
     fontSize: "14px",
     maxWidth: "60%",
     maxWidthMobile: "100%",
-    fontFamily: globalStyle.fontFamily
-  }
+    fontFamily: globalStyle.fontFamily,
+  },
 };
 const timelineStyles = {
-  item: { // tổng 1 story
+  item: {
+    // tổng 1 story
     margin: "0px 0px 20px 0px",
     padding: "none",
     fontFamily: globalStyle.fontFamily,
   },
-  panel: {  // cái tab pannel ( không có icon trên thanh timeline )
+  panel: {
+    // cái tab pannel ( không có icon trên thanh timeline )
     padding: "20px", //20px
-    margin: '0px 0px 20px 0px',//
+    margin: "0px 0px 20px 0px", //
     borderRadius: "6px",
-    boxShadow: "-2px 2px 4px 0  rgba(0, 0, 0, 0.14)"
+    boxShadow: "-2px 2px 4px 0  rgba(0, 0, 0, 0.14)",
   },
 
-  footerLine: { // đường kẻ giữa footerTitle và footer
+  footerLine: {
+    // đường kẻ giữa footerTitle và footer
     margin: "10px 0px 5px 0px",
-    borderColor: "unset"
+    borderColor: "unset",
   },
   timeline: {
     background: "#E5E5E5", // màu thanh timeline ở giữa,
     bottom: "20px", // chiều dài của thanh timeline so với bên dưới
   },
-  timelineHeading: { // header 
+  timelineHeading: {
+    // header
     margin: "0px 0px 15px 0px",
-    padding: "none"
+    padding: "none",
   },
-  timelineBody: { // body
+  timelineBody: {
+    // body
     margin: "none",
     padding: "none",
     fontSize: "14px",
   },
-  footerTitle: { // dòng chữ nhỏ phía trên footer và ở dưới body ( nhìn nó hơi giống chú thích )
+  footerTitle: {
+    // dòng chữ nhỏ phía trên footer và ở dưới body ( nhìn nó hơi giống chú thích )
     // color: "#333333",
     fontWeight: "400",
     margin: "10px 0px 0px",
     padding: "none",
-    fontSize: "0.8em"
+    fontSize: "0.8em",
   },
-  timelineFooter: { // footer
+  timelineFooter: {
+    // footer
     margin: "none",
     padding: "none",
   },
@@ -476,8 +482,8 @@ const timelineStyles = {
     height: "50px",
     widthIcon: "24px",
     heightIcon: "51px",
-    marginBetweenBadgeAndPanel: "0px"
-  }
+    marginBetweenBadgeAndPanel: "0px",
+  },
 };
 
 //checkbox/radio
@@ -485,7 +491,7 @@ const checkboxStyle = {
   spaceBetweenIconAndLabel: "5px", //khoảng cách giữa icon và text
   iconFontSize: "1.5rem", //font size của icon
   textFontSize: "17px", //font size của label
-  labelFontWeight: "400" //fontWeight (độ đậm) của label
+  labelFontWeight: "400", //fontWeight (độ đậm) của label
 };
 const sidebarStyle = {
   //sidebar gồm 3 phần header, main, footer
@@ -496,7 +502,7 @@ const sidebarStyle = {
     //màu chữ trên nền background
     backgroundAfter: "#000",
     //màu nền background
-    opacityAfter: "0.8"
+    opacityAfter: "0.8",
     // opacity background
   },
   //--------------------------------------------------------
@@ -506,7 +512,7 @@ const sidebarStyle = {
     //margin giữa header và main
     marginTop: "15px",
     //margin giữa header và phía trên
-    paddingLeft: "28px"
+    paddingLeft: "28px",
     // thụt đầu dòng ICON và TEXT
   },
   //ICON
@@ -523,13 +529,12 @@ const sidebarStyle = {
     background: "none",
     //màu nền img trường hợp img thêm vào không có nền
     border: "none",
-    borderRadius: "none"
+    borderRadius: "none",
     //border để làm nổi img
-
   },
   textIconHeader: {
     //trường hợp ICON là text
-    fontSize: "18px"
+    fontSize: "18px",
     //chỉnh fontSize text
   },
   //TEXT
@@ -542,7 +547,7 @@ const sidebarStyle = {
   footer: {
     marginTop: "0px",
     //khoảng cách giữa footer và phía trên (phần main chừa lại cho footer - xem sidebarWrapper.height)
-    paddingLeft: "27px"
+    paddingLeft: "27px",
     // thụt đầu dòng cho ICON và TEXT
   },
   //ICON
@@ -559,12 +564,12 @@ const sidebarStyle = {
     background: "none",
     //màu nền img tr[ờng hợp img kh4ng có nền
     border: "none",
-    borderRadius: "none"
+    borderRadius: "none",
     //border để làm nổi img
   },
   textIconFooter: {
     //trường hợp ICON là text
-    fontSize: "18px"
+    fontSize: "18px",
     //chỉnh fontSize text
   },
   //TEXT
@@ -585,7 +590,7 @@ const sidebarStyle = {
     //padding top,bot nên bằng 0, nếu muốn chỉnh khoảng cách của list so với trên dùng list.marginTOp, khoảng cách list so với dưới dùng sidebarWrapper.height,
     //padding left,right dùng để thụ đầu dòng các thẻ main
     //padding left right nên bằng nhau để khi mini sidebar, background của icon thẻ được active sẽ đều
-    marginTop: "15px"
+    marginTop: "15px",
     //dùng để chỉnh khoảng cách của list so với phần header,
     //sẽ có thắc mắc tại sao không marginTop trên sidebarWrapper lun, nhưng nếu dùng như vậy sẽ ảnh hưởng đến footer
   },
@@ -593,7 +598,7 @@ const sidebarStyle = {
     //từng thẻ của main
     marginTop: "10px",
     //marginTop các thẻ với nhau
-    marginBottom: "0px"
+    marginBottom: "0px",
     //marginBot các thẻ với nhau
   },
   itemLink: {
@@ -607,7 +612,7 @@ const sidebarStyle = {
     //khoảng cách của TEXT so với ICON trong  1 thẻ
     minWidth: "30px",
     //minWidth giúp các ICON cách đều với TEXT (do Icon có thể dài ngắn khác nhau(imgIcon, muiIcon, textIcon))
-    marginLeft: "3px"
+    marginLeft: "3px",
     //marginLeft để ICON vào giữa khi miniSidebar và thẻ được active
     //Trường hợp ICON là m-ui thì chỉ cần dùng marginLeft trên để căn giữa
     //Trường hợp ICON là img thì phải dùng thêm imgIcon.marginLeft để hỗ trợ căn cho img riêng
@@ -631,15 +636,14 @@ const sidebarStyle = {
     background: "white",
     //màu nên khi img không có nền
     border: "1px solid red",
-    borderRadius: "none"
+    borderRadius: "none",
     //border làm nổi img
   },
   //TEXT
   itemText: {
-    fontSize: "14px" //fontSize TEXT
+    fontSize: "14px", //fontSize TEXT
   },
-
-}
+};
 // tabs
 const customTabsStyles = {
   //Title cua tab
@@ -651,7 +655,7 @@ const customTabsStyles = {
     fontWeight: "bold", //độ đậm nhạt
   },
   tabsRoot: {
-    fontSize: "16px" //size của tên tab
+    fontSize: "16px", //size của tên tab
   },
   tabRootButton: {
     padding: "10px 15px", //padding cua từng tab
@@ -683,17 +687,17 @@ const customTabsStyles = {
   },
   cardHeaderStyle: {
     floatingHeaderPadding: "15px", //padding của header.
-    defaultMarginTop: 30, //(không phải hover) độ đẩy lên của Header. Lưu ý chỉ nhập số px muốn đẩy lên không nhập dấu -!
+    defaultMarginTop: 5, //(không phải hover) độ đẩy lên của Header. Lưu ý chỉ nhập số px muốn đẩy lên không nhập dấu -!
     marginBottom: "0",
     borderRadius: "10px", //borderRadius mặc định của Header.
   },
   cardBodyStyle: {
     padding: "5px 0px 15px 0px", //khoảng cách trên phải dưới trái của body
-    textAlign: "unset"
+    textAlign: "unset",
   },
   indicator: {
     color: ColorObject.primary.color, //Màu viền default bên dưới tab khi được chọn
-  }
+  },
 };
 
 //pagination
@@ -701,7 +705,7 @@ const paginationStyle = {
   pagination: {
     padding: 0,
     margin: "20px 0px",
-    borderRadius: "4px" // bo tron pagination
+    borderRadius: "4px", // bo tron pagination
   },
 
   //css của các nút trong pagination
@@ -716,8 +720,8 @@ const paginationStyle = {
     minHeight: "auto", // chiều cao tối thiểu
     fontWeight: "400", //độ đậm chữ
     fontSize: "12px", // cỡ chữ
-    background: "transparent" //background của các nút
-  }
+    background: "transparent", //background của các nút
+  },
 };
 const typographyStyles = {
   borderThickness: 2, // độ dày của border typography nếu có
@@ -749,47 +753,47 @@ const typographyStyles = {
   // h4FontFamily: globalStyle.fontFamily,
   // h5FontFamily: globalStyle.fontFamily,
   // h6FontFamily: globalStyle.fontFamily,
-  noneRadius: '0px', //ko Radius
-  lighterRadius: '8px', //radius nhẹ nhẹ
-  strongRadius: '10px', //radius mạnh
-  strongerRadius: '12px', //radius mạnh hơn nữa
-  heavyRadius: '20px',  //radius đậm
-  superStrongRadius: '30px', // siêu mạnh
-  XXLRadius: '38px', // siêu mạnh
+  noneRadius: "0px", //ko Radius
+  lighterRadius: "8px", //radius nhẹ nhẹ
+  strongRadius: "10px", //radius mạnh
+  strongerRadius: "12px", //radius mạnh hơn nữa
+  heavyRadius: "20px", //radius đậm
+  superStrongRadius: "30px", // siêu mạnh
+  XXLRadius: "38px", // siêu mạnh
   maximumRadius: "50%", // hết cở 50%
-  thinWidth: '1px', // 1px width
-  lighterWidth: '2px', //width nhẹ nhẹ
-  strongWidth: '5px', //width mạnh
-  superStrongWidth: '10px', // siêu mạnh
-  maximumWidth: '15px' // hết cở 
+  thinWidth: "1px", // 1px width
+  lighterWidth: "2px", //width nhẹ nhẹ
+  strongWidth: "5px", //width mạnh
+  superStrongWidth: "10px", // siêu mạnh
+  maximumWidth: "15px", // hết cở
 };
 //infoArea
 const infoAreaStyle = {
   infoArea: {
     maxWidth: "360px", //chiều rộng tối đa
     margin: "0 auto", //margin của infoArea
-    padding: "0px" //padding của infoArea
+    padding: "0px", //padding của infoArea
   },
   // icon
   iconWrapper: {
-    marginRight: "10px" //Khoảng cách phía bên phải giữa icon với phần tử khác
+    marginRight: "10px", //Khoảng cách phía bên phải giữa icon với phần tử khác
   },
   //title
   title: {
     color: "#3C4858", //màu chữ mặc định của title
     fontSize: "18px", //cỡ chữ của title
-    margin: "0px"
+    margin: "0px",
   },
   //description
   description: {
     marginTop: "15px", //Khoảng cách phía trên giữa description với phần tử khác
     fontSize: "14px", //cỡ chữ của description
-    color: "#000000" //Màu chữ mặc định của description
+    color: "#000000", //Màu chữ mặc định của description
   },
   icon: {
     width: "36px", //độ rộng icon
-    height: "36px" //độ cao icon
-  }
+    height: "36px", //độ cao icon
+  },
 };
 
 //Các nút đặc biệt của pagination (first, prev, next, last)
@@ -797,7 +801,7 @@ const paginationSpecialButton = {
   first: <i className="fas fa-fast-backward"></i>,
   previous: <i className="fas fa-chevron-left"></i>,
   next: <i className="fas fa-chevron-right"></i>,
-  last: <i className="fas fa-fast-forward"></i>
+  last: <i className="fas fa-fast-forward"></i>,
 };
 
 export {
@@ -822,5 +826,5 @@ export {
   snackbarStyles,
   gridSystemStyles,
   navPillsStyles,
-  typographyStyles
+  typographyStyles,
 };

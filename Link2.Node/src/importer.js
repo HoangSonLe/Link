@@ -23,13 +23,11 @@ import IconButtonGroup from "./base-components/IconButtonGroup";
 import ListComponent from "./base-components/ListComponent";
 import RowTextField from "./base-components/RowTextField"
 import RowSwitch from "./base-components/RowSwitch";
-import BaseModal from "./base-components/BaseModal"
 import BaseButton from "./base-components/BaseButton";
 import DevidedComponents from "./base-components/DevidedComponents";
 
 export {
     DevidedComponents,
-    BaseModal,
     BaseButton,
     Lab,
     Instrument,

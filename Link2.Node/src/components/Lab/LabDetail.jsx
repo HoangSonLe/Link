@@ -91,10 +91,10 @@ class LabDetail extends BaseConsumer {
           ) : null}
         </I3Div>
         <GridContainer margin={"md"}>
-          <GridItem xs={6} className={classes.Div}>
+          <GridItem xs={4} className={classes.Div}>
             Priority
           </GridItem>
-          <GridItem xs={6}>
+          <GridItem xs={8}>
             <ShouldUpdateWrapper
               value={lab.priority ? lab.priority : ""}
               onChange={(e) => this._changeText(lab, "priority", e)}

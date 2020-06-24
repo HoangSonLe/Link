@@ -15,15 +15,7 @@ class LisItem extends Item {
   constructor(props) {
     super(props);
   }
-  //Xóa LIS trong LAB
-  // _onUpdateItem = (oldItem, newItem) => {
-  //   this.updateObject(
-  //     oldItem,
-  //     newItem,
-  //     () => this.success("Updated Item"),
-  //     this.props.onUpdate
-  //   );
-  // };
+
   //Xóa LIS bằng callback ra ngoài
   _onDeleteItem = () => {
     this.confirm("Delete this LIS system?", {

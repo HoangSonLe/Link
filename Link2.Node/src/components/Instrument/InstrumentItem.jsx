@@ -96,6 +96,7 @@ class InstrumentItem extends Item {
       </I3Component>
     );
   }
+  //Nếu là trong Lab thì không có nút xem và sửa
 
   renderRightFooter() {
     let { instrument, isInLab } = this.props;

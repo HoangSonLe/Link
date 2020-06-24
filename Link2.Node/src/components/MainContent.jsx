@@ -1,6 +1,13 @@
 import React from "react";
 import BaseConsumer from "BaseComponent/BaseConsumer";
-import { I3Div, I3CustomTabs, Lab, Instrument, Lis } from "../importer";
+import {
+  I3Div,
+  I3CustomTabs,
+  Lab,
+  Instrument,
+  Lis,
+  I3Component,
+} from "../importer";
 import PropTypes from "prop-types";
 
 export default class MainContent extends BaseConsumer {
@@ -25,6 +32,9 @@ export default class MainContent extends BaseConsumer {
   consumerContent() {
     return (
       <I3Div margin={"md"}>
+        <I3Component variant="h4" margin={["no", "no", "xs", "no"]}>
+          Laboratory configuration
+        </I3Component>
         <I3CustomTabs indicator={true} tabs={this._createTab()}></I3CustomTabs>
       </I3Div>
     );
