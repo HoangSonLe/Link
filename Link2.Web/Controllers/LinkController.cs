@@ -876,7 +876,26 @@ namespace Link2.Web.Controllers
                 {
                     i.IsAssigned = false;
                 });
+                //Remove lab
                 listLaboratories.Remove(lab);
+                //Set lisSystem candelete =true if all labs don'h have LIS
+                foreach ( var lisLab in lab.LisInRouters)
+                {
+                    var checkExist = false;
+                    foreach (var i in listLaboratories)
+                    {
+                        var lisInLab = i.LisInRouters.Find(x => x.LisSystem.Id == lisLab.LisSystem.Id);
+                        if (lisInLab != null)
+                        {
+                            checkExist = true;
+                            break;
+                        }
+                    }
+                    if (!checkExist)
+                    {
+                        listLisSytem.Find(x => x.Id == lisLab.LisSystem.Id).CanDelete = true;
+                    }
+                }
                 ack.IsSuccess = true;
                 return ack;
             }

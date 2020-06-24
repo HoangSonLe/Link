@@ -5,9 +5,8 @@ export const EModalType = {
     Right: 4
 };
 export const LabTypeModal = {
-    AddOrUpdateLab: 1,
-    AddInstrument: 2,
-    AddLis: 3
+    Instrument: 1,
+    Lis: 2
 
 }
 export const LisMachineType = {

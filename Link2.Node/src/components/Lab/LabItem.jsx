@@ -22,21 +22,25 @@ class LabItem extends BaseConsumer {
     let { lab, onDelete } = this.props;
     let body = "";
     switch (type) {
-      case LabTypeModal.AddInstrument:
+      case LabTypeModal.Instrument:
         body = (
           <AddItemLabModal
-            onSave={(newItems) => this._onAddInstrumentsInLab(newItems)}
+            onSave={(newItems) =>
+              this._onAddItemInLab(LabTypeModal.Instrument, newItems)
+            }
             lab={lab}
-            typeAdd={LabTypeModal.AddInstrument}
+            typeAdd={LabTypeModal.Instrument}
           />
         );
         break;
-      case LabTypeModal.AddLis:
+      case LabTypeModal.Lis:
         body = (
           <AddItemLabModal
-            onSave={(newItems) => this._onAddLisSystemsInLab(newItems)}
+            onSave={(newItems) =>
+              this._onAddItemInLab(LabTypeModal.Lis, newItems)
+            }
             lab={lab}
-            typeAdd={LabTypeModal.AddLis}
+            typeAdd={LabTypeModal.Lis}
           />
         );
         break;
@@ -54,95 +58,76 @@ class LabItem extends BaseConsumer {
       true
     );
   };
-  //Thêm Instrument vào Lab
-  _onAddInstrumentsInLab = (newItems) => {
+  //Add Item to Lab
+  _onAddItemInLab = (type, newItems) => {
     let { lab } = this.props;
-    this.ajaxPost({
-      url: "/api/link/AddInstrumentToLab?id=" + lab.id,
-      data: newItems,
-      success: (ack) => {
-        this.clearListAndPushNewItems(lab.lisInstruments, ack.data, () => {
-          this.success("Added new items");
+    let url = "";
+    let oldItem = null;
+    type == LabTypeModal.Lis
+      ? ((url = "/api/link/AddLisSystemToLab?id=" + lab.id),
+        (oldItem = lab.lisInRouters))
+      : ((url = "/api/link/AddInstrumentToLab?id=" + lab.id),
+        (oldItem = lab.lisInstruments));
+    oldItem == null
+      ? null
+      : this.ajaxPost({
+          url: url,
+          data: newItems,
+          success: (ack) => {
+            this.clearListAndPushNewItems(oldItem, ack.data, () => {
+              this.success("Added new items");
+            });
+          },
+          error: (ack) => {
+            for (let i of ack.ErrorMessage) {
+              this.error(i);
+            }
+          },
         });
-      },
-      error: (ack) => {
-        for (let i of ack.ErrorMessage) {
-          this.error(i);
-        }
-      },
-    });
-
-    // this.updateObject(oldItem, newItem, () => this.success("Updated Item"));
   };
-  //Xóa Instrument trong lab
-  _onDeleteInstrument = (i) => {
+  //Removed Item in Lab
+  _onDeleteItemInLab = (type, i) => {
     let { lab } = this.props;
-    this.ajaxPost({
-      url:
-        "/api/link/DeleteInstrumentInLab?idLab=" +
-        lab.id +
-        "&idInstrument=" +
-        i.id,
-      success: (ack) => {
-        this.removeElement(lab.lisInstruments, i, this.success("Removed Item"));
-      },
-      error: (ack) => {
-        for (let i of ack.ErrorMessage) {
-          this.error(i);
-        }
-      },
-    });
+    let url = "";
+    let oldItem = null;
+    type == LabTypeModal.Lis
+      ? ((url =
+          "/api/link/DeleteLisInLab?idLab=" + lab.id + "&idLis=" + i.lisId),
+        (oldItem = lab.lisInRouters))
+      : ((url =
+          "/api/link/DeleteInstrumentInLab?idLab=" +
+          lab.id +
+          "&idInstrument=" +
+          i.id),
+        (oldItem = lab.lisInstruments));
+    //check oldItem
+    oldItem == null
+      ? null
+      : this.ajaxPost({
+          url: url,
+          success: (ack) => {
+            this.removeElement(oldItem, i, this.success("Removed Item"));
+          },
+          error: (ack) => {
+            for (let i of ack.ErrorMessage) {
+              this.error(i);
+            }
+          },
+        });
   };
-  //Render Instrument trong Lab
-  _renderInstrument = (i) => {
-    return (
+  //Render Lis or Instrument
+  _renderContent = (type, i) => {
+    return type == LabTypeModal.Instrument ? (
       <InstrumentItem
         isInLab={true}
         instrument={i}
-        onDelete={this._onDeleteInstrument}
+        onDelete={() => this._onDeleteItemInLab(LabTypeModal.Instrument, i)}
       />
-    );
-  };
-  //Thêm Lis vào Lab
-  _onAddLisSystemsInLab = (newItems) => {
-    let { lab } = this.props;
-    this.ajaxPost({
-      url: "/api/link/AddLisSystemToLab?id=" + lab.id,
-      data: newItems,
-      success: (ack) => {
-        this.clearListAndPushNewItems(lab.lisInRouters, ack.data, () => {
-          console.log("ack", lab);
-        });
-      },
-      error: (ack) => {
-        for (let i of ack.ErrorMessage) {
-          this.error(i);
-        }
-      },
-    });
-  };
-  //Xóa LIS trong LAB
-  _onDeleteLis = (i) => {
-    let { lab } = this.props;
-    this.ajaxPost({
-      url: "/api/link/DeleteLisInLab?idLab=" + lab.id + "&idLis=" + i.lisId,
-      success: (ack) => {
-        this.removeElement(lab.lisInRouters, i, this.success("Removed Item"));
-      },
-      error: (ack) => {
-        for (let i of ack.ErrorMessage) {
-          this.error(i);
-        }
-      },
-    });
-  };
-  //Render Lis trong Lab
-  _renderLis = (i) => {
-    return (
+    ) : (
       <LisItem
         key={i.id}
         lab={this.props.lab}
-        onDelete={this._onDeleteLis}
+        onDelete={() => this._onDeleteItemInLab(LabTypeModal.Lis, i)}
         lis={i}
       />
     );
@@ -197,12 +182,14 @@ class LabItem extends BaseConsumer {
           <ListComponent
             title="Intruments"
             dataList={lab.lisInstruments}
-            renderItem={(item) => this._renderInstrument(item)}
+            renderItem={(item) =>
+              this._renderContent(LabTypeModal.Instrument, item)
+            }
             renderAddItem={
               <LastDivItem
                 title="Add Instrument"
                 onClick={() =>
-                  this._openModal("Add Instrument", LabTypeModal.AddInstrument)
+                  this._openModal("Add Instrument", LabTypeModal.Instrument)
                 }
               />
             }
@@ -211,11 +198,11 @@ class LabItem extends BaseConsumer {
           <ListComponent
             title="LIS"
             dataList={lab.lisInRouters}
-            renderItem={(item) => this._renderLis(item)}
+            renderItem={(item) => this._renderContent(LabTypeModal.Lis, item)}
             renderAddItem={
               <LastDivItem
                 title="Add Lis"
-                onClick={() => this._openModal("Add Lis", LabTypeModal.AddLis)}
+                onClick={() => this._openModal("Add Lis", LabTypeModal.Lis)}
               />
             }
           />

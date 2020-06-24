@@ -290,26 +290,28 @@ class TypeComunationMode extends BaseConsumer {
               <I3Div variant="h6" fontWeight="bold" margin="xs">
                 Type
               </I3Div>
-              <ShouldUpdateWrapper
-                options={data.lisCommunationMode}
-                onChange={(item) => {
-                  this.updateObject(lis, { communicationMode: item.value });
-                }}
-                value={data.lisCommunationMode.find(
-                  (opt) => opt.value == lis.communicationMode
-                )}
-              >
-                <I3Select
-                  getOptionLabel={(opt) => {
-                    return opt.label;
+              {lis ? (
+                <ShouldUpdateWrapper
+                  options={data.lisCommunationMode}
+                  onChange={(item) => {
+                    this.updateObject(lis, { communicationMode: item.value });
                   }}
-                  getOptionValue={(opt) => {
-                    return opt.value;
-                  }}
-                  placeholder="Select Timezone"
-                  color="lighterGray"
-                />
-              </ShouldUpdateWrapper>
+                  value={data.lisCommunationMode.find(
+                    (opt) => opt.value == lis.communicationMode
+                  )}
+                >
+                  <I3Select
+                    getOptionLabel={(opt) => {
+                      return opt.label;
+                    }}
+                    getOptionValue={(opt) => {
+                      return opt.value;
+                    }}
+                    placeholder="Select Timezone"
+                    color="lighterGray"
+                  />
+                </ShouldUpdateWrapper>
+              ) : null}
             </I3Div>
             {this._renderTypeComunationMode()}
           </>

@@ -61,7 +61,6 @@ export default class Lab extends BaseConsumer {
         {lab.labList
           .sort((a, b) => a.priority - b.priority)
           .map((i) => {
-            console.log(1);
             return (
               <LabItem
                 key={i.id + "lablist"}

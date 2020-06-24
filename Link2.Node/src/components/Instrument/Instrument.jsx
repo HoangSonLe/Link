@@ -43,13 +43,6 @@ export default class Instrument extends BaseConsumer {
       this.success("Added Item");
     });
   };
-  //Cập nhật Instrument Callback của Detail
-  _onUpdateItem = (oldItem, newItem) => {
-    this.updateObject(oldItem, newItem, () => {
-      this.closeModal(-1);
-      this.success("Updated Item");
-    });
-  };
   //Xóa Instrument Callback của Detail
   _onDeleteItem = (i) => {
     this.removeElement(
@@ -60,13 +53,7 @@ export default class Instrument extends BaseConsumer {
   };
   //Hàm render từng Instrument Item
   _renderItem = (i) => {
-    return (
-      <InstrumentItem
-        instrument={i}
-        onDelete={this._onDeleteItem}
-        onUpdate={this._onUpdateItem}
-      />
-    );
+    return <InstrumentItem instrument={i} onDelete={this._onDeleteItem} />;
   };
   //Render Div cuối để add
   _renderAddItem = () => {

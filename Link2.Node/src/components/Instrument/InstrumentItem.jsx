@@ -102,16 +102,16 @@ class InstrumentItem extends Item {
     let canDelete = isInLab ? true : !instrument.isAssigned;
     let component = [];
     !isInLab
-      ? component.push({
-          className: "fas fa-cogs",
-          onClick: () => this._openModal("Communication test results", true),
-        })
-      : null;
-    typeof this.props.onUpdate === "function"
-      ? component.push({
-          className: "fas fa-pen",
-          onClick: () => this._openModal("Edit Instrument"),
-        })
+      ? component.push(
+          {
+            className: "fas fa-cogs",
+            onClick: () => this._openModal("Communication test results", true),
+          },
+          {
+            className: "fas fa-pen",
+            onClick: () => this._openModal("Edit Instrument"),
+          }
+        )
       : null;
 
     canDelete && typeof this.props.onDelete === "function"
@@ -152,7 +152,6 @@ class InstrumentItem extends Item {
 InstrumentItem.protoTypes = {
   isInLab: PropTypes.bool,
   onDelete: PropTypes.func,
-  onUpdate: PropTypes.func,
   instrument: PropTypes.object.isRequired,
 };
 

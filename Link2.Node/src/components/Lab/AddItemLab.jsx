@@ -27,7 +27,7 @@ class AddItemLab extends BaseConsumer {
   componentDidMount() {
     let { typeAdd, lab } = this.props;
     let url =
-      typeAdd == LabTypeModal.AddInstrument
+      typeAdd == LabTypeModal.Instrument
         ? "/api/link/GetInstrumentsForLab"
         : "/api/link/GetLisSystemForLab?idLab=" + lab.id;
     this.ajaxGet({
@@ -55,7 +55,7 @@ class AddItemLab extends BaseConsumer {
     let { dataList } = this.state;
     let { typeAdd } = this.props;
     let data =
-      typeAdd == LabTypeModal.AddInstrument
+      typeAdd == LabTypeModal.Instrument
         ? dataList.filter(
             (i) =>
               i.name.toUpperCase().match(text.toUpperCase()) ||
@@ -84,7 +84,7 @@ class AddItemLab extends BaseConsumer {
         }
         onClick={() => this._addSelectedItem(i)}
       >
-        {typeAdd == LabTypeModal.AddInstrument ? (
+        {typeAdd == LabTypeModal.Instrument ? (
           <InstrumentItem instrument={i} isInLab={true} />
         ) : (
           <LisSystemItem lisSystem={i} isInLab={true} />
@@ -109,7 +109,7 @@ class AddItemLab extends BaseConsumer {
               className={classes.InputSearch}
               variant="outlined"
               placeholder={
-                typeAdd == LabTypeModal.AddInstrument
+                typeAdd == LabTypeModal.Instrument
                   ? "Search by name, searial number"
                   : "Search by name"
               }

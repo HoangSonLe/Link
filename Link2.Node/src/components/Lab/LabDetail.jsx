@@ -20,6 +20,19 @@ class LabDetail extends BaseConsumer {
       _optionsTimeZones: [],
     };
   }
+  componentDidMount() {
+    this.ajaxGet({
+      url: "/api/link/GetOptionsForLabEditting",
+      success: (ack) => {
+        this.updateLocalObject(this.state._optionsTimeZones, ack.data);
+      },
+      error: (ack) => {
+        for (let i of ack.ErrorMessage) {
+          this.error(i);
+        }
+      },
+    });
+  }
   _changeText = (item, key, value) => {
     this.updateObject(item, { [key]: value });
   };
@@ -38,19 +51,7 @@ class LabDetail extends BaseConsumer {
       },
     });
   };
-  componentDidMount() {
-    this.ajaxGet({
-      url: "/api/link/GetOptionsForLabEditting",
-      success: (ack) => {
-        this.updateLocalObject(this.state._optionsTimeZones, ack.data);
-      },
-      error: (ack) => {
-        for (let i of ack.ErrorMessage) {
-          this.error(i);
-        }
-      },
-    });
-  }
+
   consumerContent() {
     let { classes, lab } = this.props;
 
@@ -66,26 +67,28 @@ class LabDetail extends BaseConsumer {
           <I3Div variant="h6" fontWeight="bold" margin="xs">
             Timezone
           </I3Div>
-          <ShouldUpdateWrapper
-            onChange={(item) => {
-              this.updateObject(this.props.lab, { timeZoneId: item.value });
-            }}
-            value={this.state._optionsTimeZones.find(
-              (opt) => opt.value == this.props.lab.timeZoneId
-            )}
-            options={this.state._optionsTimeZones}
-          >
-            <I3Select
-              getOptionLabel={(opt) => {
-                return opt.label;
+          {lab ? (
+            <ShouldUpdateWrapper
+              onChange={(item) => {
+                this.updateObject(this.props.lab, { timeZoneId: item.value });
               }}
-              getOptionValue={(opt) => {
-                return opt.value;
-              }}
-              placeholder="Select Timezone"
-              color="lighterGray"
-            />
-          </ShouldUpdateWrapper>
+              value={this.state._optionsTimeZones.find(
+                (opt) => opt.value == this.props.lab.timeZoneId
+              )}
+              options={this.state._optionsTimeZones}
+            >
+              <I3Select
+                getOptionLabel={(opt) => {
+                  return opt.label;
+                }}
+                getOptionValue={(opt) => {
+                  return opt.value;
+                }}
+                placeholder="Select Timezone"
+                color="lighterGray"
+              />
+            </ShouldUpdateWrapper>
+          ) : null}
         </I3Div>
         <GridContainer margin={"md"}>
           <GridItem xs={6} className={classes.Div}>
