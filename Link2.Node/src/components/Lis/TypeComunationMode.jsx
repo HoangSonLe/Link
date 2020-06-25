@@ -284,34 +284,32 @@ class TypeComunationMode extends BaseConsumer {
     let { classes, data, lis } = this.props;
     return (
       <Fragment>
-        {data && data.lisCommunationMode ? (
+        {data && data.lisCommunationMode && lis ? (
           <>
             <I3Div margin={"md"}>
               <I3Div variant="h6" fontWeight="bold" margin="xs">
                 Type
               </I3Div>
-              {lis ? (
-                <ShouldUpdateWrapper
-                  options={data.lisCommunationMode}
-                  onChange={(item) => {
-                    this.updateObject(lis, { communicationMode: item.value });
+              <ShouldUpdateWrapper
+                options={data.lisCommunationMode}
+                onChange={(item) => {
+                  this.updateObject(lis, { communicationMode: item.value });
+                }}
+                value={data.lisCommunationMode.find(
+                  (opt) => opt.value == lis.communicationMode
+                )}
+              >
+                <I3Select
+                  getOptionLabel={(opt) => {
+                    return opt.label;
                   }}
-                  value={data.lisCommunationMode.find(
-                    (opt) => opt.value == lis.communicationMode
-                  )}
-                >
-                  <I3Select
-                    getOptionLabel={(opt) => {
-                      return opt.label;
-                    }}
-                    getOptionValue={(opt) => {
-                      return opt.value;
-                    }}
-                    placeholder="Select Timezone"
-                    color="lighterGray"
-                  />
-                </ShouldUpdateWrapper>
-              ) : null}
+                  getOptionValue={(opt) => {
+                    return opt.value;
+                  }}
+                  placeholder="Select Timezone"
+                  color="lighterGray"
+                />
+              </ShouldUpdateWrapper>
             </I3Div>
             {this._renderTypeComunationMode()}
           </>

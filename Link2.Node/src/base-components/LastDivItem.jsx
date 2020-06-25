@@ -2,13 +2,18 @@ import React from "react";
 import BaseConsumer from "BaseComponent/BaseConsumer";
 import { I3Div, I3Icon } from "../importer";
 import PropTypes from "prop-types";
+import { EModalType } from "../general/enum";
 
 export default class LastDivItem extends BaseConsumer {
+  _onDataLoaded = (modalFunc) => {
+    this.openModal(modalFunc, EModalType.Right, true);
+  };
+
   consumerContent() {
     const { title, iconClassName, onClick } = this.props;
     return (
       <I3Div
-        onClick={onClick}
+        onClick={() => onClick(this._onDataLoaded)}
         variant="h6"
         borderColor="gray"
         border={true}
@@ -20,7 +25,6 @@ export default class LastDivItem extends BaseConsumer {
         color="blue"
         fontWeight="bold"
         height="82px"
-        // padding={["no", "no", "no", "md"]}
       >
         <I3Icon
           lineHeight="20px"

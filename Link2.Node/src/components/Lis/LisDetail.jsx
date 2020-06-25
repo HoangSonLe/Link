@@ -47,7 +47,6 @@ export default class LisDetail extends BaseConsumer {
   consumerContent() {
     let { lis } = this.props;
     let { optionsForLisEdit } = this.state;
-    console.log("LisDetail");
     return (
       <I3Div margin="xs">
         <ShouldUpdateWrapper

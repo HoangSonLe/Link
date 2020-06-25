@@ -15,6 +15,8 @@ import InstrumentItem from "../Instrument/InstrumentItem";
 import PropTypes from "prop-types";
 import CloneLabDetailModal from "./CloneLabDetailModal";
 import AddItemLabModal from "./AddItemLabModal";
+import LisSystemItem from "../Lis/LisSystemItem";
+import AddNewInstrument from "./AddNewInstrument";
 
 class LabItem extends BaseConsumer {
   //Mở modal theo type thêm Instrument,LIS hoặc sửa Lab Detail
@@ -59,34 +61,78 @@ class LabItem extends BaseConsumer {
       true
     );
   };
+  _onClickAddInstrumentButton = (onDataLoaded) => {
+    let modalFunc = () => ({
+      title: "Add Instrument",
+      body: (
+        <AddNewInstrument lab={this.props.lab} onSave={this._onAddItemInLab} />
+      ),
+    });
+    onDataLoaded(modalFunc);
+  };
+  _onClickAddLisButton = (onDataLoaded) => {
+    this.ajaxGet({
+      url: "/api/link/GetLisSystemForLab?idLab=" + this.props.lab.id,
+      success: (ack) => {
+        let modalFunc = () => ({
+          title: "Add LIS",
+          body: (
+            <AddItemLabModal
+              placeholderSearch="Search by name"
+              onSearch={this._onSearchLis}
+              onSave={(newItems) =>
+                this._onAddItemInLab(LabTypeModal.Lis, newItems)
+              }
+              dataList={ack.data}
+              renderItem={(i) => <LisSystemItem lisSystem={i} isInLab={true} />}
+              typeAdd={LabTypeModal.Lis}
+            />
+          ),
+        });
+        onDataLoaded(modalFunc);
+      },
+    });
+  };
+
+  _onSearchLis = (dataList, textSearch) => {
+    return textSearch == ""
+      ? dataList
+      : dataList.filter((i) =>
+          i.name.toUpperCase().match(textSearch.toUpperCase())
+        );
+  };
   //Add Item to Lab
   //Có 2 trường hợp thêm Lis và thêm Instrument vào Lab
-  _onAddItemInLab = (type, newItems) => {
-    let { lab } = this.props;
-    let url = "";
-    let oldItem = null;
-    type == LabTypeModal.Lis
-      ? ((url = "/api/link/AddLisSystemToLab?id=" + lab.id),
-        (oldItem = lab.lisInRouters))
-      : ((url = "/api/link/AddInstrumentToLab?id=" + lab.id),
-        (oldItem = lab.lisInstruments));
-    oldItem == null
-      ? null
-      : this.ajaxPost({
-          url: url,
-          data: newItems,
-          success: (ack) => {
-            this.clearListAndPushNewItems(oldItem, ack.data, () => {
-              this.success("Added new items");
-            });
-          },
-          error: (ack) => {
-            for (let i of ack.ErrorMessage) {
-              this.error(i);
-            }
-          },
-        });
+  _onAddItemInLab = (oldItem, newItems) => {
+    this.clearListAndPushNewItems(oldItem, newItems, () => {
+      this.success("Added new items");
+    });
+    // let { lab } = this.props;
+    // let url = "";
+    // let oldItem = null;
+    // type == LabTypeModal.Lis
+    //   ? ((url = "/api/link/AddLisSystemToLab?id=" + lab.id),
+    //     (oldItem = lab.lisInRouters))
+    //   : ((url = "/api/link/AddInstrumentToLab?id=" + lab.id),
+    //     (oldItem = lab.lisInstruments));
+    // oldItem == null
+    //   ? null
+    //   : this.ajaxPost({
+    //       url: url,
+    //       data: newItems,
+    //       success: (ack) => {
+    //         this.clearListAndPushNewItems(oldItem, ack.data, () => {
+    //           this.success("Added new items");
+    //         });
+    //       },
+    //       error: (ack) => {
+    //         for (let i of ack.ErrorMessage) {
+    //           this.error(i);
+    //         }
+    //       },
+    //     });
   };
+
   //Removed Item in Lab
   //Có 2 trường hợp xóa Lis và xóa Instrument vào Lab
 
@@ -192,24 +238,22 @@ class LabItem extends BaseConsumer {
             renderAddItem={
               <LastDivItem
                 title="Add Instrument"
-                onClick={() =>
-                  this._openModal("Add Instrument", LabTypeModal.Instrument)
-                }
+                onClick={this._onClickAddInstrumentButton}
               />
             }
           />
           {/* Render LIS */}
-          <ListComponent
+          {/* <ListComponent
             title="LIS"
             dataList={lab.lisInRouters}
             renderItem={(item) => this._renderContent(LabTypeModal.Lis, item)}
             renderAddItem={
               <LastDivItem
                 title="Add Lis"
-                onClick={() => this._openModal("Add Lis", LabTypeModal.Lis)}
+                onClick={this._onClickAddLisButton}
               />
             }
-          />
+          /> */}
         </I3Div>
       </I3Div>
     );

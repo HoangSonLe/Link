@@ -9,95 +9,59 @@ import {
 } from "../../importer";
 import { withStyles } from "@material-ui/core";
 import { LabTypeModal } from "../../general/enum";
-import InstrumentItem from "../Instrument/InstrumentItem";
-import LisSystemItem from "../Lis/LisSystemItem";
 import PropTypes from "prop-types";
 
 class AddItemLab extends BaseConsumer {
   constructor(props) {
     super(props);
     this.state = {
-      dataList: [],
-      selectedList: [],
-      searchList: [],
       searchText: "",
     };
   }
-  //Lấy ds lis, instrument
-  componentDidMount() {
-    let { typeAdd, lab } = this.props;
-    let url =
-      typeAdd == LabTypeModal.Instrument
-        ? "/api/link/GetInstrumentsForLab"
-        : "/api/link/GetLisSystemForLab?idLab=" + lab.id;
-    this.ajaxGet({
-      url: url,
-      success: (ack) => {
-        this.setState({ dataList: ack.data });
-      },
-    });
-  }
+
   //Thêm sản phẩm vào ds chọn
   _addSelectedItem = (i) => {
-    let { selectedList } = this.state;
-    let index = selectedList.findIndex((e) => e == i);
-    console.log("i", i);
-    index == -1
-      ? this.addLocalElement(selectedList, i)
-      : this.removeLocalElement(selectedList, i);
+    let { data } = this.props.state;
+    let indexItem = data.findIndex((e) => e == i);
+    this.updateLocalObject(data[indexItem], {
+      isSelected: !data[indexItem].isSelected,
+    });
   };
   //Thay đổi text Search
   _onChangeSearch = (e) => {
-    this._debounceChange(e.target.value);
-  };
-  // debounce and filter lấy ds khi search
-  _debounceChange = _.debounce((text) => {
-    let { dataList } = this.state;
-    let { typeAdd } = this.props;
-    let data =
-      typeAdd == LabTypeModal.Instrument
-        ? dataList.filter(
-            (i) =>
-              i.name.toUpperCase().match(text.toUpperCase()) ||
-              i.serialNumber.toUpperCase().match(text.toUpperCase())
-          )
-        : dataList.filter((i) =>
-            i.name.toUpperCase().match(text.toUpperCase())
-          );
+    let { onSearch, dataList } = this.props;
+    let data = onSearch(dataList, e.target.value);
     this.updateLocalObject(this.state, {
-      searchList: data,
-      searchText: text,
+      data: data,
+      searchText: e.target.value,
     });
-  }, 300);
+  };
 
   //Render nội dung hiện thị Istrument hay LIS
-  _renderContent = (i) => {
-    let { selectedList } = this.state;
-    let { classes, typeAdd } = this.props;
-    return (
-      <I3Div
-        key={i.id + "instrument"}
-        cursor="pointer"
-        margin="xs"
-        className={
-          selectedList.findIndex((e) => e == i) != -1 ? classes.ActiveDiv : ""
-        }
-        onClick={() => this._addSelectedItem(i)}
-      >
-        {typeAdd == LabTypeModal.Instrument ? (
-          <InstrumentItem instrument={i} isInLab={true} />
-        ) : (
-          <LisSystemItem lisSystem={i} isInLab={true} />
-        )}
-      </I3Div>
-    );
-  };
+  // _renderContent = (i) => {
+  //   let { selectedList } = this.state;
+  //   let { classes, typeAdd } = this.props;
+  //   return (
+  //     <I3Div
+  //       key={i.id + "instrument"}
+  //       cursor="pointer"
+  //       margin="xs"
+  //       className={
+  //         selectedList.findIndex((e) => e == i) != -1 ? classes.ActiveDiv : ""
+  //       }
+  //       onClick={() => this._addSelectedItem(i)}
+  //     >
+  //       {typeAdd == LabTypeModal.Instrument ? (
+  //         <InstrumentItem instrument={i} isInLab={true} />
+  //       ) : (
+  //         <LisSystemItem lisSystem={i} isInLab={true} />
+  //       )}
+  //     </I3Div>
+  //   );
+  // };
   consumerContent() {
-    let { dataList, selectedList, searchList, searchText } = this.state;
-    let { classes, typeAdd } = this.props;
-    this.props.onAddItemToLab(selectedList);
-
-    console.log("search", this.state.searchList);
+    let { data, searchText } = this.state;
+    let { classes, renderItem, placeholderSearch } = this.props;
     return (
       <I3Div margin="md">
         <I3Div margin={["md", "no", "md", "no"]}>
@@ -108,11 +72,7 @@ class AddItemLab extends BaseConsumer {
             <I3TextField
               className={classes.InputSearch}
               variant="outlined"
-              placeholder={
-                typeAdd == LabTypeModal.Instrument
-                  ? "Search by name, searial number"
-                  : "Search by name"
-              }
+              placeholder={placeholderSearch}
               InputProps={{
                 endAdornment: (
                   <I3Icon
@@ -127,10 +87,18 @@ class AddItemLab extends BaseConsumer {
           </ShouldUpdateWrapper>
         </I3Div>
         {/* Nếu có search thi hiện theo ds search , không thì hiện mặc định từ db về */}
-        {searchList.length > 0 ? (
-          searchList.map((i) => this._renderContent(i))
-        ) : dataList.length > 0 && searchText === "" ? (
-          dataList.map((i) => this._renderContent(i))
+        {data.length > 0 ? (
+          data.map((i) => (
+            <I3Div
+              key={i.id + "instrument"}
+              cursor="pointer"
+              margin="xs"
+              className={i.isSelected ? classes.ActiveDiv : null}
+              onClick={() => this._addSelectedItem(i)}
+            >
+              {renderItem(i)}
+            </I3Div>
+          ))
         ) : (
           <I3Component variant="h6" color="gray" margin="md">
             No Options
@@ -160,7 +128,7 @@ const Styles = {
 AddItemLab.propTypes = {
   onAddItemToLab: PropTypes.func,
   lab: PropTypes.object,
-  typeAdd: PropTypes.number,
+  placeholderSearch: PropTypes.string,
 };
 
 export default withStyles(Styles)(AddItemLab);
