@@ -23,8 +23,8 @@ export default class Lab extends BaseConsumer {
         body: (
           <CloneLabDetailModal
             data={this.props.lab.newLab}
-            onSave={this._onAddItem}
-          ></CloneLabDetailModal>
+            onAdd={this._onAddItem}
+          />
         ),
       }),
       EModalType.Right,

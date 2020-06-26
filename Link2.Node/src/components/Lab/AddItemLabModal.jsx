@@ -127,6 +127,10 @@ const Styles = {
 };
 export default withStyles(Styles)(AddItemLabModal);
 AddItemLabModal.propTypes = {
-  onSave: PropTypes.func,
-  onDelete: PropTypes.func,
+  placeholderSearch: PropTypes.string,
+  onAddSelectedItem: PropTypes.func,
+  onSearch: PropTypes.func,
+  onSaveSelectedItem: PropTypes.func,
+  dataList: PropTypes.arrayOf([PropTypes.object]),
+  renderItem: PropTypes.node,
 };

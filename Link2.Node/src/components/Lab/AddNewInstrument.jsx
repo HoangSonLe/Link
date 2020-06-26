@@ -2,6 +2,8 @@ import React from "react";
 import { BaseConsumer } from "../../importer";
 import InstrumentItem from "../Instrument/InstrumentItem";
 import AddItemLabModal from "./AddItemLabModal";
+import PropTypes from "prop-types";
+
 export default class AddNewInstrument extends BaseConsumer {
   constructor(props) {
     super(props);
@@ -33,6 +35,7 @@ export default class AddNewInstrument extends BaseConsumer {
     });
   };
   //Hàm Search
+  //Nếu true thì isHidden=true và ngược lại
   _onSearchInstrument = (textSearch) => {
     let { data } = this.state;
     if (textSearch != "") {
@@ -87,3 +90,7 @@ export default class AddNewInstrument extends BaseConsumer {
     );
   }
 }
+AddNewInstrument.propTypes = {
+  onSave: PropTypes.func,
+  lab: PropTypes.object.isRequired,
+};

@@ -81,7 +81,7 @@ namespace Link2.Web.Controllers
             },
             new StopBits()
             {
-                Value = 2,
+                Value = 3,
                 Label = "OnePointFive"
             },
         };
@@ -194,7 +194,7 @@ namespace Link2.Web.Controllers
                     Handshake= 1,
                     TimeOut=  1,
                     Parity=  1,
-                    StopBits = 3
+                    StopBits = 3,
               },
               FolderChannel = new FolderChannel(),
               TCPChannel = new TCPChannel(),

@@ -1,8 +1,9 @@
 import React from "react";
 import { BaseConsumer } from "../../importer";
 import AddItemLabModal from "./AddItemLabModal";
-import LisItem from "./LisItem";
 import LisSystemItem from "../Lis/LisSystemItem";
+import PropTypes from "prop-types";
+
 export default class AddNewLis extends BaseConsumer {
   constructor(props) {
     super(props);
@@ -48,6 +49,7 @@ export default class AddNewLis extends BaseConsumer {
 
     this.updateLocalListObject(this.state.data, data);
   };
+  //Hàm Add vào lab
   _onSave = () => {
     let { lab, onSave } = this.props;
     let newItems = this.state.data.map((i) => {
@@ -85,3 +87,7 @@ export default class AddNewLis extends BaseConsumer {
     );
   }
 }
+AddNewLis.protoTypes = {
+  onSave: PropTypes.func,
+  lab: PropTypes.object.isRequired,
+};

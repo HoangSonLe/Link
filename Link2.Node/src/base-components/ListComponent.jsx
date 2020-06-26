@@ -34,7 +34,7 @@ export default class ListComponent extends BaseConsumer {
 }
 ListComponent.protoTypes = {
   dataList: PropTypes.arrayOf([PropTypes.object]),
-  renderItem: PropTypes.func,
-  renderAddItem: PropTypes.string,
+  renderItem: PropTypes.node,
+  renderAddItem: PropTypes.node,
   title: PropTypes.string,
 };

@@ -34,13 +34,13 @@ export default class LabDetailModal extends ModalLayout {
   }
 
   rightFooter() {
-    const { lab, onSave } = this.props;
+    const { lab, onAdd } = this.props;
 
     return (
       <BaseButton
         width="110px"
         onClick={(data) => {
-          typeof onSave === "function"
+          typeof onAdd === "function"
             ? this._onAddItem(lab)
             : this._onUpdateItem(lab);
         }}
@@ -71,7 +71,7 @@ export default class LabDetailModal extends ModalLayout {
       url: "/api/link/AddOrUpdateLab",
       data: newItem,
       success: (ack) => {
-        this.props.onSave(ack.data);
+        this.props.onAdd(ack.data);
         this.closeThisModal();
       },
       error: (ack) => {
@@ -84,7 +84,7 @@ export default class LabDetailModal extends ModalLayout {
 }
 LabDetailModal.protoTypes = {
   lab: PropTypes.object,
-  onSave: PropTypes.func,
+  onAdd: PropTypes.func,
   onDelete: PropTypes.func,
   commitData: PropTypes.func,
 };

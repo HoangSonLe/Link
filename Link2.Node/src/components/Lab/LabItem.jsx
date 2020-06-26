@@ -14,8 +14,6 @@ import LisItem from "./LisItem";
 import InstrumentItem from "../Instrument/InstrumentItem";
 import PropTypes from "prop-types";
 import CloneLabDetailModal from "./CloneLabDetailModal";
-import AddItemLabModal from "./AddItemLabModal";
-import LisSystemItem from "../Lis/LisSystemItem";
 import AddNewInstrument from "./AddNewInstrument";
 import AddNewLis from "./AddNewLis";
 
@@ -27,7 +25,7 @@ class LabItem extends BaseConsumer {
     this.openModal(
       () => ({
         title: title,
-        body: <CloneLabDetailModal onDelete={onDelete} data={this.props.lab} />,
+        body: <CloneLabDetailModal onDelete={onDelete} data={lab} />,
       }),
       EModalType.Right,
       true
@@ -82,7 +80,7 @@ class LabItem extends BaseConsumer {
     let { lab } = this.props;
 
     this.ajaxPost({
-      url: `/api/link/DeleteLisInLab?idLab=+${lab.id}&idInstrument=${i.lisId}`,
+      url: `/api/link/DeleteInstrumentInLab?idLab=+${lab.id}&idInstrument=${i.id}`,
       success: (ack) => {
         this.removeElement(lab.lisInstruments, i, this.success("Removed Item"));
       },
@@ -129,7 +127,7 @@ class LabItem extends BaseConsumer {
             </I3Component>,
             <I3Component variant="subtitle1" className={classes.Div}>
               {lab.lisInstruments ? lab.lisInstruments.length : 0} instruments,
-              {lab.lisInRouters ? lab.lisInRouters.length : 0} LIS, +
+              {lab.lisInRouters ? lab.lisInRouters.length : 0} LIS +
               {lab.lisInRouters
                 ? lab.lisInRouters.filter((i) => i.isMirror).length
                 : 0}{" "}
