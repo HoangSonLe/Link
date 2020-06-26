@@ -17,20 +17,20 @@ export default class Lis extends BaseConsumer {
     });
   }
   //Mở modal thêm mới
-  _openModal = (title) => {
-    this.openModal(
-      () => ({
-        title: title,
-        body: (
-          <CloneLisDetailModal
-            onSave={this._onAddItem}
-            data={this.props.lis.newLis}
-          />
-        ),
-      }),
-      EModalType.Right,
-      true
-    );
+
+  //Nhấn Create new LIS, call vào hàm của AddNewLis
+
+  _onClickAddNewLisButton = (onDataLoaded) => {
+    let modalFunc = () => ({
+      title: "New Lis",
+      body: (
+        <CloneLisDetailModal
+          onSave={this._onAddItem}
+          data={this.props.lis.newLis}
+        />
+      ),
+    });
+    onDataLoaded(modalFunc);
   };
   //Xóa LIS, callback của children
   _onDeleteItem = (i) => {
@@ -49,13 +49,11 @@ export default class Lis extends BaseConsumer {
       <LisSystemItem key={i.id} lisSystem={i} onDelete={this._onDeleteItem} />
     );
   };
-  //Render div cuối cùng để Adđ
+
+  //Render div cuối cùng để Add
   _renderAddItem = () => {
     return (
-      <LastDivItem
-        title="Add new Lis"
-        onClick={() => this._openModal("New Lis")}
-      />
+      <LastDivItem title="Add new Lis" onClick={this._onClickAddNewLisButton} />
     );
   };
   consumerContent() {

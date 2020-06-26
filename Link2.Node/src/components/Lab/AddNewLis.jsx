@@ -1,8 +1,9 @@
 import React from "react";
 import { BaseConsumer } from "../../importer";
-import InstrumentItem from "../Instrument/InstrumentItem";
 import AddItemLabModal from "./AddItemLabModal";
-export default class AddNewInstrument extends BaseConsumer {
+import LisItem from "./LisItem";
+import LisSystemItem from "../Lis/LisSystemItem";
+export default class AddNewLis extends BaseConsumer {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,7 +12,7 @@ export default class AddNewInstrument extends BaseConsumer {
   }
   componentDidMount() {
     this.ajaxGet({
-      url: "/api/link/GetInstrumentsForLab",
+      url: `/api/link/GetLisSystemForLab?idLab=${this.props.lab.id}`,
       success: (ack) => {
         let data = ack.data.map((i) => ({
           ...i,
@@ -33,12 +34,11 @@ export default class AddNewInstrument extends BaseConsumer {
     });
   };
   //Hàm Search
-  _onSearchInstrument = (textSearch) => {
+  _onSearchLis = (textSearch) => {
     let { data } = this.state;
     if (textSearch != "") {
       data.forEach((i) =>
-        i.name.toUpperCase().includes(textSearch.toUpperCase()) ||
-        i.serialNumber.toUpperCase().includes(textSearch.toUpperCase())
+        i.name.toUpperCase().includes(textSearch.toUpperCase())
           ? (i.isHidden = false)
           : (i.isHidden = true)
       );
@@ -48,21 +48,19 @@ export default class AddNewInstrument extends BaseConsumer {
 
     this.updateLocalListObject(this.state.data, data);
   };
-  //Hàm add instrument vào lab
-
   _onSave = () => {
     let { lab, onSave } = this.props;
     let newItems = this.state.data.map((i) => {
       return i.isSelected == true ? i.id : null;
     });
     this.ajaxPost({
-      url: "/api/link/AddInstrumentToLab",
+      url: "/api/link/AddLisSystemToLab",
       data: {
         LabId: lab.id,
         ListItemsId: newItems,
       },
       success: (ack) => {
-        onSave(lab.lisInstruments, ack.data);
+        onSave(lab.lisInRouters, ack.data);
       },
       error: (ack) => {
         for (let i of ack.ErrorMessage) {
@@ -76,12 +74,12 @@ export default class AddNewInstrument extends BaseConsumer {
     let { ...otherProps } = this.props;
     return (
       <AddItemLabModal
-        placeholderSearch="Search by name, searial number"
+        placeholderSearch="Search by name"
         onAddSelectedItem={this._addSelectedItem}
-        onSearch={this._onSearchInstrument}
+        onSearch={this._onSearchLis}
         onSaveSelectedItem={this._onSave}
         dataList={data}
-        renderItem={(i) => <InstrumentItem instrument={i} isInLab={true} />}
+        renderItem={(i) => <LisSystemItem lisSystem={i} isInLab={true} />}
         {...otherProps}
       />
     );

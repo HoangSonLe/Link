@@ -64,17 +64,19 @@ class AddItemLabModal extends ModalLayout {
         </I3Div>
         {/* Nếu có search thi hiện theo ds search , không thì hiện mặc định từ db về */}
         {dataList.length > 0 ? (
-          dataList.map((i) => (
-            <I3Div
-              key={i.id + "instrument"}
-              cursor="pointer"
-              margin="xs"
-              className={i.isSelected ? classes.ActiveDiv : null}
-              onClick={() => onAddSelectedItem(i)}
-            >
-              {renderItem(i)}
-            </I3Div>
-          ))
+          dataList.map((i) =>
+            !i.isHidden ? (
+              <I3Div
+                key={i.id + "instrument"}
+                cursor="pointer"
+                margin="xs"
+                className={i.isSelected ? classes.ActiveDiv : null}
+                onClick={() => onAddSelectedItem(i)}
+              >
+                {renderItem(i)}
+              </I3Div>
+            ) : null
+          )
         ) : (
           <I3Component variant="h6" color="gray" margin="md">
             No Options
@@ -92,13 +94,13 @@ class AddItemLabModal extends ModalLayout {
   }
 
   rightFooter() {
-    const { onSave } = this.props;
+    const { onSaveSelectedItem } = this.props;
 
     return (
       <BaseButton
         width="110px"
         onClick={() => {
-          onSave(this.selectedItem);
+          onSaveSelectedItem();
           this.closeThisModal();
         }}
       >

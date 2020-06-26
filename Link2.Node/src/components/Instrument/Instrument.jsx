@@ -22,20 +22,19 @@ export default class Instrument extends BaseConsumer {
     });
   }
   //Mở modal thêm mới Instrument
-  _openModal = (title) => {
-    this.openModal(
-      () => ({
-        title: title,
-        body: (
-          <CloneInstrumentDetailModal
-            onSave={this._onAddItem}
-            data={this.props.instrument.newInstrument}
-          />
-        ),
-      }),
-      EModalType.Right,
-      true
-    );
+  //Nhấn Create new LIS, call vào hàm của AddNewLis
+
+  _onClickAddNewInstrumentButton = (onDataLoaded) => {
+    let modalFunc = () => ({
+      title: "New Instrument",
+      body: (
+        <CloneInstrumentDetailModal
+          onSave={this._onAddItem}
+          data={this.props.instrument.newInstrument}
+        />
+      ),
+    });
+    onDataLoaded(modalFunc);
   };
   //Thêm mới Instrument
   _onAddItem = (newItem) => {
@@ -60,7 +59,7 @@ export default class Instrument extends BaseConsumer {
     return (
       <LastDivItem
         title="Add new Instrument"
-        onClick={() => this._openModal("New Instrument")}
+        onClick={this._onClickAddNewInstrumentButton}
       />
     );
   };

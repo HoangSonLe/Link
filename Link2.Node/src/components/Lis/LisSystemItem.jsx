@@ -54,7 +54,6 @@ class LisSystemItem extends Item {
 
   renderImage() {
     let image = "";
-
     switch (this.props.lisSystem.communicationMode) {
       case LisCommunicationMode.FolderChannel:
         image = ImageLis.FolderChannel;

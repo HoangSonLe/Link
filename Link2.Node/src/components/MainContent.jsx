@@ -18,14 +18,14 @@ export default class MainContent extends BaseConsumer {
         tabName: "Labs",
         tabContent: <Lab lab={routeData.lab}></Lab>,
       },
-      // {
-      //   tabName: "Instruments",
-      //   tabContent: <Instrument instrument={routeData.instrument}></Instrument>,
-      // },
-      // {
-      //   tabName: "Lis",
-      //   tabContent: <Lis lis={routeData.lis}></Lis>,
-      // },
+      {
+        tabName: "Instruments",
+        tabContent: <Instrument instrument={routeData.instrument}></Instrument>,
+      },
+      {
+        tabName: "Lis",
+        tabContent: <Lis lis={routeData.lis}></Lis>,
+      },
     ];
   };
 
