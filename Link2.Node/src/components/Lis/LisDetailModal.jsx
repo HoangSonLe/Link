@@ -14,7 +14,7 @@ export default class LisDetailModal extends ModalLayout {
   }
 
   modalBody() {
-    const { lis } = this.props;
+    let { lis } = this.props;
     return <LisDetail lis={lis} />;
   }
   leftFooter() {

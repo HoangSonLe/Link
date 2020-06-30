@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core";
 import {
   I3Div,
   I3Icon,
-  LastDivItem,
+  AddNewItem,
   ListComponent,
   I3Component,
 } from "../../importer";
@@ -32,23 +32,23 @@ class LabItem extends BaseConsumer {
     );
   };
   //Nhấn Create new Instrument, call vào hàm của AddNewInstrument
-  _onClickAddInstrumentButton = (onDataLoaded) => {
+  _onClickAddInstrumentButton = (callbackOpenModal) => {
     let modalFunc = () => ({
       title: "Add Instrument",
       body: (
         <AddNewInstrument lab={this.props.lab} onSave={this._onAddItemInLab} />
       ),
     });
-    onDataLoaded(modalFunc);
+    callbackOpenModal(modalFunc);
   };
   //Nhấn Create new LIS, call vào hàm của AddNewLis
 
-  _onClickAddLisButton = (onDataLoaded) => {
+  _onClickAddLisButton = (callbackOpenModal) => {
     let modalFunc = () => ({
       title: "Add Lis",
       body: <AddNewLis lab={this.props.lab} onSave={this._onAddItemInLab} />,
     });
-    onDataLoaded(modalFunc);
+    callbackOpenModal(modalFunc);
   };
 
   //Add Item to Lab
@@ -162,7 +162,7 @@ class LabItem extends BaseConsumer {
               this._renderContent(LabTypeModal.Instrument, item)
             }
             renderAddItem={
-              <LastDivItem
+              <AddNewItem
                 title="Add Instrument"
                 onClick={this._onClickAddInstrumentButton}
               />
@@ -174,10 +174,7 @@ class LabItem extends BaseConsumer {
             dataList={lab.lisInRouters}
             renderItem={(item) => this._renderContent(LabTypeModal.Lis, item)}
             renderAddItem={
-              <LastDivItem
-                title="Add Lis"
-                onClick={this._onClickAddLisButton}
-              />
+              <AddNewItem title="Add Lis" onClick={this._onClickAddLisButton} />
             }
           />
         </I3Div>

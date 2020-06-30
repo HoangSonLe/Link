@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 export default class HeaderListComponent extends BaseConsumer {
   consumerContent() {
-    const { title, margin } = this.props;
+    let { title, margin } = this.props;
     return (
       <I3Div backgroundColor="lighterGray" padding={["no", "xs", "xs", "xs"]}>
         <I3Div display={"flex"}>

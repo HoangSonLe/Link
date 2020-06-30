@@ -18,7 +18,7 @@ import Lab from './components/Lab/Lab';
 import Instrument from './components/Instrument/Instrument';
 import Lis from './components/Lis/Lis';
 import Item from './base-components/Item';
-import LastDivItem from "./base-components/LastDivItem";
+import AddNewItem from "./base-components/AddNewItem";
 import IconButtonGroup from "./base-components/IconButtonGroup";
 import ListComponent from "./base-components/ListComponent";
 import RowTextField from "./base-components/RowTextField"
@@ -37,7 +37,7 @@ export {
     IconButtonGroup,
     RowSwitch,
     RowTextField,
-    LastDivItem,
+    AddNewItem,
     I3CustomTabs,
     BaseCheckboxItem,
     I3Component,

@@ -1,7 +1,7 @@
 import React from "react";
 import BaseConsumer from "BaseComponent/BaseConsumer";
 import { withStyles } from "@material-ui/core";
-import { LastDivItem, ListComponent } from "../../importer";
+import { AddNewItem, ListComponent } from "../../importer";
 import { EModalType } from "../../general/enum";
 import LisSystemItem from "./LisSystemItem";
 import CloneLisDetailModal from "./CloneLisDetailModal";
@@ -20,7 +20,7 @@ export default class Lis extends BaseConsumer {
 
   //Nhấn Create new LIS, call vào hàm của AddNewLis
 
-  _onClickAddNewLisButton = (onDataLoaded) => {
+  _onClickAddNewLisButton = (callbackOpenModal) => {
     let modalFunc = () => ({
       title: "New Lis",
       body: (
@@ -30,7 +30,7 @@ export default class Lis extends BaseConsumer {
         />
       ),
     });
-    onDataLoaded(modalFunc);
+    callbackOpenModal(modalFunc);
   };
   //Xóa LIS, callback của children
   _onDeleteItem = (i) => {
@@ -53,7 +53,7 @@ export default class Lis extends BaseConsumer {
   //Render div cuối cùng để Add
   _renderAddItem = () => {
     return (
-      <LastDivItem title="Add new Lis" onClick={this._onClickAddNewLisButton} />
+      <AddNewItem title="Add new Lis" onClick={this._onClickAddNewLisButton} />
     );
   };
   consumerContent() {

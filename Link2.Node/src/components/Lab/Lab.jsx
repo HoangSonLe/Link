@@ -24,6 +24,7 @@ export default class Lab extends BaseConsumer {
           <CloneLabDetailModal
             data={this.props.lab.newLab}
             onAdd={this._onAddItem}
+            isAddNew={true}
           />
         ),
       }),

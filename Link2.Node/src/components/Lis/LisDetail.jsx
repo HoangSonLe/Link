@@ -18,18 +18,11 @@ export default class LisDetail extends BaseConsumer {
     };
   }
   componentDidMount() {
-    let { optionsForLisEdit, selectedOption } = this.state;
+    let { optionsForLisEdit } = this.state;
     this.ajaxGet({
       url: "/api/link/GetOptionsForLisEdit",
       success: (ack) => {
-        this.updateLocalObject(optionsForLisEdit, ack.data, () => {
-          optionsForLisEdit.lisCommunationMode
-            ? this.updateLocalObject(
-                selectedOption,
-                optionsForLisEdit.lisCommunationMode[1]
-              )
-            : null;
-        });
+        this.updateLocalObject(optionsForLisEdit, ack.data);
       },
       error: (ack) => {
         for (let i of ack.ErrorMessage) {
@@ -50,7 +43,7 @@ export default class LisDetail extends BaseConsumer {
     return (
       <I3Div margin="xs">
         <ShouldUpdateWrapper
-          value={lis.name ? lis.name : ""}
+          value={lis.name || ""}
           onChange={(text) => this._changeText(lis, "name", text)}
         >
           <RowTextField title="LIS name" />

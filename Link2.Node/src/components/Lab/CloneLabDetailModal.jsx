@@ -17,7 +17,7 @@ export default class CloneLabDetailModal extends BaseCloneConsumer {
     return this.props.data;
   }
   childrenCloneContent() {
-    let { data, onAdd, onDelete, ...otherProps } = this.props;
+    let { data, onAdd, onDelete, isAddNew, ...otherProps } = this.props;
     let cloneData = this.getCloneStateByKey(this._randomId);
     return (
       <LabDetailModal
@@ -25,6 +25,7 @@ export default class CloneLabDetailModal extends BaseCloneConsumer {
         onDelete={onDelete}
         onAdd={onAdd}
         lab={cloneData}
+        isAddNew={isAddNew}
         {...otherProps}
       />
     );
@@ -34,5 +35,6 @@ CloneLabDetailModal.propTypes = {
   data: PropTypes.object,
   onAdd: PropTypes.func,
   onDelete: PropTypes.func,
+  isAddNew: PropTypes.bool,
 };
 CloneLabDetailModal.displayName = "CloneLabDetailModal";

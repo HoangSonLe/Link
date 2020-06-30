@@ -12,7 +12,7 @@ export default class RowTextField extends BaseConsumer {
     this.props.onChange(text);
   }, 300);
   consumerContent() {
-    const { title, value, onChange, ...otherProps } = this.props;
+    let { title, value, onChange, ...otherProps } = this.props;
     return (
       <I3Div margin={"md"}>
         {title ? (

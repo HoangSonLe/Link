@@ -14,7 +14,7 @@ export default class LabDetailModal extends ModalLayout {
   }
 
   modalBody() {
-    const { lab, onDelete } = this.props;
+    let { lab, onDelete, isAddNew } = this.props;
     return (
       <LabDetail
         onDelete={() => {
@@ -22,6 +22,7 @@ export default class LabDetailModal extends ModalLayout {
           this.closeThisModal();
         }}
         lab={lab}
+        isAddNew={isAddNew}
       />
     );
   }
@@ -34,12 +35,12 @@ export default class LabDetailModal extends ModalLayout {
   }
 
   rightFooter() {
-    const { lab, onAdd } = this.props;
+    let { lab, onAdd } = this.props;
 
     return (
       <BaseButton
         width="110px"
-        onClick={(data) => {
+        onClick={() => {
           typeof onAdd === "function"
             ? this._onAddItem(lab)
             : this._onUpdateItem(lab);
@@ -87,4 +88,5 @@ LabDetailModal.protoTypes = {
   onAdd: PropTypes.func,
   onDelete: PropTypes.func,
   commitData: PropTypes.func,
+  isAddNew: PropTypes.bool,
 };

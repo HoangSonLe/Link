@@ -15,54 +15,26 @@ export default class AddNewInstrument extends BaseConsumer {
     this.ajaxGet({
       url: "/api/link/GetInstrumentsForLab",
       success: (ack) => {
-        let data = ack.data.map((i) => ({
-          ...i,
-          isSelected: false,
-          isHidden: false,
-        }));
-        this.updateLocalObject(this.state, {
-          data: data,
-        });
+        this.clearLocalListAndPushNewItems(this.state.data, ack.data);
       },
     });
   }
-  //Thêm sản phẩm vào ds chọn
-  _addSelectedItem = (i) => {
-    let { data } = this.state;
-    let indexItem = data.findIndex((e) => e.id == i.id);
-    this.updateLocalObject(data[indexItem], {
-      isSelected: !data[indexItem].isSelected,
-    });
-  };
+
   //Hàm Search
-  //Nếu true thì isHidden=true và ngược lại
-  _onSearchInstrument = (textSearch) => {
-    let { data } = this.state;
-    if (textSearch != "") {
-      data.forEach((i) =>
-        i.name.toUpperCase().includes(textSearch.toUpperCase()) ||
-        i.serialNumber.toUpperCase().includes(textSearch.toUpperCase())
-          ? (i.isHidden = false)
-          : (i.isHidden = true)
-      );
-    } else {
-      data.forEach((i) => (i.isHidden = false));
-    }
-
-    this.updateLocalListObject(this.state.data, data);
+  _onSearchInstrument = (i, textSearch) => {
+    return (
+      i.name.toUpperCase().includes(textSearch.toUpperCase()) ||
+      i.serialNumber.toUpperCase().includes(textSearch.toUpperCase())
+    );
   };
-  //Hàm add instrument vào lab
 
-  _onSave = () => {
+  _onSave = (newItems) => {
     let { lab, onSave } = this.props;
-    let newItems = this.state.data.map((i) => {
-      return i.isSelected == true ? i.id : null;
-    });
     this.ajaxPost({
       url: "/api/link/AddInstrumentToLab",
       data: {
         LabId: lab.id,
-        ListItemsId: newItems,
+        ListItems: newItems,
       },
       success: (ack) => {
         onSave(lab.lisInstruments, ack.data);
@@ -80,7 +52,6 @@ export default class AddNewInstrument extends BaseConsumer {
     return (
       <AddItemLabModal
         placeholderSearch="Search by name, searial number"
-        onAddSelectedItem={this._addSelectedItem}
         onSearch={this._onSearchInstrument}
         onSaveSelectedItem={this._onSave}
         dataList={data}

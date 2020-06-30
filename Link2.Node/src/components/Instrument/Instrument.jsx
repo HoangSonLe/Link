@@ -1,6 +1,6 @@
 import React from "react";
 import BaseConsumer from "BaseComponent/BaseConsumer";
-import { I3Div, LastDivItem, ListComponent, I3Component } from "../../importer";
+import { I3Div, AddNewItem, ListComponent, I3Component } from "../../importer";
 import { EModalType } from "../../general/enum";
 import CloneInstrumentDetailModal from "./CloneInstrumentDetailModal";
 import InstrumentItem from "./InstrumentItem";
@@ -24,7 +24,7 @@ export default class Instrument extends BaseConsumer {
   //Mở modal thêm mới Instrument
   //Nhấn Create new LIS, call vào hàm của AddNewLis
 
-  _onClickAddNewInstrumentButton = (onDataLoaded) => {
+  _onClickAddNewInstrumentButton = (callbackOpenModal) => {
     let modalFunc = () => ({
       title: "New Instrument",
       body: (
@@ -34,7 +34,7 @@ export default class Instrument extends BaseConsumer {
         />
       ),
     });
-    onDataLoaded(modalFunc);
+    callbackOpenModal(modalFunc);
   };
   //Thêm mới Instrument
   _onAddItem = (newItem) => {
@@ -57,7 +57,7 @@ export default class Instrument extends BaseConsumer {
   //Render Div cuối để add
   _renderAddItem = () => {
     return (
-      <LastDivItem
+      <AddNewItem
         title="Add new Instrument"
         onClick={this._onClickAddNewInstrumentButton}
       />
@@ -77,7 +77,6 @@ export default class Instrument extends BaseConsumer {
     );
   };
   consumerContent() {
-    let { instrument } = this.props;
     return (
       <>
         <I3Div margin={["no", "md", "md", "md"]}>

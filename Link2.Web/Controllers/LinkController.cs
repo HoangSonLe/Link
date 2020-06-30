@@ -915,14 +915,15 @@ namespace Link2.Web.Controllers
             return ack;
         }
         [HttpPost]
-        public Acknowledgement<List<Instrument>> AddInstrumentToLab(AddItemToLabModelView ins)
+        public Acknowledgement<List<Instrument>> AddInstrumentToLab(AddInstrumentToLabModelView ins)
         {
             var ack = new Acknowledgement<List<Instrument>>();
             //Check exist Lab
             var lab = listLaboratories.Where(x => x.Id == ins.LabId).FirstOrDefault();
+            var listInsId = ins.ListItems.Select(i => i.Id).ToList();
             if (lab != null)
             {
-                var ist = listInstruments.Where(i => ins.ListItemsId.Contains(i.Id)).ToList();
+                var ist = listInstruments.Where(i => listInsId.Contains(i.Id)).ToList();
                 //Set Assign for Instrument
 
                 ist.ForEach(i =>
@@ -978,13 +979,14 @@ namespace Link2.Web.Controllers
             return ack;
         }
         [HttpPost]
-        public Acknowledgement<List<Lis>> AddLisSystemToLab(AddItemToLabModelView lisSystems)
+        public Acknowledgement<List<Lis>> AddLisSystemToLab(AddLisToLabModelView lisSystems)
         {
             var ack = new Acknowledgement<List<Lis>>();
             var lab = listLaboratories.Where(x => x.Id == lisSystems.LabId).FirstOrDefault();
+            var listLisId = lisSystems.ListItems.Select(i => i.Id).ToList();
             if (lab != null)
             {
-                var lis = listLisSytem.Where(i => lisSystems.ListItemsId.Contains(i.Id)).ToList();
+                var lis = listLisSytem.Where(i => listLisId.Contains(i.Id)).ToList();
                 //Set Assign for Instrument
                 foreach (var i in lis)
                 {

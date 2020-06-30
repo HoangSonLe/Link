@@ -24,7 +24,10 @@ class LabDetail extends BaseConsumer {
     this.ajaxGet({
       url: "/api/link/GetOptionsForLabEditting",
       success: (ack) => {
-        this.updateLocalObject(this.state._optionsTimeZones, ack.data);
+        this.clearLocalListAndPushNewItems(
+          this.state._optionsTimeZones,
+          ack.data
+        );
       },
       error: (ack) => {
         for (let i of ack.ErrorMessage) {
@@ -53,12 +56,12 @@ class LabDetail extends BaseConsumer {
   };
 
   consumerContent() {
-    let { classes, lab } = this.props;
+    let { classes, lab, isAddNew } = this.props;
 
     return (
       <I3Div margin="xs">
         <ShouldUpdateWrapper
-          value={lab.name ? lab.name : ""}
+          value={lab.name || ""}
           onChange={(text) => this._changeText(lab, "name", text)}
         >
           <RowTextField title="Laboratory name" />
@@ -96,7 +99,7 @@ class LabDetail extends BaseConsumer {
           </GridItem>
           <GridItem xs={8}>
             <ShouldUpdateWrapper
-              value={lab.priority ? lab.priority : ""}
+              value={lab.priority || ""}
               onChange={(e) => this._changeText(lab, "priority", e)}
             >
               <RowTextField
@@ -111,17 +114,19 @@ class LabDetail extends BaseConsumer {
             </ShouldUpdateWrapper>
           </GridItem>
         </GridContainer>
-        <I3Div display="flex" alignItems="center" justifyContent="flex-end">
-          <BaseButton
-            onClick={this._onDeleteLab}
-            iconClassName="far fa-trash-alt"
-            fontWeight="bolder"
-            variant="text"
-            margin="xs"
-          >
-            DELETE LAB
-          </BaseButton>
-        </I3Div>
+        {!isAddNew ? (
+          <I3Div display="flex" alignItems="center" justifyContent="flex-end">
+            <BaseButton
+              onClick={this._onDeleteLab}
+              iconClassName="far fa-trash-alt"
+              fontWeight="bolder"
+              variant="text"
+              margin="xs"
+            >
+              DELETE LAB
+            </BaseButton>
+          </I3Div>
+        ) : null}
       </I3Div>
     );
   }
@@ -141,8 +146,14 @@ const Styles = {
     },
   },
 };
+
+LabDetail.defaultProps = {
+  isAddNew: false,
+};
+
 LabDetail.propTypes = {
   onDelete: PropTypes.func,
   lab: PropTypes.object,
+  isAddNew: PropTypes.bool,
 };
 export default withStyles(Styles)(LabDetail);

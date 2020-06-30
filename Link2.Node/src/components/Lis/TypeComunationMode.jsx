@@ -24,19 +24,19 @@ class TypeComunationMode extends BaseConsumer {
     return (
       <Fragment>
         <ShouldUpdateWrapper
-          value={lis.tcpChannel.ip ? lis.tcpChannel.ip : ""}
+          value={lis.tcpChannel.ip || ""}
           onChange={(text) => this._changeText(lis.tcpChannel, "ip", text)}
         >
           <RowTextField title="TCP/IP Address" />
         </ShouldUpdateWrapper>
         <ShouldUpdateWrapper
-          value={lis.tcpChannel.port ? lis.tcpChannel.port : ""}
+          value={lis.tcpChannel.port || ""}
           onChange={(text) => this._changeText(lis.tcpChannel, "port", text)}
         >
           <RowTextField title="TCP/IP Port" />
         </ShouldUpdateWrapper>
         <ShouldUpdateWrapper
-          value={lis.tcpChannel.timeOut ? lis.tcpChannel.timeOut : 0}
+          value={lis.tcpChannel.timeOut || 0}
           onChange={(text) => this._changeText(lis.tcpChannel, "timeOut", text)}
         >
           <RowTextField
@@ -65,7 +65,7 @@ class TypeComunationMode extends BaseConsumer {
     return (
       <Fragment>
         <ShouldUpdateWrapper
-          value={lis.serialChannel.portName ? lis.serialChannel.portName : ""}
+          value={lis.serialChannel.portName || ""}
           onChange={(text) =>
             this._changeText(lis.serialChannel, "portName", text)
           }
@@ -74,16 +74,16 @@ class TypeComunationMode extends BaseConsumer {
         </ShouldUpdateWrapper>
         <RowSwitch
           title="DTSDSR"
-          isActive={lis.serialChannel.dtsdsr ? lis.serialChannel.dtsdsr : false}
+          isActive={lis.serialChannel.dtsdsr || false}
           onChange={() => this._changeActiveSerialChannel("dtsdsr")}
         />
         <RowSwitch
           title="RTSCTS"
-          isActive={lis.serialChannel.rtscts ? lis.serialChannel.rtscts : false}
+          isActive={lis.serialChannel.rtscts || false}
           onChange={() => this._changeActiveSerialChannel("rtscts")}
         />
         <ShouldUpdateWrapper
-          value={lis.serialChannel.timeOut ? lis.serialChannel.timeOut : 0}
+          value={lis.serialChannel.timeOut || 0}
           onChange={(text) =>
             this._changeText(lis.serialChannel, "timeOut", text)
           }
@@ -225,15 +225,11 @@ class TypeComunationMode extends BaseConsumer {
       <Fragment>
         <RowSwitch
           title="Need Ack"
-          isActive={
-            lis.folderChannel.needAck ? lis.folderChannel.needAck : false
-          }
+          isActive={lis.folderChannel.needAck || false}
           onChange={() => this._changeActiveFolderChannel("needAck")}
         />
         <ShouldUpdateWrapper
-          value={
-            lis.folderChannel.rootFolder ? lis.folderChannel.rootFolder : ""
-          }
+          value={lis.folderChannel.rootFolder || ""}
           onChange={(text) =>
             this._changeText(lis.folderChannel, "rootFolder", text)
           }
@@ -241,7 +237,7 @@ class TypeComunationMode extends BaseConsumer {
           <RowTextField title="Shared folder" />
         </ShouldUpdateWrapper>
         <ShouldUpdateWrapper
-          value={lis.folderChannel.inputFile ? lis.folderChannel.inputFile : ""}
+          value={lis.folderChannel.inputFile || ""}
           onChange={(text) =>
             this._changeText(lis.folderChannel, "inputFile", text)
           }
@@ -249,9 +245,7 @@ class TypeComunationMode extends BaseConsumer {
           <RowTextField title="Input File" />
         </ShouldUpdateWrapper>
         <ShouldUpdateWrapper
-          value={
-            lis.folderChannel.outputFile ? lis.folderChannel.outputFile : ""
-          }
+          value={lis.folderChannel.outputFile || ""}
           onChange={(text) =>
             this._changeText(lis.folderChannel, "outputFile", text)
           }

@@ -18,25 +18,30 @@ class AddItemLabModal extends ModalLayout {
     super(props);
     this.state = {
       searchText: "",
+      selectedItems: [],
     };
   }
+  //Thêm sản phẩm vào ds chọn
+  _addSelectedItem = (i) => {
+    let { selectedItems } = this.state;
+    let index = selectedItems.findIndex((e) => e == i);
+    index == -1
+      ? this.addLocalElement(this.state.selectedItems, i)
+      : this.removeLocalElement(this.state.selectedItems, i);
+  };
   //Thay đổi text Search
   _onChangeSearch = (e) => {
-    let { onSearch } = this.props;
-    onSearch(e.target.value);
-    this.updateLocalObject(this.state, {
-      searchText: e.target.value,
-    });
+    this.updateLocalObject(this.state.searchText, e.target.value);
   };
   modalBody() {
-    let { searchText } = this.state;
+    let { searchText, selectedItems } = this.state;
 
     let {
       classes,
       dataList,
       renderItem,
-      onAddSelectedItem,
       placeholderSearch,
+      onSearch,
     } = this.props;
     return (
       <I3Div margin="md">
@@ -63,15 +68,20 @@ class AddItemLabModal extends ModalLayout {
           </ShouldUpdateWrapper>
         </I3Div>
         {/* Nếu có search thi hiện theo ds search , không thì hiện mặc định từ db về */}
+
         {dataList.length > 0 ? (
           dataList.map((i) =>
-            !i.isHidden ? (
+            onSearch(i, searchText) ? (
               <I3Div
                 key={i.id + "instrument"}
                 cursor="pointer"
                 margin="xs"
-                className={i.isSelected ? classes.ActiveDiv : null}
-                onClick={() => onAddSelectedItem(i)}
+                className={
+                  selectedItems.findIndex((e) => e == i) != -1
+                    ? classes.ActiveDiv
+                    : ""
+                }
+                onClick={() => this._addSelectedItem(i)}
               >
                 {renderItem(i)}
               </I3Div>
@@ -94,13 +104,14 @@ class AddItemLabModal extends ModalLayout {
   }
 
   rightFooter() {
-    const { onSaveSelectedItem } = this.props;
+    let { onSaveSelectedItem } = this.props;
+    let { selectedItems } = this.state;
 
     return (
       <BaseButton
         width="110px"
         onClick={() => {
-          onSaveSelectedItem();
+          onSaveSelectedItem(selectedItems);
           this.closeThisModal();
         }}
       >
@@ -131,6 +142,6 @@ AddItemLabModal.propTypes = {
   onAddSelectedItem: PropTypes.func,
   onSearch: PropTypes.func,
   onSaveSelectedItem: PropTypes.func,
-  dataList: PropTypes.arrayOf([PropTypes.object]),
-  renderItem: PropTypes.node,
+  // dataList: PropTypes.arrayOf([PropTypes.object]),
+  renderItem: PropTypes.func,
 };

@@ -20,7 +20,10 @@ export default class InstrumentDetail extends BaseConsumer {
     this.ajaxGet({
       url: "/api/link/GetOptionsForAnalyser",
       success: (ack) => {
-        this.updateLocalObject(this.state._optionsInstrumentType, ack.data);
+        this.clearLocalListAndPushNewItems(
+          this.state._optionsInstrumentType,
+          ack.data
+        );
       },
       error: (ack) => {
         for (let i of ack.ErrorMessage) {
@@ -45,7 +48,7 @@ export default class InstrumentDetail extends BaseConsumer {
     return (
       <I3Div margin="xs">
         <ShouldUpdateWrapper
-          value={instrument.name ? instrument.name : ""}
+          value={instrument.name || ""}
           onChange={(text) => this._changeText(instrument, "name", text)}
         >
           <RowTextField title="Instrument name" />
@@ -61,7 +64,7 @@ export default class InstrumentDetail extends BaseConsumer {
           onChange={() => this._changeActive("autoSendToHost")}
         />
         <ShouldUpdateWrapper
-          value={instrument.serialNumber ? instrument.serialNumber : ""}
+          value={instrument.serialNumber || ""}
           onChange={(text) =>
             this._changeText(instrument, "serialNumber", text)
           }
@@ -96,13 +99,13 @@ export default class InstrumentDetail extends BaseConsumer {
           </ShouldUpdateWrapper>
         </I3Div>
         <ShouldUpdateWrapper
-          value={instrument.tanFolder ? instrument.tanFolder : ""}
+          value={instrument.tanFolder || ""}
           onChange={(text) => this._changeText(instrument, "tanFolder", text)}
         >
           <RowTextField title="TAN folder" />
         </ShouldUpdateWrapper>
         <ShouldUpdateWrapper
-          value={instrument.astmFolder ? instrument.astmFolder : ""}
+          value={instrument.astmFolder || ""}
           onChange={(text) => this._changeText(instrument, "astmFolder", text)}
         >
           <RowTextField title="ASTM folder" />

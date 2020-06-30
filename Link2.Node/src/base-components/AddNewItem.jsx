@@ -4,16 +4,16 @@ import { I3Div, I3Icon } from "../importer";
 import PropTypes from "prop-types";
 import { EModalType } from "../general/enum";
 
-export default class LastDivItem extends BaseConsumer {
-  _onDataLoaded = (modalFunc) => {
+export default class AddNewItem extends BaseConsumer {
+  _callbackOpenModal = (modalFunc) => {
     this.openModal(modalFunc, EModalType.Right, true);
   };
 
   consumerContent() {
-    const { title, iconClassName, onClick } = this.props;
+    let { title, iconClassName, onClick } = this.props;
     return (
       <I3Div
-        onClick={() => onClick(this._onDataLoaded)}
+        onClick={() => onClick(this._callbackOpenModal)}
         variant="h6"
         borderColor="gray"
         border={true}
@@ -37,7 +37,7 @@ export default class LastDivItem extends BaseConsumer {
     );
   }
 }
-LastDivItem.propType = {
+AddNewItem.propType = {
   title: PropTypes.string,
   iconClassName: PropTypes.string,
   onClick: PropTypes.func,

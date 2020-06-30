@@ -13,7 +13,7 @@ export default class InstrumenteDetailModal extends ModalLayout {
     this.setInitDataToCompare(this.props.instrument);
   }
   modalBody() {
-    const { instrument } = this.props;
+    let { instrument } = this.props;
     return <InstrumentDetail instrument={instrument} />;
   }
   leftFooter() {
@@ -25,7 +25,7 @@ export default class InstrumenteDetailModal extends ModalLayout {
   }
 
   rightFooter() {
-    const { instrument, onSave } = this.props;
+    let { instrument, onSave } = this.props;
 
     return (
       <BaseButton

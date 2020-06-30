@@ -19,7 +19,7 @@ class App extends BasePage {
     this.ajaxGet({
       url: "/api/link/GetLabConfigurationDefault",
       success: (ack) => {
-        this.updateObject(this.state, { routeData: ack.data });
+        this.updateLocalObject(this.state.routeData, ack.data);
       },
     });
   }

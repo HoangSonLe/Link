@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 export default class ListComponent extends BaseConsumer {
   consumerContent() {
-    const { title, renderAddItem, renderItem, dataList, margin } = this.props;
+    let { title, renderAddItem, renderItem, dataList, margin } = this.props;
     return (
       <I3Div
         backgroundColor="lighterGray"
