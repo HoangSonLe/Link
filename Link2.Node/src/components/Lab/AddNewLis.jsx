@@ -50,6 +50,7 @@ export default class AddNewLis extends BaseConsumer {
       <AddItemLabModal
         placeholderSearch="Search by name"
         onSearch={this._onSearchLis}
+        keyIndentify="id"
         onSaveSelectedItem={this._onSave}
         dataList={data}
         renderItem={(i) => <LisSystemItem lisSystem={i} isInLab={true} />}

@@ -30,6 +30,9 @@ export default class AddNewInstrument extends BaseConsumer {
 
   _onSave = (newItems) => {
     let { lab, onSave } = this.props;
+    // let {data} = this.state;
+    // let postData = [];
+    debugger;
     this.ajaxPost({
       url: "/api/link/AddInstrumentToLab",
       data: {
@@ -46,6 +49,7 @@ export default class AddNewInstrument extends BaseConsumer {
       },
     });
   };
+
   consumerContent() {
     let { data } = this.state;
     let { ...otherProps } = this.props;
@@ -54,6 +58,7 @@ export default class AddNewInstrument extends BaseConsumer {
         placeholderSearch="Search by name, searial number"
         onSearch={this._onSearchInstrument}
         onSaveSelectedItem={this._onSave}
+        keyIndentify="id"
         dataList={data}
         renderItem={(i) => <InstrumentItem instrument={i} isInLab={true} />}
         {...otherProps}

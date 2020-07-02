@@ -24,10 +24,14 @@ class AddItemLabModal extends ModalLayout {
   //Thêm sản phẩm vào ds chọn
   _addSelectedItem = (i) => {
     let { selectedItems } = this.state;
-    let index = selectedItems.findIndex((e) => e == i);
-    index == -1
-      ? this.addLocalElement(this.state.selectedItems, i)
-      : this.removeLocalElement(this.state.selectedItems, i);
+    let { keyIndentify } = this.props;
+    let item = selectedItems.find((e) => e[keyIndentify] == i[keyIndentify]);
+
+    item == null
+      ? this.addLocalElement(this.state.selectedItems, {
+          [keyIndentify]: i[keyIndentify],
+        })
+      : this.removeLocalElement(this.state.selectedItems, item);
   };
   //Thay đổi text Search
   _onChangeSearch = (e) => {
@@ -42,6 +46,7 @@ class AddItemLabModal extends ModalLayout {
       renderItem,
       placeholderSearch,
       onSearch,
+      keyIndentify,
     } = this.props;
     return (
       <I3Div margin="md">
@@ -77,7 +82,9 @@ class AddItemLabModal extends ModalLayout {
                 cursor="pointer"
                 margin="xs"
                 className={
-                  selectedItems.findIndex((e) => e == i) != -1
+                  selectedItems.find(
+                    (e) => e[keyIndentify] == i[keyIndentify]
+                  ) != null
                     ? classes.ActiveDiv
                     : ""
                 }
@@ -104,14 +111,21 @@ class AddItemLabModal extends ModalLayout {
   }
 
   rightFooter() {
-    let { onSaveSelectedItem } = this.props;
+    let { onSaveSelectedItem, dataList, keyIndentify } = this.props;
     let { selectedItems } = this.state;
 
     return (
       <BaseButton
         width="110px"
         onClick={() => {
-          onSaveSelectedItem(selectedItems);
+          let newItems = [];
+          dataList.forEach((i) =>
+            selectedItems.find((e) =>
+              e[keyIndentify] == i[keyIndentify] ? newItems.push(i) : null
+            )
+          );
+
+          onSaveSelectedItem(newItems);
           this.closeThisModal();
         }}
       >
